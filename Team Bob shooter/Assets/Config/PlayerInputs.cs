@@ -53,6 +53,15 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""8ef456c7-09b7-4205-adb0-7174f003460d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -187,6 +196,28 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""action"": ""CameraY"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3eec6d14-b240-46fb-b102-f94a8cf86d67"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MKB"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""882788e0-901f-4fbe-b051-a06ef189659d"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -209,6 +240,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_Movement_Move = m_Movement.FindAction("Move", throwIfNotFound: true);
         m_Movement_CameraX = m_Movement.FindAction("CameraX", throwIfNotFound: true);
         m_Movement_CameraY = m_Movement.FindAction("CameraY", throwIfNotFound: true);
+        m_Movement_Jump = m_Movement.FindAction("Jump", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -273,6 +305,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Movement_Move;
     private readonly InputAction m_Movement_CameraX;
     private readonly InputAction m_Movement_CameraY;
+    private readonly InputAction m_Movement_Jump;
     public struct MovementActions
     {
         private @PlayerInputs m_Wrapper;
@@ -280,6 +313,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Movement_Move;
         public InputAction @CameraX => m_Wrapper.m_Movement_CameraX;
         public InputAction @CameraY => m_Wrapper.m_Movement_CameraY;
+        public InputAction @Jump => m_Wrapper.m_Movement_Jump;
         public InputActionMap Get() { return m_Wrapper.m_Movement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -298,6 +332,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @CameraY.started += instance.OnCameraY;
             @CameraY.performed += instance.OnCameraY;
             @CameraY.canceled += instance.OnCameraY;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
         }
 
         private void UnregisterCallbacks(IMovementActions instance)
@@ -311,6 +348,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @CameraY.started -= instance.OnCameraY;
             @CameraY.performed -= instance.OnCameraY;
             @CameraY.canceled -= instance.OnCameraY;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
         }
 
         public void RemoveCallbacks(IMovementActions instance)
@@ -351,5 +391,6 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnCameraX(InputAction.CallbackContext context);
         void OnCameraY(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
     }
 }

@@ -11,6 +11,12 @@ namespace TeamBobFPS
         [SerializeField]
         private float speed = 5;
 
+        [SerializeField]
+        private float jumpStrength = 1;
+
+        [SerializeField]
+        private float fallSpeedModifier = 10f;
+
         private PlayerInputs playerInputs;
 
         public PlayerInputs Inputs
@@ -18,11 +24,13 @@ namespace TeamBobFPS
             get { return playerInputs; }
         }
 
-        private InputAction moveAction;
+        private InputAction moveAction, jumpAction;
 
         private Mover mover;
 
         private Rigidbody rb;
+
+        private bool jumping = false;
 
         protected override void Awake()
         {
@@ -34,6 +42,9 @@ namespace TeamBobFPS
             playerInputs = new PlayerInputs();
             playerInputs.Movement.Enable();
             moveAction = playerInputs.Movement.Move;
+            jumpAction = playerInputs.Movement.Jump;
+
+            jumpAction.performed += Jump;
         }
 
         public override void OnFixedUpdate(float fixedDeltaTime)
@@ -41,6 +52,11 @@ namespace TeamBobFPS
             base.OnFixedUpdate(fixedDeltaTime);
 
             rb.useGravity = !mover.OnSlope();
+
+            if (!mover.OnSlope() && !mover.IsGrounded)
+            {
+                rb.AddForce(Physics.gravity * rb.mass * fallSpeedModifier, ForceMode.Force);
+            }
 
             Vector3 camForward = new(Camera.main.transform.forward.x, 0, Camera.main.transform.forward.z);
             Vector3 camRight = new(Camera.main.transform.right.x, 0, Camera.main.transform.right.z);
@@ -58,6 +74,17 @@ namespace TeamBobFPS
             move = mover.GetSlopeDirection(move);
 
             mover.Move(move);
+
+            if (mover.IsGrounded && jumping) jumping = false;
+        }
+
+        private void Jump(InputAction.CallbackContext context)
+        {
+            if (jumping || !mover.IsGrounded) return;
+
+            rb.useGravity = true;
+            rb.velocity = Vector3.zero;
+            rb.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
         }
     }
 }
