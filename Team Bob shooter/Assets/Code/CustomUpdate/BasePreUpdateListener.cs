@@ -19,6 +19,8 @@ namespace TeamBobFPS
 
         protected virtual void Awake()
         {
+            if (GameInstance.Instance == null) return;
+
             updateManager = GameInstance.Instance.GetUpdateManager();
 
             id = updateManager.GetUniqueID();
