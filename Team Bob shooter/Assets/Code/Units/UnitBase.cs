@@ -15,5 +15,20 @@ namespace TeamBobFPS
         {
             get { return health; }
         }
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            health = maxHealth;
+        }
+
+        protected virtual void ChangeHealth(float amount)
+        {
+            health += amount;
+            
+            if (health > maxHealth) health = maxHealth;
+            if (health < 0) health = 0;
+        }
     }
 }

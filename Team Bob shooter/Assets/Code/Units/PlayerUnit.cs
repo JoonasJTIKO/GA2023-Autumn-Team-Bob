@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,19 +33,37 @@ namespace TeamBobFPS
 
         private bool jumping = false;
 
+        public static event Action OnPlayerHealthChanged;
+
         protected override void Awake()
         {
             base.Awake();
+            if (GameInstance.Instance == null) return;
 
             mover = GetComponent<Mover>();
             mover.Setup(speed);
             rb = GetComponent<Rigidbody>();
             playerInputs = new PlayerInputs();
-            playerInputs.Movement.Enable();
             moveAction = playerInputs.Movement.Move;
             jumpAction = playerInputs.Movement.Jump;
+        }
 
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            if (GameInstance.Instance == null) return;
+
+            playerInputs.Movement.Enable();
             jumpAction.performed += Jump;
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            if (GameInstance.Instance == null) return;
+
+            playerInputs.Movement.Disable();
+            jumpAction.performed -= Jump;
         }
 
         public override void OnFixedUpdate(float fixedDeltaTime)
@@ -85,6 +104,13 @@ namespace TeamBobFPS
             rb.useGravity = true;
             rb.velocity = Vector3.zero;
             rb.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
+        }
+
+        protected override void ChangeHealth(float amount)
+        {
+            base.ChangeHealth(amount);
+
+            OnPlayerHealthChanged?.Invoke();
         }
     }
 }
