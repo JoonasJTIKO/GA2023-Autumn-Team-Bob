@@ -31,7 +31,19 @@ namespace TeamBobFPS
 
         private Rigidbody rb;
 
+        private Camera playerCam;
+
+        public Camera PlayerCam
+        {
+            get { return playerCam; }
+        }
+
         private bool jumping = false;
+
+        public bool IsGrounded
+        {
+            get { return mover.IsGrounded; }
+        }
 
         public static event Action OnPlayerHealthChanged;
 
@@ -43,6 +55,7 @@ namespace TeamBobFPS
             mover = GetComponent<Mover>();
             mover.Setup(speed);
             rb = GetComponent<Rigidbody>();
+            playerCam = GetComponentInChildren<Camera>();
             playerInputs = new PlayerInputs();
             moveAction = playerInputs.Movement.Move;
             jumpAction = playerInputs.Movement.Jump;
@@ -70,15 +83,20 @@ namespace TeamBobFPS
         {
             base.OnFixedUpdate(fixedDeltaTime);
 
+            if (IsGrounded)
+            {
+                rb.velocity = Vector3.zero;
+            }
+
             rb.useGravity = !mover.OnSlope();
 
-            if (!mover.OnSlope() && !mover.IsGrounded)
+            if (!mover.OnSlope() && !IsGrounded)
             {
                 rb.AddForce(Physics.gravity * rb.mass * fallSpeedModifier, ForceMode.Force);
             }
 
-            Vector3 camForward = new(Camera.main.transform.forward.x, 0, Camera.main.transform.forward.z);
-            Vector3 camRight = new(Camera.main.transform.right.x, 0, Camera.main.transform.right.z);
+            Vector3 camForward = new(playerCam.transform.forward.x, 0, playerCam.transform.forward.z);
+            Vector3 camRight = new(playerCam.transform.right.x, 0, playerCam.transform.right.z);
             camForward.Normalize();
             camRight.Normalize();
 
@@ -94,12 +112,12 @@ namespace TeamBobFPS
 
             mover.Move(move);
 
-            if (mover.IsGrounded && jumping) jumping = false;
+            if (IsGrounded && jumping) jumping = false;
         }
 
         private void Jump(InputAction.CallbackContext context)
         {
-            if (jumping || !mover.IsGrounded) return;
+            if (jumping || !IsGrounded) return;
 
             rb.useGravity = true;
             rb.velocity = Vector3.zero;

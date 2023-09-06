@@ -25,6 +25,11 @@ namespace TeamBobFPS
         [SerializeField]
         private float shotAmmoCost;
 
+        [SerializeField]
+        private GameObject hitEffect;
+
+        protected ComponentPool<Transform> hitEffectPool;
+
         private float currentReserveAmmo;
 
         private float currentMagAmmoCount;
@@ -39,6 +44,7 @@ namespace TeamBobFPS
 
             currentReserveAmmo = startingReserveAmmo;
             currentMagAmmoCount = magSize;
+            hitEffectPool = new ComponentPool<Transform>(hitEffect.transform, 10);
         }
 
         public override void OnUpdate(float deltaTime)

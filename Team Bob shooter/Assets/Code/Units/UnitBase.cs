@@ -23,6 +23,11 @@ namespace TeamBobFPS
             health = maxHealth;
         }
 
+        public virtual void TakeDamage(float amount)
+        {
+            ChangeHealth(-amount);
+        }
+
         protected virtual void ChangeHealth(float amount)
         {
             health += amount;

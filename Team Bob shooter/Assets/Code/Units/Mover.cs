@@ -53,8 +53,8 @@ namespace TeamBobFPS
         {
             base.OnFixedUpdate(fixedDeltaTime);
 
-            IsGrounded = Physics.SphereCast(transform.position, collider.radius, 
-                -transform.up, out hit, 0.6f, layerMask);
+            IsGrounded = Physics.SphereCast(transform.position, collider.radius * 0.7f, 
+                -transform.up, out hit, 0.7f, layerMask);
 
             Move(fixedDeltaTime);
         }
