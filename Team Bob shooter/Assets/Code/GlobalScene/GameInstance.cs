@@ -4,11 +4,15 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using TeamBobFPS;
+using TeamBobFPS.UI;
 
 namespace TeamBobFPS
 {
     public class GameInstance : MonoBehaviour
     {
+        [SerializeField]
+        private InGameHudCanvas inGameHudCanvas;
+
         [SerializeField]
         private UpdateManager updateManager;
 
@@ -66,6 +70,8 @@ namespace TeamBobFPS
         }
 
         // Getters
+
+        public InGameHudCanvas GetInGameHudCanvas() { return inGameHudCanvas; }
 
         public UpdateManager GetUpdateManager() { return updateManager; }
 

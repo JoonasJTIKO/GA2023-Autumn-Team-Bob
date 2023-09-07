@@ -31,9 +31,9 @@ namespace TeamBobFPS
             rb = GetComponent<Rigidbody>();
         }
 
-        protected override void BeginReload()
+        public override void BeginReload()
         {
-            throw new System.NotImplementedException();
+            
         }
 
         protected override void Fire()
@@ -55,10 +55,6 @@ namespace TeamBobFPS
                 activeHitEffects[index].position = hit.point;
                 index++;
                 if (index >= activeHitEffects.Length) index = 0;
-            }
-            else
-            {
-                Debug.DrawRay(playerUnit.PlayerCam.transform.position, angle * 50, Color.red);
             }
 
             if (!playerUnit.IsGrounded)

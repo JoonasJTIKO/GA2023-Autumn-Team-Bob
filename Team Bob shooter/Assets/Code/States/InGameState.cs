@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 namespace TeamBobFPS
 {
-    public class StartMenuState : GameStateBase
+    public class InGameState : GameStateBase
     {
         public override string SceneName { get { return "PlayerTest"; } }
 
@@ -17,14 +17,17 @@ namespace TeamBobFPS
             {
                 SceneManager.LoadSceneAsync(SceneName, LoadSceneMode.Additive);
             }
+
+            GameInstance.Instance.GetInGameHudCanvas().Show();
         }
 
         public override void Deactivate(bool unloadScene = true)
         {
             if (unloadScene) SceneManager.UnloadSceneAsync(SceneName);
+            GameInstance.Instance.GetInGameHudCanvas().Hide();
         }
 
-        public StartMenuState() : base() 
+        public InGameState() : base() 
         {
 
         }

@@ -10,11 +10,14 @@ namespace TeamBobFPS
         [SerializeField]
         private List<WeaponBase> weapons;
 
+        [SerializeField]
+        private List<GameObject> viewmodels;
+
         private WeaponBase[] equippedWeapons;
 
         private PlayerUnit playerUnit;
 
-        private InputAction swapAction, shootAction;
+        private InputAction swapAction, shootAction, reloadAction;
 
         private int activeWeaponIndex = 0;
 
@@ -41,6 +44,8 @@ namespace TeamBobFPS
                 slot++;
             }
             activeWeapon = equippedWeapons[activeWeaponIndex];
+            activeWeapon.UpdateHudAmmo();
+            viewmodels[activeWeaponIndex].SetActive(true);
         }
 
         protected override void OnEnable()
@@ -51,7 +56,9 @@ namespace TeamBobFPS
             playerUnit.Inputs.Weapons.Enable();
             swapAction = playerUnit.Inputs.Weapons.Swap;
             shootAction = playerUnit.Inputs.Weapons.Shoot;
+            reloadAction = playerUnit.Inputs.Weapons.Reload;
             swapAction.performed += SwapWeapon;
+            reloadAction.performed += ReloadActiveWeapon;
         }
 
         protected override void OnDisable()
@@ -61,6 +68,7 @@ namespace TeamBobFPS
 
             playerUnit.Inputs.Weapons.Disable();
             swapAction.performed -= SwapWeapon;
+            reloadAction.performed -= ReloadActiveWeapon;
         }
 
         public override void OnUpdate(float deltaTime)
@@ -88,6 +96,8 @@ namespace TeamBobFPS
 
         private void SwapWeapon(InputAction.CallbackContext context)
         {
+            viewmodels[activeWeaponIndex].SetActive(false);
+
             if (context.ReadValue<float>() > 0)
             {
                 activeWeaponIndex++;
@@ -99,12 +109,18 @@ namespace TeamBobFPS
                 if (activeWeaponIndex < 0) activeWeaponIndex = equippedWeapons.Length - 1;
             }
             activeWeapon = equippedWeapons[activeWeaponIndex];
-            Debug.Log(activeWeapon);
+            activeWeapon.UpdateHudAmmo();
+            viewmodels[activeWeaponIndex].SetActive(true);
         }
 
         private void ShootActiveWeapon()
         {
             activeWeapon.Shoot();
+        }
+
+        private void ReloadActiveWeapon(InputAction.CallbackContext context)
+        {
+            activeWeapon.BeginReload();
         }
     }
 }

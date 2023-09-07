@@ -51,9 +51,9 @@ namespace TeamBobFPS
 
         private void Initialize()
         {
-            StartMenuState startMenuState = new StartMenuState();
+            InGameState inGameState = new InGameState();
 
-            states.Add(startMenuState);
+            states.Add(inGameState);
         }
 
         private void LoadInitialState()

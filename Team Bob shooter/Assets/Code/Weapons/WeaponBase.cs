@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TeamBobFPS.UI;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -8,35 +9,37 @@ namespace TeamBobFPS
     public abstract class WeaponBase : BaseUpdateListener
     {
         [SerializeField]
-        private float bulletDamage;
+        protected float bulletDamage;
 
         [SerializeField]
-        private float fireRate;
+        protected float fireRate;
 
         [SerializeField]
-        private float maxReserveAmmo;
+        protected int maxReserveAmmo;
 
         [SerializeField]
-        private float startingReserveAmmo;
+        protected int startingReserveAmmo;
 
         [SerializeField]
-        private float magSize;
+        protected int magSize;
 
         [SerializeField]
-        private float shotAmmoCost;
+        protected int shotAmmoCost;
 
         [SerializeField]
-        private GameObject hitEffect;
+        protected GameObject hitEffect;
 
         protected ComponentPool<Transform> hitEffectPool;
 
-        private float currentReserveAmmo;
+        protected int currentReserveAmmo;
 
-        private float currentMagAmmoCount;
+        protected int currentMagAmmoCount;
 
-        private float timer = 0;
+        protected float timer = 0;
 
-        private bool readyToFire = true;
+        protected bool readyToFire = true;
+
+        protected bool reloading = false;
 
         protected override void Awake()
         {
@@ -58,27 +61,39 @@ namespace TeamBobFPS
             }
         }
 
+        public virtual void UpdateHudAmmo()
+        {
+            InGameHudCanvas inGameHudCanvas = GameInstance.Instance.GetInGameHudCanvas();
+
+            inGameHudCanvas.UpdateMagCount(currentMagAmmoCount);
+            inGameHudCanvas.UpdateReserveCount(currentReserveAmmo);
+        }
+
         public virtual void Shoot()
         {
-            if (currentMagAmmoCount == 0 || !readyToFire) return;
+            if (currentMagAmmoCount == 0 || !readyToFire || reloading) return;
 
             currentMagAmmoCount -= shotAmmoCost;
             Fire();
+            UpdateHudAmmo();
             readyToFire = false;
             timer = 1 / fireRate;
         }
 
         protected virtual void ReloadCompleted()
         {
-            float reloadAmount;
-            if (currentReserveAmmo < magSize) reloadAmount = currentReserveAmmo;
-            else reloadAmount = magSize;
+            int reloadAmount = magSize - currentMagAmmoCount;
+            if (currentReserveAmmo < reloadAmount) reloadAmount = currentReserveAmmo;
 
             currentReserveAmmo -= reloadAmount;
             currentMagAmmoCount += reloadAmount;
+            if (currentMagAmmoCount > magSize) currentMagAmmoCount = magSize;
+
+            UpdateHudAmmo();
+            reloading = false;
         }
 
-        protected abstract void BeginReload();
+        public abstract void BeginReload();
 
         protected abstract void Fire();
     }
