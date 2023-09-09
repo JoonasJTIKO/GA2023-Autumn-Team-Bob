@@ -4,17 +4,23 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using TeamBobFPS;
+using TeamBobFPS.UI;
 
 namespace TeamBobFPS
 {
     public class GameInstance : MonoBehaviour
     {
         [SerializeField]
+        private InGameHudCanvas inGameHudCanvas;
+
+        [SerializeField]
         private UpdateManager updateManager;
 
         private static GameInstance instance;
 
         private GameStateManager gameStateManager;
+
+        private WeaponLoadout weaponLoadout;
 
         public AudioListener AudioListener
         {
@@ -52,6 +58,7 @@ namespace TeamBobFPS
                 instance = GetComponent<GameInstance>();
             }
             gameStateManager = GetComponent<GameStateManager>();
+            weaponLoadout = GetComponent<WeaponLoadout>();
             AudioListener = GetComponent<AudioListener>();
             UsingController = Gamepad.all.Count > 0;
             Application.targetFrameRate = 60;
@@ -64,9 +71,13 @@ namespace TeamBobFPS
 
         // Getters
 
+        public InGameHudCanvas GetInGameHudCanvas() { return inGameHudCanvas; }
+
         public UpdateManager GetUpdateManager() { return updateManager; }
 
         public GameStateManager GetGameStateManager() { return gameStateManager; }
+
+        public WeaponLoadout GetWeaponLoadout() { return weaponLoadout; }
     }
 }
 

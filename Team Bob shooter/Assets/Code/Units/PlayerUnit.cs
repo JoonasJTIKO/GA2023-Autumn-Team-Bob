@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,36 +31,72 @@ namespace TeamBobFPS
 
         private Rigidbody rb;
 
+        private Camera playerCam;
+
+        public Camera PlayerCam
+        {
+            get { return playerCam; }
+        }
+
         private bool jumping = false;
+
+        public bool IsGrounded
+        {
+            get { return mover.IsGrounded; }
+        }
+
+        public static event Action OnPlayerHealthChanged;
 
         protected override void Awake()
         {
             base.Awake();
+            if (GameInstance.Instance == null) return;
 
             mover = GetComponent<Mover>();
             mover.Setup(speed);
             rb = GetComponent<Rigidbody>();
+            playerCam = GetComponentInChildren<Camera>();
             playerInputs = new PlayerInputs();
-            playerInputs.Movement.Enable();
             moveAction = playerInputs.Movement.Move;
             jumpAction = playerInputs.Movement.Jump;
+        }
 
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            if (GameInstance.Instance == null) return;
+
+            playerInputs.Movement.Enable();
             jumpAction.performed += Jump;
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            if (GameInstance.Instance == null) return;
+
+            playerInputs.Movement.Disable();
+            jumpAction.performed -= Jump;
         }
 
         public override void OnFixedUpdate(float fixedDeltaTime)
         {
             base.OnFixedUpdate(fixedDeltaTime);
 
+            if (IsGrounded)
+            {
+                rb.velocity = Vector3.zero;
+            }
+
             rb.useGravity = !mover.OnSlope();
 
-            if (!mover.OnSlope() && !mover.IsGrounded)
+            if (!mover.OnSlope() && !IsGrounded)
             {
                 rb.AddForce(Physics.gravity * rb.mass * fallSpeedModifier, ForceMode.Force);
             }
 
-            Vector3 camForward = new(Camera.main.transform.forward.x, 0, Camera.main.transform.forward.z);
-            Vector3 camRight = new(Camera.main.transform.right.x, 0, Camera.main.transform.right.z);
+            Vector3 camForward = new(playerCam.transform.forward.x, 0, playerCam.transform.forward.z);
+            Vector3 camRight = new(playerCam.transform.right.x, 0, playerCam.transform.right.z);
             camForward.Normalize();
             camRight.Normalize();
 
@@ -75,16 +112,23 @@ namespace TeamBobFPS
 
             mover.Move(move);
 
-            if (mover.IsGrounded && jumping) jumping = false;
+            if (IsGrounded && jumping) jumping = false;
         }
 
         private void Jump(InputAction.CallbackContext context)
         {
-            if (jumping || !mover.IsGrounded) return;
+            if (jumping || !IsGrounded) return;
 
             rb.useGravity = true;
             rb.velocity = Vector3.zero;
             rb.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
+        }
+
+        protected override void ChangeHealth(float amount)
+        {
+            base.ChangeHealth(amount);
+
+            OnPlayerHealthChanged?.Invoke();
         }
     }
 }
