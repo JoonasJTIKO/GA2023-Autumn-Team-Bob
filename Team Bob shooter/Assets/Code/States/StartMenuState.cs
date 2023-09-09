@@ -7,7 +7,7 @@ namespace TeamBobFPS
 {
     public class StartMenuState : GameStateBase
     {
-        public override string SceneName { get { return "PlayerTest"; } }
+        public override string SceneName { get { return "EnemyTest"; } }
 
         public override StateType Type { get { return StateType.MainMenu; } }
 
