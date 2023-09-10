@@ -111,21 +111,21 @@ namespace TeamBobFPS
             if (path == null)
                 return;
 
-            if(currentWaypoint >= path.vectorPath.Count)
-            {
-                reachedEndOfPath =true;
-                return;
-            }
-            else
-            {
-                reachedEndOfPath = false;
-            }
-
             float distance = Vector3.Distance(rb.position, path.vectorPath[currentWaypoint]);
 
             if (distance < nextWaypointDistance)
             {
                 currentWaypoint++;
+            }
+
+            if (currentWaypoint >= path.vectorPath.Count)
+            {
+                reachedEndOfPath = true;
+                return;
+            }
+            else
+            {
+                reachedEndOfPath = false;
             }
 
             float speedChange = speed;
@@ -147,7 +147,7 @@ namespace TeamBobFPS
         {
             if (currentDistance < radius)
             {
-                Debug.Log("Player has been detected!");
+                //Debug.Log("Player has been detected!");
 
                 Quaternion lookOnLook =
                 Quaternion.LookRotation(player.transform.position - transform.position);

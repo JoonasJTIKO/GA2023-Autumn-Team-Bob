@@ -251,6 +251,15 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ShotgunDash"",
+                    ""type"": ""Button"",
+                    ""id"": ""93fe1a92-6159-447b-b9fe-bf9abfbb32e7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -286,6 +295,17 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""action"": ""Reload"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8ef7e93f-5067-4736-b7b4-8602830d6203"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MKB"",
+                    ""action"": ""ShotgunDash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -314,6 +334,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_Weapons_Swap = m_Weapons.FindAction("Swap", throwIfNotFound: true);
         m_Weapons_Shoot = m_Weapons.FindAction("Shoot", throwIfNotFound: true);
         m_Weapons_Reload = m_Weapons.FindAction("Reload", throwIfNotFound: true);
+        m_Weapons_ShotgunDash = m_Weapons.FindAction("ShotgunDash", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -448,6 +469,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Weapons_Swap;
     private readonly InputAction m_Weapons_Shoot;
     private readonly InputAction m_Weapons_Reload;
+    private readonly InputAction m_Weapons_ShotgunDash;
     public struct WeaponsActions
     {
         private @PlayerInputs m_Wrapper;
@@ -455,6 +477,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         public InputAction @Swap => m_Wrapper.m_Weapons_Swap;
         public InputAction @Shoot => m_Wrapper.m_Weapons_Shoot;
         public InputAction @Reload => m_Wrapper.m_Weapons_Reload;
+        public InputAction @ShotgunDash => m_Wrapper.m_Weapons_ShotgunDash;
         public InputActionMap Get() { return m_Wrapper.m_Weapons; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -473,6 +496,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @Reload.started += instance.OnReload;
             @Reload.performed += instance.OnReload;
             @Reload.canceled += instance.OnReload;
+            @ShotgunDash.started += instance.OnShotgunDash;
+            @ShotgunDash.performed += instance.OnShotgunDash;
+            @ShotgunDash.canceled += instance.OnShotgunDash;
         }
 
         private void UnregisterCallbacks(IWeaponsActions instance)
@@ -486,6 +512,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @Reload.started -= instance.OnReload;
             @Reload.performed -= instance.OnReload;
             @Reload.canceled -= instance.OnReload;
+            @ShotgunDash.started -= instance.OnShotgunDash;
+            @ShotgunDash.performed -= instance.OnShotgunDash;
+            @ShotgunDash.canceled -= instance.OnShotgunDash;
         }
 
         public void RemoveCallbacks(IWeaponsActions instance)
@@ -533,5 +562,6 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         void OnSwap(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
+        void OnShotgunDash(InputAction.CallbackContext context);
     }
 }

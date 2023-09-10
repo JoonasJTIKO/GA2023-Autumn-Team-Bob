@@ -229,6 +229,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ShotgunDash",
+                    "type": "Button",
+                    "id": "93fe1a92-6159-447b-b9fe-bf9abfbb32e7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -262,6 +271,17 @@
                     "processors": "",
                     "groups": "MKB",
                     "action": "Reload",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8ef7e93f-5067-4736-b7b4-8602830d6203",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MKB",
+                    "action": "ShotgunDash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

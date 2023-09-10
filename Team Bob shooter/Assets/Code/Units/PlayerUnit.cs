@@ -31,6 +31,8 @@ namespace TeamBobFPS
 
         private Rigidbody rb;
 
+        private UnitHealth unitHealth;
+
         private Camera playerCam;
 
         public Camera PlayerCam
@@ -40,10 +42,18 @@ namespace TeamBobFPS
 
         private bool jumping = false;
 
+        public Vector3 MoveDirection
+        {
+            get;
+            private set;
+        }
+
         public bool IsGrounded
         {
             get { return mover.IsGrounded; }
         }
+
+        public bool LockMovement = false;
 
         public static event Action OnPlayerHealthChanged;
 
@@ -55,6 +65,7 @@ namespace TeamBobFPS
             mover = GetComponent<Mover>();
             mover.Setup(speed);
             rb = GetComponent<Rigidbody>();
+            unitHealth = GetComponent<UnitHealth>();
             playerCam = GetComponentInChildren<Camera>();
             playerInputs = new PlayerInputs();
             moveAction = playerInputs.Movement.Move;
@@ -88,9 +99,9 @@ namespace TeamBobFPS
                 rb.velocity = Vector3.zero;
             }
 
-            rb.useGravity = !mover.OnSlope();
+            if (!LockMovement) rb.useGravity = !mover.OnSlope();
 
-            if (!mover.OnSlope() && !IsGrounded)
+            if (!mover.OnSlope() && !IsGrounded && rb.useGravity)
             {
                 rb.AddForce(Physics.gravity * rb.mass * fallSpeedModifier, ForceMode.Force);
             }
@@ -110,7 +121,12 @@ namespace TeamBobFPS
 
             move = mover.GetSlopeDirection(move);
 
-            mover.Move(move);
+            MoveDirection = move;
+
+            if (!LockMovement)
+            {
+                mover.Move(move);
+            }
 
             if (IsGrounded && jumping) jumping = false;
         }
@@ -124,11 +140,17 @@ namespace TeamBobFPS
             rb.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
         }
 
-        protected override void ChangeHealth(float amount)
+        public Vector3 GetForwardDirection()
         {
-            base.ChangeHealth(amount);
+            Vector3 forward = new(playerCam.transform.forward.x, 0, playerCam.transform.forward.z);
+            forward.Normalize();
+            forward = mover.GetSlopeDirection(forward);
+            return forward;
+        }
 
-            OnPlayerHealthChanged?.Invoke();
+        public void ResetSpeed()
+        {
+            mover.Setup(speed);
         }
     }
 }

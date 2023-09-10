@@ -77,9 +77,15 @@ namespace TeamBobFPS
             if (Health > 0 && !Invincible && damageMultiplier != 0)
             {
                 Health -= amount * damageMultiplier;
+                Debug.Log(Health);
                 if (Health < 0)
                 {
                     Health = 0;
+                }
+                if (Health == 0)
+                {
+                    Die();
+                    return true;
                 }
                 Invincible = true;
                 StartCoroutine(InvincibilityTimer());
@@ -98,6 +104,11 @@ namespace TeamBobFPS
 
             rb.velocity = new(0, 0, 0);
             rb.AddForce(knockbackDirection * knockbackAmount, ForceMode.Impulse);
+        }
+
+        private void Die()
+        {
+            gameObject.SetActive(false);
         }
 
         private IEnumerator InvincibilityTimer()

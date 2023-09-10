@@ -15,12 +15,12 @@ TagManager:
   - Enemy
   - Environment
   - Viewmodel
+  - EnemyBody
+  - EnemyHead
   - 
   - 
   - 
   - 
-  - 
-  - Enemy
   - 
   - 
   - 

@@ -10,7 +10,10 @@ namespace TeamBobFPS
         private float spreadAngle = 0.5f;
 
         [SerializeField]
-        private LayerMask layerMask;
+        private LayerMask environmentLayers;
+
+        [SerializeField]
+        private LayerMask enemyLayers;
 
         [SerializeField]
         private int pelletCount = 5;
@@ -19,8 +22,6 @@ namespace TeamBobFPS
         private float reloadTime = 0.5f;
 
         private PlayerUnit playerUnit;
-
-        private Rigidbody rb;
 
         private Transform[] activeHitEffects = new Transform[8];
 
@@ -31,7 +32,6 @@ namespace TeamBobFPS
             base.Awake();
 
             playerUnit = GetComponent<PlayerUnit>();
-            rb = GetComponent<Rigidbody>();
         }
 
         public override void BeginReload()
@@ -49,6 +49,8 @@ namespace TeamBobFPS
 
         protected override void Fire()
         {
+            Dictionary<UnitHealth, float> damages = new Dictionary<UnitHealth, float>();
+
             for (int i = 0; i < pelletCount; i++)
             {
                 RaycastHit hit;
@@ -58,7 +60,35 @@ namespace TeamBobFPS
                     angle.z + Random.Range(-spreadAngle, spreadAngle));
 
                 if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
-                    angle, out hit, Mathf.Infinity, layerMask))
+                angle, out hit, Mathf.Infinity, enemyLayers))
+                {
+                    float damage = bulletDamage;
+                    if (hit.collider.gameObject.layer == 16)
+                    {
+                        damage *= 1.5f;
+                    }
+
+                    UnitHealth component = hit.collider.GetComponent<UnitHealth>();
+                    if (damages.ContainsKey(component))
+                    {
+                        damages[component] += damage;
+                    }
+                    else
+                    {
+                        damages.Add(component, damage);
+                    }
+
+                    if (activeHitEffects[index] != null)
+                    {
+                        hitEffectPool.Return(activeHitEffects[index]);
+                    }
+                    activeHitEffects[index] = hitEffectPool.Get();
+                    activeHitEffects[index].position = hit.point;
+                    index++;
+                    if (index >= activeHitEffects.Length) index = 0;
+                }
+                else if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
+                    angle, out hit, Mathf.Infinity, environmentLayers))
                 {
                     if (activeHitEffects[index] != null)
                     {
@@ -69,6 +99,11 @@ namespace TeamBobFPS
                     index++;
                     if (index >= activeHitEffects.Length) index = 0;
                 }
+            }
+
+            foreach (KeyValuePair<UnitHealth, float> item in damages)
+            {
+                item.Key.RemoveHealth(item.Value);
             }
         }
     }
