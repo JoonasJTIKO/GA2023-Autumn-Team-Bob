@@ -61,7 +61,7 @@ namespace TeamBobFPS
             weaponLoadout = GetComponent<WeaponLoadout>();
             AudioListener = GetComponent<AudioListener>();
             UsingController = Gamepad.all.Count > 0;
-            Application.targetFrameRate = 60;
+            //Application.targetFrameRate = 60;
         }
 
         private void Update()

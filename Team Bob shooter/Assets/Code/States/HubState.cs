@@ -5,11 +5,11 @@ using UnityEngine.SceneManagement;
 
 namespace TeamBobFPS
 {
-    public class InGameState : GameStateBase
+    public class HubState : GameStateBase
     {
-        public override string SceneName { get { return "PlayerTest"; } }
+        public override string SceneName { get { return "HubScene"; } }
 
-        public override StateType Type { get { return StateType.Arena1; } }
+        public override StateType Type { get { return StateType.Hub; } }
 
         public override void Activate(bool loadScene = true)
         {
@@ -27,9 +27,10 @@ namespace TeamBobFPS
             GameInstance.Instance.GetInGameHudCanvas().Hide();
         }
 
-        public InGameState() : base() 
+        public HubState() : base()
         {
 
         }
+        
     }
 }

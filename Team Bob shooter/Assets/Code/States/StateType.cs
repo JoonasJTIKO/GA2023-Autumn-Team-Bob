@@ -5,5 +5,7 @@ namespace TeamBobFPS
     {
         None = 0,
         MainMenu = 1,
+        Hub = 2,
+        Arena1 = 3,
     }
 }

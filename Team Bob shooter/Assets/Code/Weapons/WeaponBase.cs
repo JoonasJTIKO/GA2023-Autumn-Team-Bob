@@ -6,6 +6,12 @@ using UnityEngine;
 
 namespace TeamBobFPS
 {
+    public enum WeaponType
+    {
+        Minigun = 0,
+        Shotgun = 1,
+    }
+
     public abstract class WeaponBase : BaseUpdateListener
     {
         [SerializeField]
@@ -29,6 +35,9 @@ namespace TeamBobFPS
         [SerializeField]
         protected GameObject hitEffect;
 
+        [SerializeField]
+        protected WeaponType weaponType;
+
         protected ComponentPool<Transform> hitEffectPool;
 
         protected int currentReserveAmmo;
@@ -40,6 +49,11 @@ namespace TeamBobFPS
         protected bool readyToFire = true;
 
         protected bool reloading = false;
+
+        public WeaponType WeaponType
+        {
+            get { return weaponType; }
+        }
 
         protected override void Awake()
         {

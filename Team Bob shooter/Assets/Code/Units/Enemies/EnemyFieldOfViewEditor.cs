@@ -1,6 +1,9 @@
+#if UNITY_EDITOR
 using TeamBobFPS;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [CustomEditor(typeof(MeleeEnemy))]
 public class EnemyFieldOfViewEditor : Editor
@@ -32,3 +35,4 @@ public class EnemyFieldOfViewEditor : Editor
         return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
     }
 }
+#endif
