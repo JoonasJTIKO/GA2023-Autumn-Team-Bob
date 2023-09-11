@@ -48,6 +48,8 @@ namespace TeamBobFPS
             private set;
         }
 
+        public int CurrentWeaponSlot;
+
         public bool IsGrounded
         {
             get { return mover.IsGrounded; }

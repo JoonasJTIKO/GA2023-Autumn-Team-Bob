@@ -62,6 +62,15 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""65762024-6522-401a-a8c4-351cff304e4e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -218,6 +227,17 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""99210ab0-3c85-4b99-8e62-4459d43e93d1"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MKB"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -329,6 +349,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_Movement_CameraX = m_Movement.FindAction("CameraX", throwIfNotFound: true);
         m_Movement_CameraY = m_Movement.FindAction("CameraY", throwIfNotFound: true);
         m_Movement_Jump = m_Movement.FindAction("Jump", throwIfNotFound: true);
+        m_Movement_Interact = m_Movement.FindAction("Interact", throwIfNotFound: true);
         // Weapons
         m_Weapons = asset.FindActionMap("Weapons", throwIfNotFound: true);
         m_Weapons_Swap = m_Weapons.FindAction("Swap", throwIfNotFound: true);
@@ -400,6 +421,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Movement_CameraX;
     private readonly InputAction m_Movement_CameraY;
     private readonly InputAction m_Movement_Jump;
+    private readonly InputAction m_Movement_Interact;
     public struct MovementActions
     {
         private @PlayerInputs m_Wrapper;
@@ -408,6 +430,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         public InputAction @CameraX => m_Wrapper.m_Movement_CameraX;
         public InputAction @CameraY => m_Wrapper.m_Movement_CameraY;
         public InputAction @Jump => m_Wrapper.m_Movement_Jump;
+        public InputAction @Interact => m_Wrapper.m_Movement_Interact;
         public InputActionMap Get() { return m_Wrapper.m_Movement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -429,6 +452,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
         }
 
         private void UnregisterCallbacks(IMovementActions instance)
@@ -445,6 +471,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
         }
 
         public void RemoveCallbacks(IMovementActions instance)
@@ -556,6 +585,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         void OnCameraX(InputAction.CallbackContext context);
         void OnCameraY(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
     }
     public interface IWeaponsActions
     {

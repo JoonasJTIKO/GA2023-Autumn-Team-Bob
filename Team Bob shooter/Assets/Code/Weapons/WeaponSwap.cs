@@ -25,6 +25,8 @@ namespace TeamBobFPS
 
         private WeaponBase activeWeapon;
 
+        private bool firstInitialize = true;
+
         public WeaponBase ActiveWeapon
         {
             get;
@@ -48,21 +50,39 @@ namespace TeamBobFPS
             }
         }
 
-        protected override void OnEnable()
+        private void Start()
         {
-            base.OnEnable();
-            if (GameInstance.Instance == null) return;
-
             swapAction = playerUnit.Inputs.Weapons.Swap;
             shootAction = playerUnit.Inputs.Weapons.Shoot;
             reloadAction = playerUnit.Inputs.Weapons.Reload;
             dashAction = playerUnit.Inputs.Weapons.ShotgunDash;
 
-            playerUnit.Inputs.Weapons.Enable();
-            swapAction.performed += SwapWeapon;
-            reloadAction.performed += ReloadActiveWeapon;
+            if (firstInitialize)
+            {
+                playerUnit.Inputs.Weapons.Enable();
+                swapAction.performed += SwapWeapon;
+                reloadAction.performed += ReloadActiveWeapon;
+
+                firstInitialize = false;
+            }
 
             ActivateWeapon(activeWeaponIndex);
+        }
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            if (GameInstance.Instance == null) return;
+
+
+            if (!firstInitialize)
+            {
+                playerUnit.Inputs.Weapons.Enable();
+                swapAction.performed += SwapWeapon;
+                reloadAction.performed += ReloadActiveWeapon;
+            }
+
+            WeaponLoadout.WeaponEquipped += EquipWeapon;
         }
 
         protected override void OnDisable()
@@ -73,6 +93,8 @@ namespace TeamBobFPS
             playerUnit.Inputs.Weapons.Disable();
             swapAction.performed -= SwapWeapon;
             reloadAction.performed -= ReloadActiveWeapon;
+
+            WeaponLoadout.WeaponEquipped -= EquipWeapon;
         }
 
         public override void OnUpdate(float deltaTime)
@@ -96,12 +118,13 @@ namespace TeamBobFPS
                     equippedWeapons[slot] = weapons[1];
                     break;
             }
+
+
+            ActivateWeapon(activeWeaponIndex);
         }
 
         private void SwapWeapon(InputAction.CallbackContext context)
         {
-            viewmodels[activeWeaponIndex].SetActive(false);
-
             if (context.ReadValue<float>() > 0)
             {
                 activeWeaponIndex++;
@@ -118,19 +141,37 @@ namespace TeamBobFPS
 
         private void ActivateWeapon(int index)
         {
-            switch (index)
+            WeaponType weaponType = equippedWeapons[index].WeaponType;
+
+            switch (weaponType)
             {
-                case 0:
-                    dashAction.performed -= ShotgunDash;
+                case WeaponType.Minigun:
+                    if (dashAction != null) dashAction.performed -= ShotgunDash;
                     break;
-                case 1:
-                    dashAction.performed += ShotgunDash;
+                case WeaponType.Shotgun:
+                    if (dashAction != null) dashAction.performed += ShotgunDash;
                     break;
             }
 
             activeWeapon = equippedWeapons[index];
             activeWeapon.UpdateHudAmmo();
-            viewmodels[index].SetActive(true);
+            ActivateViewmodel(weaponType);
+            playerUnit.CurrentWeaponSlot = activeWeaponIndex;
+        }
+
+        private void ActivateViewmodel(WeaponType weapon)
+        {
+            switch (weapon)
+            {
+                case WeaponType.Minigun:
+                    viewmodels[0].SetActive(true);
+                    viewmodels[1].SetActive(false);
+                    break;
+                case WeaponType.Shotgun:
+                    viewmodels[0].SetActive(false);
+                    viewmodels[1].SetActive(true);
+                    break;
+            }
         }
 
         private void ShootActiveWeapon()
