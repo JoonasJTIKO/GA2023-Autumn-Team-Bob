@@ -13,6 +13,9 @@ namespace TeamBobFPS.UI
         [SerializeField]
         private TMP_Text reserveCountText;
 
+        [SerializeField]
+        private TMP_Text interactText;
+
         public void UpdateMagCount(int amount)
         {
             magCountText.text = amount.ToString();
@@ -21,6 +24,11 @@ namespace TeamBobFPS.UI
         public void UpdateReserveCount(int amount)
         {
             reserveCountText.text = amount.ToString();
+        }
+
+        public void SetInteractText(string text)
+        {
+            interactText.text = text;
         }
     }
 }

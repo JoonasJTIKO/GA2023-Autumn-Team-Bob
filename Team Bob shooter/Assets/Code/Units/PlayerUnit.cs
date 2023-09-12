@@ -81,6 +81,8 @@ namespace TeamBobFPS
 
             playerInputs.Movement.Enable();
             jumpAction.performed += Jump;
+
+            RocketProjectile.PlayerHit += ReceiveKnockback;
         }
 
         protected override void OnDisable()
@@ -90,6 +92,8 @@ namespace TeamBobFPS
 
             playerInputs.Movement.Disable();
             jumpAction.performed -= Jump;
+
+            RocketProjectile.PlayerHit -= ReceiveKnockback;
         }
 
         public override void OnFixedUpdate(float fixedDeltaTime)
@@ -140,6 +144,11 @@ namespace TeamBobFPS
             rb.useGravity = true;
             rb.velocity = Vector3.zero;
             rb.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
+        }
+
+        private void ReceiveKnockback(Vector3 origin, float strength, float radius)
+        {
+            rb.AddExplosionForce(strength * 100, origin, radius);
         }
 
         public Vector3 GetForwardDirection()

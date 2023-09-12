@@ -10,6 +10,7 @@ namespace TeamBobFPS
     {
         Minigun = 0,
         Shotgun = 1,
+        RocketLauncher = 2,
     }
 
     public abstract class WeaponBase : BaseUpdateListener

@@ -10,6 +10,9 @@ namespace TeamBobFPS
         [SerializeField]
         private LayerMask layerMask;
 
+        [SerializeField]
+        private bool doGroundCheck = true;
+
         private new CapsuleCollider collider;
         private Rigidbody rb;
         private Vector3 direction;
@@ -53,10 +56,16 @@ namespace TeamBobFPS
         {
             base.OnFixedUpdate(fixedDeltaTime);
 
-            IsGrounded = Physics.SphereCast(transform.position, collider.radius * 0.7f, 
-                -transform.up, out hit, 0.7f, layerMask);
+            if (doGroundCheck)
+            {
+                IsGrounded = Physics.SphereCast(transform.position, collider.radius * 0.7f,
+                                -transform.up, out hit, 0.7f, layerMask);
+            }
 
-            Move(fixedDeltaTime);
+            if (rb != null)
+            {
+                Move(fixedDeltaTime);
+            }
         }
 
         private void Move(float deltaTime)

@@ -29,7 +29,8 @@ namespace TeamBobFPS
 
         public InGameState() : base() 
         {
-
+            AddTargetState(StateType.MainMenu);
+            AddTargetState(StateType.Hub);
         }
     }
 }

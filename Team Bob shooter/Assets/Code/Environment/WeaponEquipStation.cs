@@ -12,7 +12,15 @@ namespace TeamBobFPS
         [SerializeField]
         private GameObject model;
 
+        [SerializeField]
+        private string promptText;
+
         private new Collider collider;
+
+        public string PromptText
+        {
+            get { return promptText; }
+        }
 
         private void Awake()
         {

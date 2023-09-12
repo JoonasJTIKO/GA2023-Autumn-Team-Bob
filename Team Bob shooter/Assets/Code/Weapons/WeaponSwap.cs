@@ -117,6 +117,9 @@ namespace TeamBobFPS
                 case EquippableWeapon.Weapon.Shotgun:
                     equippedWeapons[slot] = weapons[1];
                     break;
+                case EquippableWeapon.Weapon.RocketLauncher:
+                    equippedWeapons[slot] = weapons[2];
+                    break;
             }
 
 
@@ -151,6 +154,9 @@ namespace TeamBobFPS
                 case WeaponType.Shotgun:
                     if (dashAction != null) dashAction.performed += ShotgunDash;
                     break;
+                case WeaponType.RocketLauncher:
+                    if (dashAction != null) dashAction.performed -= ShotgunDash;
+                    break;
             }
 
             activeWeapon = equippedWeapons[index];
@@ -166,10 +172,17 @@ namespace TeamBobFPS
                 case WeaponType.Minigun:
                     viewmodels[0].SetActive(true);
                     viewmodels[1].SetActive(false);
+                    viewmodels[2].SetActive(false);
                     break;
                 case WeaponType.Shotgun:
                     viewmodels[0].SetActive(false);
                     viewmodels[1].SetActive(true);
+                    viewmodels[2].SetActive(false);
+                    break;
+                case WeaponType.RocketLauncher:
+                    viewmodels[0].SetActive(false);
+                    viewmodels[1].SetActive(false);
+                    viewmodels[2].SetActive(true);
                     break;
             }
         }

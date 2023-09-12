@@ -29,8 +29,8 @@ namespace TeamBobFPS
 
         public HubState() : base()
         {
-
+            AddTargetState(StateType.MainMenu);
+            AddTargetState(StateType.Arena1);
         }
-        
     }
 }

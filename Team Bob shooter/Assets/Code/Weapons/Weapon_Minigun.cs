@@ -82,6 +82,8 @@ namespace TeamBobFPS
 
             if (!playerUnit.IsGrounded)
             {
+                if (rb.velocity.y < 0) rb.velocity = new(rb.velocity.x, 0, rb.velocity.z);
+
                 rb.AddForce(-playerUnit.PlayerCam.transform.TransformDirection(Vector3.forward) * knockbackStrength, ForceMode.Impulse);
             }
         }

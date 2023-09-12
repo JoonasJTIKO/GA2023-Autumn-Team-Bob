@@ -24,6 +24,10 @@ namespace TeamBobFPS
 
         private RaycastHit hit;
 
+        private bool firstInitialize = true;
+
+        private IInteractable currentTargeted = null;
+
         protected override void Awake()
         {
             base.Awake();
@@ -31,13 +35,27 @@ namespace TeamBobFPS
             playerUnit = GetComponent<PlayerUnit>();
         }
 
+        private void Start()
+        {
+            interactAction = playerUnit.Inputs.Movement.Interact;
+
+            if (firstInitialize)
+            {
+                interactAction.performed += Interact;
+
+                firstInitialize = false;
+            }
+        }
+
         protected override void OnEnable()
         {
             base.OnEnable();
             if (GameInstance.Instance == null) return;
 
-            interactAction = playerUnit.Inputs.Movement.Interact;
-            interactAction.performed += Interact;
+            if (!firstInitialize)
+            {
+                interactAction.performed += Interact;
+            }
         }
 
         protected override void OnDisable()
@@ -54,6 +72,23 @@ namespace TeamBobFPS
 
             interactAvailable = Physics.Raycast(playerCam.transform.position,
                 playerCam.transform.forward, out hit, interactRange, layerMask);
+
+            if (interactAvailable)
+            {
+                if (currentTargeted != hit.collider.GetComponent<IInteractable>())
+                {
+                    currentTargeted = hit.collider.GetComponent<IInteractable>();
+                    GameInstance.Instance.GetInGameHudCanvas().SetInteractText(currentTargeted.PromptText);
+                }
+            }
+            else
+            {
+                if (currentTargeted != null)
+                {
+                    currentTargeted = null;
+                    GameInstance.Instance.GetInGameHudCanvas().SetInteractText("");
+                }
+            }
         }
 
         private void Interact(InputAction.CallbackContext context)

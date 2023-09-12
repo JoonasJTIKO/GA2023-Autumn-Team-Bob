@@ -6,6 +6,8 @@ namespace TeamBobFPS
 {
     public interface IInteractable
     {
+        string PromptText { get; }
+
         bool OnInteract(int currentWeapon);
     }
 }
