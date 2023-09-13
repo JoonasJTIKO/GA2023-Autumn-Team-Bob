@@ -8,7 +8,5 @@ namespace TeamBobFPS
 		/// Unique ID
 		/// </summary>
 		int ID { get; }
-
-		GameObject SelfReference { get; }
 	}
 }

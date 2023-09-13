@@ -12,11 +12,6 @@ namespace TeamBobFPS
 
         public int ID { get { return id; } }
 
-        public GameObject SelfReference
-        {
-            get { return this.gameObject; }
-        }
-
         protected virtual void Awake()
         {
             if (GameInstance.Instance == null) return;
@@ -31,6 +26,13 @@ namespace TeamBobFPS
             if (updateManager == null) return;
 
             updateManager.AddPostUpdateListener(this);
+        }
+
+        protected virtual void OnDestroy()
+        {
+            if (updateManager == null) return;
+
+            updateManager.RemovePostUpdateListener(this);
         }
 
         protected virtual void OnDisable()

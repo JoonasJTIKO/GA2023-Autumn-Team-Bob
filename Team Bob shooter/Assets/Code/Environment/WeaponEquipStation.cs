@@ -47,7 +47,7 @@ namespace TeamBobFPS
 
         private void CheckOnUnequip(EquippableWeapon weapon)
         {
-            if (weapon == this.weapon)
+            if (weapon.WeaponType == this.weapon.WeaponType)
             {
                 collider.enabled = true;
             }

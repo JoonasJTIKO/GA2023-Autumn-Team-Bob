@@ -146,9 +146,14 @@ namespace TeamBobFPS
             rb.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
         }
 
-        private void ReceiveKnockback(Vector3 origin, float strength, float radius)
+        private void ReceiveKnockback(Vector3 origin, float strength)
         {
-            rb.AddExplosionForce(strength * 100, origin, radius);
+            Vector3 direction = transform.position - origin;
+            direction.Normalize();
+
+            if (IsGrounded && direction.y < 0) return;
+
+            rb.AddForce(direction * strength, ForceMode.Impulse);
         }
 
         public Vector3 GetForwardDirection()

@@ -30,7 +30,7 @@ namespace TeamBobFPS
 
         public event Action<RocketProjectile> Expired;
 
-        public static event Action<Vector3, float, float> PlayerHit;
+        public static event Action<Vector3, float> PlayerHit;
 
         public override void OnFixedUpdate(float fixedDeltaTime)
         {
@@ -59,8 +59,7 @@ namespace TeamBobFPS
                 }
                 else if (hit.collider.gameObject.layer == 3)
                 {
-                    Debug.Log("hi");
-                    PlayerHit?.Invoke(impactPoint, playerKnockback, explosionRadius);
+                    PlayerHit?.Invoke(impactPoint, playerKnockback);
                 }
             }
 

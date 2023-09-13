@@ -347,7 +347,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingLoadout:
-  - WeaponType: 2
+  - WeaponType: 0
   - WeaponType: 1
 --- !u!1 &800012204
 GameObject:

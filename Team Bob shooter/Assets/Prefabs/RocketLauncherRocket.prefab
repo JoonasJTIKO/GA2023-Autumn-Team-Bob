@@ -114,7 +114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flightSpeed: 20
-  playerKnockback: 10
+  playerKnockback: 15
   explosionRadius: 5
   explosionPrefab: {fileID: 0}
   mask:
