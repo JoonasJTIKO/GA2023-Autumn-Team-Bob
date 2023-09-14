@@ -11,6 +11,8 @@ namespace TeamBobFPS
         Minigun = 0,
         Shotgun = 1,
         RocketLauncher = 2,
+        Railgun = 3,
+        Pistol = 4,
     }
 
     public abstract class WeaponBase : BaseUpdateListener
@@ -51,6 +53,8 @@ namespace TeamBobFPS
 
         protected bool reloading = false;
 
+        public bool Active = false;
+
         public WeaponType WeaponType
         {
             get { return weaponType; }
@@ -72,12 +76,18 @@ namespace TeamBobFPS
             if (readyToFire == false)
             {
                 timer -= deltaTime;
-                if (timer <= 0) readyToFire = true;
+                if (timer <= 0)
+                {
+                    readyToFire = true;
+                    if (currentMagAmmoCount == 0) BeginReload();
+                }
             }
         }
 
         public virtual void UpdateHudAmmo()
         {
+            if (!Active) return;
+
             InGameHudCanvas inGameHudCanvas = GameInstance.Instance.GetInGameHudCanvas();
 
             inGameHudCanvas.UpdateMagCount(currentMagAmmoCount);
@@ -92,7 +102,8 @@ namespace TeamBobFPS
             Fire();
             UpdateHudAmmo();
             readyToFire = false;
-            timer = 1 / fireRate;
+            if (fireRate != 0) timer = 1 / fireRate;
+            else timer = 0;
         }
 
         protected virtual void ReloadCompleted()
@@ -107,6 +118,8 @@ namespace TeamBobFPS
             UpdateHudAmmo();
             reloading = false;
         }
+
+        public abstract void AbortReload();
 
         public abstract void BeginReload();
 

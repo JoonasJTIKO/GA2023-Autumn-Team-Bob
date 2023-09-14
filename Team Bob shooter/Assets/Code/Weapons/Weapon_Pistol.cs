@@ -4,11 +4,8 @@ using UnityEngine;
 
 namespace TeamBobFPS
 {
-    public class Weapon_Minigun : WeaponBase
+    public class Weapon_Pistol : WeaponBase
     {
-        [SerializeField]
-        private float knockbackStrength = 2f;
-
         [SerializeField]
         private float spreadAngle = 0.5f;
 
@@ -18,29 +15,46 @@ namespace TeamBobFPS
         [SerializeField]
         private LayerMask enemyLayers;
 
-        private PlayerUnit playerUnit;
+        [SerializeField]
+        private float reloadTime = 0.5f;
 
-        private Rigidbody rb;
+        private PlayerUnit playerUnit;
 
         private Transform[] activeHitEffects = new Transform[8];
 
         private int index = 0;
+
+        private Coroutine reloadRoutine = null;
 
         protected override void Awake()
         {
             base.Awake();
 
             playerUnit = GetComponent<PlayerUnit>();
-            rb = GetComponent<Rigidbody>();
         }
 
         public override void AbortReload()
         {
+            if (reloadRoutine != null && reloading)
+            {
+                StopCoroutine(reloadRoutine);
+                reloading = false;
+            }
         }
 
         public override void BeginReload()
         {
+            if (currentMagAmmoCount == magSize || reloading) return;
 
+            reloading = true;
+
+            reloadRoutine = StartCoroutine(ReloadAfterDelay());
+        }
+
+        private IEnumerator ReloadAfterDelay()
+        {
+            yield return new WaitForSeconds(reloadTime);
+            ReloadCompleted();
         }
 
         protected override void Fire()
@@ -82,13 +96,6 @@ namespace TeamBobFPS
                 activeHitEffects[index].position = hit.point;
                 index++;
                 if (index >= activeHitEffects.Length) index = 0;
-            }
-
-            if (!playerUnit.IsGrounded)
-            {
-                if (rb.velocity.y < 0) rb.velocity = new(rb.velocity.x, 0, rb.velocity.z);
-
-                rb.AddForce(-playerUnit.PlayerCam.transform.TransformDirection(Vector3.forward) * knockbackStrength, ForceMode.Impulse);
             }
         }
     }

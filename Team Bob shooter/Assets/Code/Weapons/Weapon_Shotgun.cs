@@ -27,6 +27,8 @@ namespace TeamBobFPS
 
         private int index = 0;
 
+        private Coroutine reloadRoutine = null;
+
         protected override void Awake()
         {
             base.Awake();
@@ -34,11 +36,22 @@ namespace TeamBobFPS
             playerUnit = GetComponent<PlayerUnit>();
         }
 
+        public override void AbortReload()
+        {
+            if (reloadRoutine != null && reloading)
+            {
+                StopCoroutine(reloadRoutine);
+                reloading = false;
+            }
+        }
+
         public override void BeginReload()
         {
-            if (currentMagAmmoCount == magSize) return;
+            if (currentMagAmmoCount == magSize || reloading) return;
 
-            StartCoroutine(ReloadAfterDelay());
+            reloading = true;
+
+            reloadRoutine = StartCoroutine(ReloadAfterDelay());
         }
 
         private IEnumerator ReloadAfterDelay()

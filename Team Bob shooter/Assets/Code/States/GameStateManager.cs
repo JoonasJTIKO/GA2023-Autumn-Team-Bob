@@ -105,5 +105,11 @@ namespace TeamBobFPS
 
             return true;
         }
+
+        public void ReloadCurrentState()
+        {
+            CurrentState.Deactivate();
+            CurrentState.Activate();
+        }
     }
 }

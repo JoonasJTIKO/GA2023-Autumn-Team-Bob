@@ -11,6 +11,9 @@ namespace TeamBobFPS
     public class GameInstance : MonoBehaviour
     {
         [SerializeField]
+        private PlayerDefeatedCanvas playerDefeatedCanvas;
+
+        [SerializeField]
         private InGameHudCanvas inGameHudCanvas;
 
         [SerializeField]
@@ -70,6 +73,8 @@ namespace TeamBobFPS
         }
 
         // Getters
+
+        public PlayerDefeatedCanvas GetPlayerDefeatedCanvas() { return  playerDefeatedCanvas; }
 
         public InGameHudCanvas GetInGameHudCanvas() { return inGameHudCanvas; }
 

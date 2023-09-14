@@ -18,6 +18,8 @@ namespace TeamBobFPS
 
         private ComponentPool<RocketProjectile> pool;
 
+        private Coroutine reloadRoutine = null;
+
         protected override void Awake()
         {
             base.Awake();
@@ -25,11 +27,22 @@ namespace TeamBobFPS
             pool = new ComponentPool<RocketProjectile>(projectilePrefab, 5);
         }
 
+        public override void AbortReload()
+        {
+            if (reloadRoutine != null && reloading)
+            {
+                StopCoroutine(reloadRoutine);
+                reloading = false;
+            }
+        }
+
         public override void BeginReload()
         {
-            if (currentMagAmmoCount == magSize) return;
+            if (currentMagAmmoCount == magSize || reloading) return;
 
-            StartCoroutine(ReloadAfterDelay());
+            reloading = true;
+
+            reloadRoutine = StartCoroutine(ReloadAfterDelay());
         }
 
         private IEnumerator ReloadAfterDelay()

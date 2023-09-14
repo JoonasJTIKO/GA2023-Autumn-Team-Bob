@@ -15,7 +15,7 @@ namespace TeamBobFPS
 
         private new CapsuleCollider collider;
         private Rigidbody rb;
-        private Vector3 direction;
+        private Vector3 direction, previousDirection;
 
         private RaycastHit slopeCast;
         private RaycastHit hit;
@@ -32,11 +32,20 @@ namespace TeamBobFPS
             private set;
         }
 
-        public void Setup(float speed)
+        private float currentSpeed = 0f;
+
+        private float accelerationTime, decelerationTime;
+
+        private bool noAcceleration = true;
+
+        public void Setup(float speed, float accelerationTime = 0f, float decelerationTime = 0f, bool noAcceleration = true)
         {
             collider = GetComponent<CapsuleCollider>();
 
             Speed = speed;
+            this.accelerationTime = accelerationTime;
+            this.decelerationTime = decelerationTime;
+            this.noAcceleration = noAcceleration;
             if (rb == null)
             {
                 rb = GetComponent<Rigidbody>();
@@ -70,11 +79,28 @@ namespace TeamBobFPS
 
         private void Move(float deltaTime)
         {
-            Vector3 move = direction * Speed * deltaTime;
+            if (noAcceleration)
+            {
+                currentSpeed = Speed;
+            }
+            else if (direction != Vector3.zero && currentSpeed < Speed && accelerationTime > 0)
+            {
+                currentSpeed += deltaTime * (Speed * (1 / accelerationTime));
+            }
+            else if (direction == Vector3.zero && currentSpeed > 0 && decelerationTime > 0)
+            {
+                direction = previousDirection;
+                currentSpeed -= deltaTime * (Speed * (1 / decelerationTime));
+            }
+            if (currentSpeed > Speed) currentSpeed = Speed;
+            if (currentSpeed < 0) currentSpeed = 0;
+
+            Vector3 move = direction * currentSpeed * deltaTime;
             Vector3 position = transform.position + move;
 
             rb.MovePosition(position);
 
+            previousDirection = direction;
             direction = Vector3.zero;
         }
 
