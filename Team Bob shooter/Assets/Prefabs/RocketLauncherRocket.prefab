@@ -132,9 +132,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48e10db2d6a7bb9419c2e0eb07f35eef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layerMask:
+  groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
+  environmentLayer:
+    serializedVersion: 2
+    m_Bits: 256
   doGroundCheck: 0
 --- !u!54 &3422187079405440920
 Rigidbody:

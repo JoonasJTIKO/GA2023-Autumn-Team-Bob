@@ -8,7 +8,10 @@ namespace TeamBobFPS
     public class Mover : BaseFixedUpdateListener
     {
         [SerializeField]
-        private LayerMask layerMask;
+        private LayerMask groundLayer;
+
+        [SerializeField]
+        private LayerMask environmentLayer;
 
         [SerializeField]
         private bool doGroundCheck = true;
@@ -34,9 +37,25 @@ namespace TeamBobFPS
 
         private float currentSpeed = 0f;
 
+        private float colliderHeight = 0f;
+
+        private float colliderRadius = 0f;
+
         private float accelerationTime, decelerationTime;
 
         private bool noAcceleration = true;
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            CapsuleCollider capsuleCollider = GetComponent<CapsuleCollider>();
+            if (capsuleCollider != null)
+            {
+                colliderHeight = capsuleCollider.height;
+                colliderRadius = capsuleCollider.radius;
+            }
+        }
 
         public void Setup(float speed, float accelerationTime = 0f, float decelerationTime = 0f, bool noAcceleration = true)
         {
@@ -68,7 +87,7 @@ namespace TeamBobFPS
             if (doGroundCheck)
             {
                 IsGrounded = Physics.SphereCast(transform.position, collider.radius * 0.7f,
-                                -transform.up, out hit, 0.7f, layerMask);
+                                -transform.up, out hit, 0.7f, groundLayer);
             }
 
             if (rb != null)
@@ -98,6 +117,18 @@ namespace TeamBobFPS
             Vector3 move = direction * currentSpeed * deltaTime;
             Vector3 position = transform.position + move;
 
+            if (colliderHeight != 0)
+            {
+                RaycastHit hit;
+
+                if (Physics.SphereCast(transform.position, 0.3f, direction, out hit, (position - transform.position).magnitude, groundLayer + environmentLayer))
+                {
+                    previousDirection = direction;
+                    direction = Vector3.zero;
+                    return;
+                }
+            }
+
             rb.MovePosition(position);
 
             previousDirection = direction;
@@ -106,7 +137,7 @@ namespace TeamBobFPS
 
         public bool OnSlope()
         {
-            if (Physics.Raycast(transform.position, Vector3.down, out slopeCast, 2f * 0.5f + 0.3f, layerMask) && IsGrounded)
+            if (Physics.Raycast(transform.position, Vector3.down, out slopeCast, 2f * 0.5f + 0.3f, groundLayer) && IsGrounded)
             {
                 float angle = Vector3.Angle(Vector3.up, slopeCast.normal);
                 return angle < 45f && angle != 0;
