@@ -64,6 +64,12 @@ namespace TeamBobFPS
 
         public bool LockMovement = false;
 
+        private bool jumping = false;
+
+        private float waitFrames;
+
+        private bool doJump = false;
+
         public bool EnableDoubleJump = false;
 
         private bool canDoubleJump = true;
@@ -91,7 +97,7 @@ namespace TeamBobFPS
             if (GameInstance.Instance == null) return;
 
             playerInputs.Movement.Enable();
-            jumpAction.performed += Jump;
+            jumpAction.performed += QueueJump;
 
             unitHealth.OnDied += OnDie;
             RocketProjectile.PlayerHit += ReceiveKnockback;
@@ -103,7 +109,7 @@ namespace TeamBobFPS
             if (GameInstance.Instance == null) return;
 
             playerInputs.Movement.Disable();
-            jumpAction.performed -= Jump;
+            jumpAction.performed -= QueueJump;
 
             unitHealth.OnDied -= OnDie;
             RocketProjectile.PlayerHit -= ReceiveKnockback;
@@ -113,9 +119,27 @@ namespace TeamBobFPS
         {
             base.OnFixedUpdate(fixedDeltaTime);
 
-            if (IsGrounded)
+            if (IsGrounded && rb.velocity.y <= 0)
             {
-                rb.velocity = Vector3.zero;
+                if (waitFrames > 10)
+                {
+                    waitFrames--;
+                }
+                else
+                {
+                    jumping = false;
+                }
+            }
+
+            if (!IsGrounded && !jumping && rb.velocity.y > 0)
+            {
+                rb.velocity = new(rb.velocity.x, 0, rb.velocity.z);
+            }
+
+            if (doJump)
+            {
+                doJump = false;
+                Jump();
             }
 
             if (!LockMovement) rb.useGravity = !mover.OnSlope();
@@ -138,7 +162,10 @@ namespace TeamBobFPS
                 move = move.x * camRight + move.z * camForward;
             }
 
-            move = mover.GetSlopeDirection(move);
+            if (!jumping)
+            {
+                move = mover.GetSlopeDirection(move);
+            }
 
             MoveDirection = move;
 
@@ -148,7 +175,12 @@ namespace TeamBobFPS
             }
         }
 
-        private void Jump(InputAction.CallbackContext context)
+        private void QueueJump(InputAction.CallbackContext context)
+        {
+            doJump = true;
+        }
+
+        private void Jump()
         {
             if (!IsGrounded)
             {
@@ -161,8 +193,10 @@ namespace TeamBobFPS
             }
 
             rb.useGravity = true;
-            rb.velocity = Vector3.zero;
+            rb.velocity = new(rb.velocity.x, 0, rb.velocity.z);
             rb.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
+            jumping = true;
+            waitFrames = 10;
         }
 
         private void ReceiveKnockback(Vector3 origin, float strength)
@@ -180,7 +214,7 @@ namespace TeamBobFPS
             OnPlayerDied?.Invoke();
 
             LockMovement = true;
-            jumpAction.performed -= Jump;
+            jumpAction.performed -= QueueJump;
             GameInstance.Instance.GetPlayerDefeatedCanvas().Show();
         }
 

@@ -37,25 +37,9 @@ namespace TeamBobFPS
 
         private float currentSpeed = 0f;
 
-        private float colliderHeight = 0f;
-
-        private float colliderRadius = 0f;
-
         private float accelerationTime, decelerationTime;
 
         private bool noAcceleration = true;
-
-        protected override void Awake()
-        {
-            base.Awake();
-
-            CapsuleCollider capsuleCollider = GetComponent<CapsuleCollider>();
-            if (capsuleCollider != null)
-            {
-                colliderHeight = capsuleCollider.height;
-                colliderRadius = capsuleCollider.radius;
-            }
-        }
 
         public void Setup(float speed, float accelerationTime = 0f, float decelerationTime = 0f, bool noAcceleration = true)
         {
@@ -114,22 +98,15 @@ namespace TeamBobFPS
             if (currentSpeed > Speed) currentSpeed = Speed;
             if (currentSpeed < 0) currentSpeed = 0;
 
-            Vector3 move = direction * currentSpeed * deltaTime;
-            Vector3 position = transform.position + move;
-
-            if (colliderHeight != 0)
+            Vector3 velocity = direction * currentSpeed * deltaTime * 70;
+            if (direction.y != 0)
             {
-                RaycastHit hit;
-
-                if (Physics.SphereCast(transform.position, 0.3f, direction, out hit, (position - transform.position).magnitude, groundLayer + environmentLayer))
-                {
-                    previousDirection = direction;
-                    direction = Vector3.zero;
-                    return;
-                }
+                rb.velocity = velocity;
             }
-
-            rb.MovePosition(position);
+            else
+            {
+                rb.velocity = new Vector3(velocity.x, rb.velocity.y, velocity.z);
+            }
 
             previousDirection = direction;
             direction = Vector3.zero;
