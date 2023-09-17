@@ -1067,7 +1067,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< HEAD
 --- !u!114 &1671087769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1293,8 +1292,6 @@ MonoBehaviour:
   minimumOrbs: 1
   maximumOrbs: 3
   takeKnockBack: 0
-=======
->>>>>>> main
 --- !u!1 &2129767290
 GameObject:
   m_ObjectHideFlags: 0
