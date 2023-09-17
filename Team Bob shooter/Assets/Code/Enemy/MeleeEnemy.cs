@@ -1,14 +1,17 @@
 using Pathfinding;
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using static Unity.VisualScripting.Member;
 
 namespace TeamBobFPS
 {
-    public class MeleeEnemy : BaseUpdateListener
+    public class MeleeEnemy : BaseFixedUpdateListener
     {
         public Transform player;
         [SerializeField] private LayerMask targetMask;
+        [SerializeField] private LayerMask wallMask;
+
 
         public float radius;
         [Range(0, 360)]
@@ -30,7 +33,6 @@ namespace TeamBobFPS
         public float timer;
         public bool noticed = false;
 
-
         void Start()
         {
             seeker = GetComponent<Seeker>();
@@ -41,9 +43,13 @@ namespace TeamBobFPS
 
         void UpdatePath()
         {
-            if(seeker.IsDone())
+            if(seeker.IsDone() && canSee)
             {
                 seeker.StartPath(rb.position, player.position, OnPathComplete);
+            }
+            else if (!canSee)
+            {
+                return;
             }
         }
 
@@ -62,7 +68,8 @@ namespace TeamBobFPS
             {
                 noticed = true;
                 timer = 0;
-                radius = radius * 2;
+                radius = radius * 5;
+                angle = 360;
             }
         }
 
@@ -73,7 +80,7 @@ namespace TeamBobFPS
             currentDistance = Vector3.Distance(player.transform.position, transform.position);
             //Debug.Log(currentDistance);  
 
-            if(currentDistance < radius)
+            if(currentDistance < radius && canSee)
             {
                 Noticed();
             }
@@ -84,26 +91,26 @@ namespace TeamBobFPS
 
             if (timer >= 10 && noticed)
             {
-                radius = radius / 2;
+                radius = radius / 5;
                 noticed = false;
+                angle = 90;
             }
-            else if(noticed && timer < 10)
-            {
-                InvokeRepeating("UpdatePath", 0f, .5f);
-                Move();
 
-                Quaternion lookOnLook =
-                Quaternion.LookRotation(player.transform.position - transform.position);
-
-                transform.rotation =
-                Quaternion.Slerp(transform.rotation, lookOnLook, Time.deltaTime * 5f);
-            }
-            if(!noticed && timer >= 10)
+            if(noticed && timer < 10)
             {
                 Move();
             }
+            //if(!noticed && timer >= 10)
+            //{
+            //    Move();
+            //}
 
             LookForPlayer();
+
+            if(noticed && !canSee)
+            {
+                Search();
+            }
         }
 
         private void Move()
@@ -129,13 +136,13 @@ namespace TeamBobFPS
             }
 
             float speedChange = speed;
-            if(currentDistance >= 3f && noticed)
+            if(currentDistance > 3f)
             {
                 Vector3 direction = ((Vector3)path.vectorPath[currentWaypoint] - rb.position).normalized;
                 Vector3 force = direction * speed * Time.deltaTime;
                 rb.AddForce(force, ForceMode.VelocityChange);
             }
-            else if(currentDistance <= 3f && noticed)
+            else if(currentDistance <= 3f)
             {
                 speedChange = speed * 0;
             }
@@ -145,17 +152,30 @@ namespace TeamBobFPS
 
         private void LookForPlayer()
         {
+            Vector3 directionToTarget = (player.transform.position - transform.position).normalized;
+
             if (currentDistance < radius)
             {
-                Debug.Log("Player has been detected!");
+                if (!Physics.Raycast(transform.position, directionToTarget, radius, wallMask))
+                {
+                    Debug.Log("Player has been detected!");
 
-                Quaternion lookOnLook =
-                Quaternion.LookRotation(player.transform.position - transform.position);
+                    FieldOfView();
 
-                transform.rotation =
-                Quaternion.Slerp(transform.rotation, lookOnLook, Time.deltaTime * 5f);
+                    Quaternion lookOnLook =
+                    Quaternion.LookRotation(player.transform.position - transform.position);
 
-                FieldOfView();
+                    transform.rotation =
+                    Quaternion.Slerp(transform.rotation, lookOnLook, Time.deltaTime * 5f);                  
+                }
+                else
+                {
+                    canSee = false;
+                }
+            }
+            else
+            {
+                canSee= false;
             }
         }
 
@@ -166,9 +186,18 @@ namespace TeamBobFPS
 
             if (kulma < angle / 2)
             {
-                canSee = true;
-                timer = 0;
-                Attack();
+                if (!Physics.Raycast(transform.position, directionToTarget, radius, wallMask))
+                {
+                    canSee = true;
+                    timer = 0;
+                    
+                    Attack();
+                }
+                else
+                {
+                    canSee = false;
+                }
+
                 //noticed = true;
                 //seeker.StartPath(rb.position, player.position, OnPathComplete);
             }
@@ -179,6 +208,8 @@ namespace TeamBobFPS
         }
         public void Attack()
         {
+            InvokeRepeating("UpdatePath", 0f, .5f);
+
             if (canSee && currentDistance < 5)
             {
                 if (isInCooldown == false)
@@ -194,6 +225,12 @@ namespace TeamBobFPS
                 }
             }
         }
+
+        private void Search()
+        {
+            
+        }
+
         private IEnumerator Wait()
         {
             yield return new WaitForSeconds(0.75f);

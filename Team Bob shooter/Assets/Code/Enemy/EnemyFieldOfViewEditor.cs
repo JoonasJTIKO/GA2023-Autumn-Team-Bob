@@ -2,12 +2,12 @@ using TeamBobFPS;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(MeleeEnemy))]
+[CustomEditor(typeof(RangeEnemy))]
 public class EnemyFieldOfViewEditor : Editor
 {
     private void OnSceneGUI()
     {
-        MeleeEnemy fov = (MeleeEnemy)target;
+        RangeEnemy fov = (RangeEnemy)target;
         Handles.color = Color.white;
         Handles.DrawWireArc(fov.transform.position, Vector3.up, Vector3.forward, 360, fov.radius);
 
