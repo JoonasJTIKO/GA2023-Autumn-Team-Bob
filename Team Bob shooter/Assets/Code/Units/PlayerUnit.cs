@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -18,6 +19,12 @@ namespace TeamBobFPS
         [SerializeField]
         private float fallSpeedModifier = 10f;
 
+        [SerializeField]
+        private float accelerationTime = 0.25f;
+
+        [SerializeField]
+        private float decelerationTime = 0.25f;
+
         private PlayerInputs playerInputs;
 
         public PlayerInputs Inputs
@@ -31,6 +38,8 @@ namespace TeamBobFPS
 
         private Rigidbody rb;
 
+        private UnitHealth unitHealth;
+
         private Camera playerCam;
 
         public Camera PlayerCam
@@ -38,14 +47,34 @@ namespace TeamBobFPS
             get { return playerCam; }
         }
 
-        private bool jumping = false;
+        public Vector3 MoveDirection
+        {
+            get;
+            private set;
+        }
+
+        public int CurrentWeaponSlot;
+
+        public float MoveSpeedModifier = 0f;
 
         public bool IsGrounded
         {
             get { return mover.IsGrounded; }
         }
 
-        public static event Action OnPlayerHealthChanged;
+        public bool LockMovement = false;
+
+        private bool jumping = false;
+
+        private float waitFrames;
+
+        private bool doJump = false;
+
+        public bool EnableDoubleJump = false;
+
+        private bool canDoubleJump = true;
+
+        public event Action OnPlayerDied;
 
         protected override void Awake()
         {
@@ -53,8 +82,9 @@ namespace TeamBobFPS
             if (GameInstance.Instance == null) return;
 
             mover = GetComponent<Mover>();
-            mover.Setup(speed);
+            mover.Setup(speed, accelerationTime, decelerationTime, false);
             rb = GetComponent<Rigidbody>();
+            unitHealth = GetComponent<UnitHealth>();
             playerCam = GetComponentInChildren<Camera>();
             playerInputs = new PlayerInputs();
             moveAction = playerInputs.Movement.Move;
@@ -67,7 +97,10 @@ namespace TeamBobFPS
             if (GameInstance.Instance == null) return;
 
             playerInputs.Movement.Enable();
-            jumpAction.performed += Jump;
+            jumpAction.performed += QueueJump;
+
+            unitHealth.OnDied += OnDie;
+            RocketProjectile.PlayerHit += ReceiveKnockback;
         }
 
         protected override void OnDisable()
@@ -76,21 +109,42 @@ namespace TeamBobFPS
             if (GameInstance.Instance == null) return;
 
             playerInputs.Movement.Disable();
-            jumpAction.performed -= Jump;
+            jumpAction.performed -= QueueJump;
+
+            unitHealth.OnDied -= OnDie;
+            RocketProjectile.PlayerHit -= ReceiveKnockback;
         }
 
         public override void OnFixedUpdate(float fixedDeltaTime)
         {
             base.OnFixedUpdate(fixedDeltaTime);
 
-            if (IsGrounded)
+            if (IsGrounded && rb.velocity.y <= 0)
             {
-                rb.velocity = Vector3.zero;
+                if (waitFrames > 10)
+                {
+                    waitFrames--;
+                }
+                else
+                {
+                    jumping = false;
+                }
             }
 
-            rb.useGravity = !mover.OnSlope();
+            if (!IsGrounded && !jumping && rb.velocity.y > 0)
+            {
+                rb.velocity = new(rb.velocity.x, 0, rb.velocity.z);
+            }
 
-            if (!mover.OnSlope() && !IsGrounded)
+            if (doJump)
+            {
+                doJump = false;
+                Jump();
+            }
+
+            if (!LockMovement) rb.useGravity = !mover.OnSlope();
+
+            if (!mover.OnSlope() && !IsGrounded && rb.useGravity)
             {
                 rb.AddForce(Physics.gravity * rb.mass * fallSpeedModifier, ForceMode.Force);
             }
@@ -108,27 +162,75 @@ namespace TeamBobFPS
                 move = move.x * camRight + move.z * camForward;
             }
 
-            move = mover.GetSlopeDirection(move);
+            if (!jumping)
+            {
+                move = mover.GetSlopeDirection(move);
+            }
 
-            mover.Move(move);
+            MoveDirection = move;
 
-            if (IsGrounded && jumping) jumping = false;
+            if (!LockMovement)
+            {
+                mover.Move(move);
+            }
         }
 
-        private void Jump(InputAction.CallbackContext context)
+        private void QueueJump(InputAction.CallbackContext context)
         {
-            if (jumping || !IsGrounded) return;
+            doJump = true;
+        }
+
+        private void Jump()
+        {
+            if (!IsGrounded)
+            {
+                if (!EnableDoubleJump || !canDoubleJump) return;
+                canDoubleJump = false;
+            }
+            else
+            {
+                canDoubleJump = true;
+            }
 
             rb.useGravity = true;
-            rb.velocity = Vector3.zero;
+            rb.velocity = new(rb.velocity.x, 0, rb.velocity.z);
             rb.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
+            jumping = true;
+            waitFrames = 10;
         }
 
-        protected override void ChangeHealth(float amount)
+        private void ReceiveKnockback(Vector3 origin, float strength)
         {
-            base.ChangeHealth(amount);
+            Vector3 direction = transform.position - origin;
+            direction.Normalize();
 
-            OnPlayerHealthChanged?.Invoke();
+            if (IsGrounded && direction.y < 0) return;
+
+            rb.AddForce(direction * strength, ForceMode.Impulse);
+        }
+
+        private void OnDie()
+        {
+            OnPlayerDied?.Invoke();
+
+            LockMovement = true;
+            jumpAction.performed -= QueueJump;
+            GameInstance.Instance.GetPlayerDefeatedCanvas().Show();
+        }
+
+        public Vector3 GetForwardDirection()
+        {
+            Vector3 forward = new(playerCam.transform.forward.x, 0, playerCam.transform.forward.z);
+            forward.Normalize();
+            forward = mover.GetSlopeDirection(forward);
+            return forward;
+        }
+
+        public void ResetSpeed()
+        {
+            if (mover == null) return;
+
+            mover.Setup(speed * MoveSpeedModifier, accelerationTime, decelerationTime, false);
         }
     }
 }

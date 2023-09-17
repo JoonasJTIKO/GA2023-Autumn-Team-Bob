@@ -8,7 +8,7 @@ namespace TeamBobFPS
 		{
 			foreach (IUpdateListener listener in Listeners)
 			{
-				if (removedListeners.Contains(listener) || listener.SelfReference == null)
+				if (removedListeners.Contains(listener))
 				{
 					continue;
 				}

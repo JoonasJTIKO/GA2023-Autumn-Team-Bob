@@ -11,6 +11,9 @@ namespace TeamBobFPS
     public class GameInstance : MonoBehaviour
     {
         [SerializeField]
+        private PlayerDefeatedCanvas playerDefeatedCanvas;
+
+        [SerializeField]
         private InGameHudCanvas inGameHudCanvas;
 
         [SerializeField]
@@ -61,7 +64,7 @@ namespace TeamBobFPS
             weaponLoadout = GetComponent<WeaponLoadout>();
             AudioListener = GetComponent<AudioListener>();
             UsingController = Gamepad.all.Count > 0;
-            Application.targetFrameRate = 60;
+            //Application.targetFrameRate = 60;
         }
 
         private void Update()
@@ -70,6 +73,8 @@ namespace TeamBobFPS
         }
 
         // Getters
+
+        public PlayerDefeatedCanvas GetPlayerDefeatedCanvas() { return  playerDefeatedCanvas; }
 
         public InGameHudCanvas GetInGameHudCanvas() { return inGameHudCanvas; }
 

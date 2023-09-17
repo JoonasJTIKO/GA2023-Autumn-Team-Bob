@@ -6,6 +6,15 @@ using UnityEngine;
 
 namespace TeamBobFPS
 {
+    public enum WeaponType
+    {
+        Minigun = 0,
+        Shotgun = 1,
+        RocketLauncher = 2,
+        Railgun = 3,
+        Pistol = 4,
+    }
+
     public abstract class WeaponBase : BaseUpdateListener
     {
         [SerializeField]
@@ -29,6 +38,9 @@ namespace TeamBobFPS
         [SerializeField]
         protected GameObject hitEffect;
 
+        [SerializeField]
+        protected WeaponType weaponType;
+
         protected ComponentPool<Transform> hitEffectPool;
 
         protected int currentReserveAmmo;
@@ -40,6 +52,13 @@ namespace TeamBobFPS
         protected bool readyToFire = true;
 
         protected bool reloading = false;
+
+        public bool Active = false;
+
+        public WeaponType WeaponType
+        {
+            get { return weaponType; }
+        }
 
         protected override void Awake()
         {
@@ -57,12 +76,18 @@ namespace TeamBobFPS
             if (readyToFire == false)
             {
                 timer -= deltaTime;
-                if (timer <= 0) readyToFire = true;
+                if (timer <= 0)
+                {
+                    readyToFire = true;
+                    if (currentMagAmmoCount == 0) BeginReload();
+                }
             }
         }
 
         public virtual void UpdateHudAmmo()
         {
+            if (!Active) return;
+
             InGameHudCanvas inGameHudCanvas = GameInstance.Instance.GetInGameHudCanvas();
 
             inGameHudCanvas.UpdateMagCount(currentMagAmmoCount);
@@ -77,7 +102,8 @@ namespace TeamBobFPS
             Fire();
             UpdateHudAmmo();
             readyToFire = false;
-            timer = 1 / fireRate;
+            if (fireRate != 0) timer = 1 / fireRate;
+            else timer = 0;
         }
 
         protected virtual void ReloadCompleted()
@@ -92,6 +118,8 @@ namespace TeamBobFPS
             UpdateHudAmmo();
             reloading = false;
         }
+
+        public abstract void AbortReload();
 
         public abstract void BeginReload();
 

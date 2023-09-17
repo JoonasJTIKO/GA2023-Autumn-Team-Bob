@@ -52,8 +52,10 @@ namespace TeamBobFPS
         private void Initialize()
         {
             InGameState inGameState = new InGameState();
+            HubState hubState = new HubState();
 
             states.Add(inGameState);
+            states.Add(hubState);
         }
 
         private void LoadInitialState()
@@ -102,6 +104,12 @@ namespace TeamBobFPS
             CurrentState.Activate(loadScene);
 
             return true;
+        }
+
+        public void ReloadCurrentState()
+        {
+            CurrentState.Deactivate();
+            CurrentState.Activate();
         }
     }
 }

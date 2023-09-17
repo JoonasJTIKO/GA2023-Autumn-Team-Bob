@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,10 @@ namespace TeamBobFPS
         [SerializeField]
         private List<EquippableWeapon> startingLoadout;
 
+        public static event Action<EquippableWeapon> WeaponUnequipped;
+
+        public static event Action<EquippableWeapon.Weapon, int> WeaponEquipped;
+
         private void Awake()
         {
             int slot = 0;
@@ -28,7 +33,11 @@ namespace TeamBobFPS
 
         public void EquipWeapon(EquippableWeapon weapon, int slot)
         {
+            WeaponUnequipped?.Invoke(equippedWeapons[slot]);
+
             equippedWeapons[slot] = weapon;
+
+            WeaponEquipped?.Invoke(equippedWeapons[slot].WeaponType, slot);
         }
     }
 }

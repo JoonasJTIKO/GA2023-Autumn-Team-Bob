@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,6 +29,10 @@ namespace TeamBobFPS
             get; protected set;
         }
 
+        public event Action<float> OnHealthUpdate;
+
+        public event Action OnDied;
+
         protected Rigidbody rb;
 
         protected float knockbackAmount = 100f;
@@ -55,11 +60,13 @@ namespace TeamBobFPS
         {
             if (Health < MaxHealth)
             {
+                float startingHealth = Health;
                 Health += amount;
                 if (Health > MaxHealth)
                 {
                     Health = MaxHealth;
                 }
+                OnHealthUpdate?.Invoke(Health - startingHealth);
                 return true;
             }
             return false;
@@ -81,8 +88,14 @@ namespace TeamBobFPS
                 {
                     Health = 0;
                 }
+                if (Health == 0)
+                {
+                    Die();
+                    return true;
+                }
                 Invincible = true;
                 StartCoroutine(InvincibilityTimer());
+                OnHealthUpdate?.Invoke(-amount * damageMultiplier);
                 return true;
             }
             return false;
@@ -98,6 +111,11 @@ namespace TeamBobFPS
 
             rb.velocity = new(0, 0, 0);
             rb.AddForce(knockbackDirection * knockbackAmount, ForceMode.Impulse);
+        }
+
+        private void Die()
+        {
+            OnDied?.Invoke();
         }
 
         private IEnumerator InvincibilityTimer()

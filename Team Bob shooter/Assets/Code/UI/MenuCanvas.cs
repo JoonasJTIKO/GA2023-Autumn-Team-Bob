@@ -5,23 +5,33 @@ using UnityEngine.EventSystems;
 
 namespace TeamBobFPS.UI
 {
-    public class MenuCanvas : MonoBehaviour
+    public class MenuCanvas : BaseUpdateListener
     {
         [SerializeField]
-        private GameObject eventSystem;
+        private EventSystem eventSystem;
 
         [SerializeField]
         private GameObject initialSelectedObject;
+
+        public override void OnUpdate(float deltaTime)
+        {
+            base.OnUpdate(deltaTime);
+
+            if (initialSelectedObject != null && eventSystem.currentSelectedGameObject == null)
+            {
+                eventSystem.SetSelectedGameObject(initialSelectedObject);
+            }
+        }
 
         public virtual void Show()
         {
             gameObject.SetActive(true);
 
-            eventSystem.SetActive(true);
+            eventSystem.gameObject.SetActive(true);
 
             if (initialSelectedObject != null)
             {
-                eventSystem.GetComponent<EventSystem>().SetSelectedGameObject(initialSelectedObject);
+                eventSystem.SetSelectedGameObject(initialSelectedObject);
             }
 
         }
@@ -30,7 +40,7 @@ namespace TeamBobFPS.UI
         {
             gameObject.SetActive(false);
 
-            eventSystem.SetActive(false);
+            eventSystem.gameObject.SetActive(false);
         }
     }
 }

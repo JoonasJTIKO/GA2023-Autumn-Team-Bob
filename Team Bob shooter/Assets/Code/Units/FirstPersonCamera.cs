@@ -31,6 +31,8 @@ namespace TeamBobFPS
 
         private Vector2 orientation;
 
+        private bool lockCamera = false;
+
         private void Start()
         {
             playerUnit = GetComponent<PlayerUnit>();
@@ -44,11 +46,22 @@ namespace TeamBobFPS
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            playerUnit.OnPlayerDied += OnPlayerDied;
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+
+            if (playerUnit == null) return;
+            playerUnit.OnPlayerDied -= OnPlayerDied;
         }
 
         public override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
+
+            if (lockCamera) return;
 
             inputX = input.x * xSensitivity * smoothing;
             inputY = input.y * ySensitivity * smoothing;
@@ -64,6 +77,11 @@ namespace TeamBobFPS
 
             Quaternion yRotation = Quaternion.AngleAxis(absoluteLook.x, Vector3.up);
             transform.localRotation = yRotation * Quaternion.Euler(orientation);
+        }
+
+        private void OnPlayerDied()
+        {
+            lockCamera = true;
         }
     }
 }
