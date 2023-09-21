@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -17,6 +18,12 @@ namespace TeamBobFPS
 
         [SerializeField]
         private float fallSpeedModifier = 10f;
+
+        [SerializeField]
+        private float accelerationTime = 0.25f;
+
+        [SerializeField]
+        private float decelerationTime = 0.25f;
 
         private PlayerInputs playerInputs;
 
@@ -40,8 +47,6 @@ namespace TeamBobFPS
             get { return playerCam; }
         }
 
-        private bool jumping = false;
-
         public Vector3 MoveDirection
         {
             get;
@@ -50,6 +55,8 @@ namespace TeamBobFPS
 
         public int CurrentWeaponSlot;
 
+        public float MoveSpeedModifier = 0f;
+
         public bool IsGrounded
         {
             get { return mover.IsGrounded; }
@@ -57,7 +64,17 @@ namespace TeamBobFPS
 
         public bool LockMovement = false;
 
-        public static event Action OnPlayerHealthChanged;
+        private bool jumping = false;
+
+        private float waitFrames;
+
+        private bool doJump = false;
+
+        public bool EnableDoubleJump = false;
+
+        private bool canDoubleJump = true;
+
+        public event Action OnPlayerDied;
 
         protected override void Awake()
         {
@@ -65,7 +82,7 @@ namespace TeamBobFPS
             if (GameInstance.Instance == null) return;
 
             mover = GetComponent<Mover>();
-            mover.Setup(speed);
+            mover.Setup(speed, accelerationTime, decelerationTime, false);
             rb = GetComponent<Rigidbody>();
             unitHealth = GetComponent<UnitHealth>();
             playerCam = GetComponentInChildren<Camera>();
@@ -80,8 +97,9 @@ namespace TeamBobFPS
             if (GameInstance.Instance == null) return;
 
             playerInputs.Movement.Enable();
-            jumpAction.performed += Jump;
+            jumpAction.performed += QueueJump;
 
+            unitHealth.OnDied += OnDie;
             RocketProjectile.PlayerHit += ReceiveKnockback;
         }
 
@@ -91,8 +109,9 @@ namespace TeamBobFPS
             if (GameInstance.Instance == null) return;
 
             playerInputs.Movement.Disable();
-            jumpAction.performed -= Jump;
+            jumpAction.performed -= QueueJump;
 
+            unitHealth.OnDied -= OnDie;
             RocketProjectile.PlayerHit -= ReceiveKnockback;
         }
 
@@ -100,9 +119,27 @@ namespace TeamBobFPS
         {
             base.OnFixedUpdate(fixedDeltaTime);
 
-            if (IsGrounded)
+            if (IsGrounded && rb.velocity.y <= 0)
             {
-                rb.velocity = Vector3.zero;
+                if (waitFrames > 10)
+                {
+                    waitFrames--;
+                }
+                else
+                {
+                    jumping = false;
+                }
+            }
+
+            if (!IsGrounded && !jumping && rb.velocity.y > 0)
+            {
+                rb.velocity = new(rb.velocity.x, 0, rb.velocity.z);
+            }
+
+            if (doJump)
+            {
+                doJump = false;
+                Jump();
             }
 
             if (!LockMovement) rb.useGravity = !mover.OnSlope();
@@ -125,7 +162,10 @@ namespace TeamBobFPS
                 move = move.x * camRight + move.z * camForward;
             }
 
-            move = mover.GetSlopeDirection(move);
+            if (!jumping)
+            {
+                move = mover.GetSlopeDirection(move);
+            }
 
             MoveDirection = move;
 
@@ -133,17 +173,30 @@ namespace TeamBobFPS
             {
                 mover.Move(move);
             }
-
-            if (IsGrounded && jumping) jumping = false;
         }
 
-        private void Jump(InputAction.CallbackContext context)
+        private void QueueJump(InputAction.CallbackContext context)
         {
-            if (jumping || !IsGrounded) return;
+            doJump = true;
+        }
+
+        private void Jump()
+        {
+            if (!IsGrounded)
+            {
+                if (!EnableDoubleJump || !canDoubleJump) return;
+                canDoubleJump = false;
+            }
+            else
+            {
+                canDoubleJump = true;
+            }
 
             rb.useGravity = true;
-            rb.velocity = Vector3.zero;
+            rb.velocity = new(rb.velocity.x, 0, rb.velocity.z);
             rb.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
+            jumping = true;
+            waitFrames = 10;
         }
 
         private void ReceiveKnockback(Vector3 origin, float strength)
@@ -156,6 +209,15 @@ namespace TeamBobFPS
             rb.AddForce(direction * strength, ForceMode.Impulse);
         }
 
+        private void OnDie()
+        {
+            OnPlayerDied?.Invoke();
+
+            LockMovement = true;
+            jumpAction.performed -= QueueJump;
+            GameInstance.Instance.GetPlayerDefeatedCanvas().Show();
+        }
+
         public Vector3 GetForwardDirection()
         {
             Vector3 forward = new(playerCam.transform.forward.x, 0, playerCam.transform.forward.z);
@@ -166,7 +228,9 @@ namespace TeamBobFPS
 
         public void ResetSpeed()
         {
-            mover.Setup(speed);
+            if (mover == null) return;
+
+            mover.Setup(speed * MoveSpeedModifier, accelerationTime, decelerationTime, false);
         }
     }
 }

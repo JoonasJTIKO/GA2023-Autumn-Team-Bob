@@ -118,6 +118,9 @@ MonoBehaviour:
   targetMask:
     serializedVersion: 2
     m_Bits: 8
+  wallMask:
+    serializedVersion: 2
+    m_Bits: 0
   radius: 10
   angle: 90
   canSee: 0
@@ -126,6 +129,9 @@ MonoBehaviour:
   speed: 25
   timer: 0
   noticed: 0
+  gibPrefab: {fileID: 8349114086626252122, guid: a45d8a84b571e25499a073449e1811ad,
+    type: 3}
+  enemyType: 0
 --- !u!114 &3517088280860780273
 MonoBehaviour:
   m_ObjectHideFlags: 0

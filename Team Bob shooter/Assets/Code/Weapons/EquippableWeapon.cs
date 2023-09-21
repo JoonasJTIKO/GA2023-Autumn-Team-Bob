@@ -12,6 +12,8 @@ namespace TeamBobFPS
             Minigun = 0,
             Shotgun = 1,
             RocketLauncher = 2,
+            Railgun = 3,
+            Pistol = 4,
         }
 
         [SerializeField]

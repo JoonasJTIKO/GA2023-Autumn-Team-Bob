@@ -1,0 +1,30 @@
+using UnityEngine;
+
+namespace TeamBobFPS
+{
+    [System.Serializable]
+    public class WaveData
+    {
+        public enum EnemyType
+        {
+            MeleeStandard,
+            RangedStandard
+        }
+
+        [System.Serializable]
+        public class WaveEnemy
+        {
+            public EnemyType EnemyType;
+
+            public int TotalAmount;
+
+            public int MaxConcurrent;
+
+            public int ReinforcementThreshold;
+
+            public int spawnGroupSize;
+        }
+
+        public WaveEnemy[] Enemies;
+    }
+}

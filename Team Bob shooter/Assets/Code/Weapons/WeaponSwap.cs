@@ -27,6 +27,14 @@ namespace TeamBobFPS
 
         private bool firstInitialize = true;
 
+        private bool playerDead = false;
+
+        private bool fullAutoMode = true;
+
+        private bool readyToFire = true;
+
+        private Vector3 baseGravity;
+
         public WeaponBase ActiveWeapon
         {
             get;
@@ -48,6 +56,8 @@ namespace TeamBobFPS
                 EquipWeapon(weapon.WeaponType, slot);
                 slot++;
             }
+
+            baseGravity = Physics.gravity;
         }
 
         private void Start()
@@ -83,6 +93,7 @@ namespace TeamBobFPS
             }
 
             WeaponLoadout.WeaponEquipped += EquipWeapon;
+            playerUnit.OnPlayerDied += OnPlayerDied;
         }
 
         protected override void OnDisable()
@@ -95,16 +106,36 @@ namespace TeamBobFPS
             reloadAction.performed -= ReloadActiveWeapon;
 
             WeaponLoadout.WeaponEquipped -= EquipWeapon;
+            playerUnit.OnPlayerDied -= OnPlayerDied;
+
+            if (baseGravity != Vector3.zero) Physics.gravity = baseGravity;
         }
 
         public override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
 
-            if (shootAction.phase == InputActionPhase.Performed)
+            if (!readyToFire && shootAction.phase == InputActionPhase.Waiting)
+            {
+                readyToFire = true;
+            }
+
+            if (shootAction.phase == InputActionPhase.Performed && !playerDead && readyToFire)
             {
                 ShootActiveWeapon();
+                if (!fullAutoMode)
+                {
+                    readyToFire = false;
+                }
             }
+        }
+
+        private void OnPlayerDied()
+        {
+            swapAction.performed -= SwapWeapon;
+            reloadAction.performed -= ReloadActiveWeapon;
+
+            playerDead = true;
         }
 
         private void EquipWeapon(EquippableWeapon.Weapon weapon, int slot)
@@ -120,6 +151,12 @@ namespace TeamBobFPS
                 case EquippableWeapon.Weapon.RocketLauncher:
                     equippedWeapons[slot] = weapons[2];
                     break;
+                case EquippableWeapon.Weapon.Railgun:
+                    equippedWeapons[slot] = weapons[3];
+                    break;
+                case EquippableWeapon.Weapon.Pistol:
+                    equippedWeapons[slot] = weapons[4];
+                    break;
             }
 
 
@@ -128,6 +165,9 @@ namespace TeamBobFPS
 
         private void SwapWeapon(InputAction.CallbackContext context)
         {
+            equippedWeapons[activeWeaponIndex].AbortReload();
+            equippedWeapons[activeWeaponIndex].Active = false;
+
             if (context.ReadValue<float>() > 0)
             {
                 activeWeaponIndex++;
@@ -146,20 +186,41 @@ namespace TeamBobFPS
         {
             WeaponType weaponType = equippedWeapons[index].WeaponType;
 
+            if (baseGravity != Vector3.zero) Physics.gravity = baseGravity;
+            if (dashAction != null) dashAction.performed -= ShotgunDash;
+            if (playerUnit != null)
+            {
+                playerUnit.MoveSpeedModifier = 1f;
+                playerUnit.ResetSpeed();
+                playerUnit.EnableDoubleJump = false;
+            }
+            fullAutoMode = true;
+
             switch (weaponType)
             {
                 case WeaponType.Minigun:
-                    if (dashAction != null) dashAction.performed -= ShotgunDash;
                     break;
                 case WeaponType.Shotgun:
                     if (dashAction != null) dashAction.performed += ShotgunDash;
                     break;
                 case WeaponType.RocketLauncher:
-                    if (dashAction != null) dashAction.performed -= ShotgunDash;
+                    break;
+                case WeaponType.Railgun:
+                    if (baseGravity != Vector3.zero) Physics.gravity = baseGravity * 0.3f;
+                    break;
+                case WeaponType.Pistol:
+                    if (playerUnit != null)
+                    {
+                        playerUnit.MoveSpeedModifier = 1.5f;
+                        playerUnit.ResetSpeed();
+                        playerUnit.EnableDoubleJump = true;
+                    }
+                    fullAutoMode = false;
                     break;
             }
 
             activeWeapon = equippedWeapons[index];
+            activeWeapon.Active = true;
             activeWeapon.UpdateHudAmmo();
             ActivateViewmodel(weaponType);
             playerUnit.CurrentWeaponSlot = activeWeaponIndex;
@@ -167,22 +228,28 @@ namespace TeamBobFPS
 
         private void ActivateViewmodel(WeaponType weapon)
         {
+            viewmodels[0].SetActive(false);
+            viewmodels[1].SetActive(false);
+            viewmodels[2].SetActive(false);
+            viewmodels[3].SetActive(false);
+            viewmodels[4].SetActive(false);
+
             switch (weapon)
             {
                 case WeaponType.Minigun:
                     viewmodels[0].SetActive(true);
-                    viewmodels[1].SetActive(false);
-                    viewmodels[2].SetActive(false);
                     break;
                 case WeaponType.Shotgun:
-                    viewmodels[0].SetActive(false);
                     viewmodels[1].SetActive(true);
-                    viewmodels[2].SetActive(false);
                     break;
                 case WeaponType.RocketLauncher:
-                    viewmodels[0].SetActive(false);
-                    viewmodels[1].SetActive(false);
                     viewmodels[2].SetActive(true);
+                    break;
+                case WeaponType.Railgun:
+                    viewmodels[3].SetActive(true);
+                    break;
+                case WeaponType.Pistol:
+                    viewmodels[4].SetActive(true);
                     break;
             }
         }

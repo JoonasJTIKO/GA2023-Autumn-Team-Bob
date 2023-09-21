@@ -113,7 +113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2268ed5f3e40d14eaae04754db8199e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flightSpeed: 20
+  flightSpeed: 15
   playerKnockback: 15
   explosionRadius: 5
   explosionPrefab: {fileID: 0}
@@ -132,9 +132,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48e10db2d6a7bb9419c2e0eb07f35eef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layerMask:
+  groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
+  environmentLayer:
+    serializedVersion: 2
+    m_Bits: 256
   doGroundCheck: 0
 --- !u!54 &3422187079405440920
 Rigidbody:

@@ -5,11 +5,8 @@ using UnityEngine.InputSystem;
 
 namespace TeamBobFPS
 {
-    public class FirstPersonCamera : BaseUpdateListener
+    public class FirstPersonCamera : BaseFixedUpdateListener
     {
-        [SerializeField]
-        private Transform playerCam;
-
         [SerializeField]
         private float xSensitivity = 10f;
 
@@ -23,6 +20,8 @@ namespace TeamBobFPS
 
         private PlayerUnit playerUnit;
 
+        private Camera playerCam;
+
         private InputAction cameraX, cameraY;
 
         private Vector2 input;
@@ -31,9 +30,12 @@ namespace TeamBobFPS
 
         private Vector2 orientation;
 
+        private bool lockCamera = false;
+
         private void Start()
         {
             playerUnit = GetComponent<PlayerUnit>();
+            playerCam = playerUnit.PlayerCam;
             cameraX = playerUnit.Inputs.Movement.CameraX;
             cameraY = playerUnit.Inputs.Movement.CameraY;
 
@@ -44,11 +46,22 @@ namespace TeamBobFPS
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            playerUnit.OnPlayerDied += OnPlayerDied;
         }
 
-        public override void OnUpdate(float deltaTime)
+        protected override void OnDisable()
         {
-            base.OnUpdate(deltaTime);
+            base.OnDisable();
+
+            if (playerUnit == null) return;
+            playerUnit.OnPlayerDied -= OnPlayerDied;
+        }
+
+        public override void OnFixedUpdate(float fixedDeltaTime)
+        {
+            base.OnFixedUpdate(fixedDeltaTime);
+
+            if (lockCamera || playerCam == null) return;
 
             inputX = input.x * xSensitivity * smoothing;
             inputY = input.y * ySensitivity * smoothing;
@@ -64,6 +77,11 @@ namespace TeamBobFPS
 
             Quaternion yRotation = Quaternion.AngleAxis(absoluteLook.x, Vector3.up);
             transform.localRotation = yRotation * Quaternion.Euler(orientation);
+        }
+
+        private void OnPlayerDied()
+        {
+            lockCamera = true;
         }
     }
 }

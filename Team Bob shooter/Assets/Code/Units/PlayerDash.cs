@@ -27,6 +27,8 @@ namespace TeamBobFPS
 
         private Vector3 dashDirection;
 
+        private Coroutine dashRoutine = null;
+
         protected override void Awake()
         {
             base.Awake();
@@ -35,6 +37,20 @@ namespace TeamBobFPS
             mover = GetComponent<Mover>();
             rb = GetComponent<Rigidbody>();
             dashDuration = dashDistance / dashSpeed;
+        }
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+
+            playerUnit.OnPlayerDied += AbortDash;
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+
+            playerUnit.OnPlayerDied -= AbortDash;
         }
 
         public void Dash()
@@ -53,7 +69,17 @@ namespace TeamBobFPS
             }
 
             canDash = false;
-            StartCoroutine(DashRoutine());
+            dashRoutine = StartCoroutine(DashRoutine());
+        }
+
+        private void AbortDash()
+        {
+            if (dashRoutine != null)
+            {
+                StopCoroutine(dashRoutine);
+                playerUnit.ResetSpeed();
+                StartCoroutine(Cooldown());
+            }
         }
 
         private IEnumerator DashRoutine()
