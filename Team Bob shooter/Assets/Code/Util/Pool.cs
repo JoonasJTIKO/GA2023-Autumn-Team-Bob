@@ -144,7 +144,7 @@ namespace TeamBobFPS
         {
             // Create a new object from a prefab.
             T item = UnityEngine.Object.Instantiate(this.prefab);
-
+            
             // Disable pooled objects by default.
             SetActive(item, setActive: setActive);
 

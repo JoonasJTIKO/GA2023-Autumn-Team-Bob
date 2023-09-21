@@ -1,4 +1,5 @@
 using Pathfinding;
+using System;
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
@@ -33,6 +34,20 @@ namespace TeamBobFPS
         public float timer;
         public bool noticed = false;
 
+        private UnitHealth unitHealth;
+
+        [SerializeField]
+        private EnemyGibbing gibPrefab;
+
+        private ComponentPool<EnemyGibbing> enemyGibbingPool;
+
+        private EnemyGibbing activeGibbing = null;
+
+        [SerializeField]
+        private WaveData.EnemyType enemyType;
+
+        public static event Action<WaveData.EnemyType, Transform> OnDefeated;
+
         void Start()
         {
             seeker = GetComponent<Seeker>();
@@ -41,9 +56,62 @@ namespace TeamBobFPS
             //seeker.StartPath(rb.position, player.position, OnPathComplete);
         }
 
+        protected override void Awake()
+        {
+            base.Awake();
+
+            enemyGibbingPool = new ComponentPool<EnemyGibbing>(gibPrefab, 2);
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+
+            if (unitHealth != null)
+            {
+                unitHealth.OnDied -= OnDie;
+            }
+
+            if (activeGibbing != null)
+            {
+                activeGibbing.Completed -= ReturnGibToPool;
+                activeGibbing = null;
+            }
+        }
+
+        public void Initialize()
+        {
+            player = FindObjectOfType<PlayerUnit>().transform;
+
+            unitHealth = GetComponent<UnitHealth>();
+            unitHealth.AddHealth(unitHealth.MaxHealth);
+            unitHealth.OnDied += OnDie;
+        }
+
+        private void OnDie()
+        {
+            Vector3 pos = transform.position;
+            Quaternion rot = transform.rotation;
+
+            OnDefeated?.Invoke(enemyType, transform);
+
+            activeGibbing = enemyGibbingPool.Get();
+            activeGibbing.Completed += ReturnGibToPool;
+            activeGibbing.transform.position = pos;
+            activeGibbing.transform.rotation = rot;
+            activeGibbing.Activate();
+        }
+
+        private void ReturnGibToPool(EnemyGibbing item)
+        {
+            activeGibbing = null;
+            item.Completed -= ReturnGibToPool;
+            enemyGibbingPool.Return(item);
+        }
+
         void UpdatePath()
         {
-            if(seeker.IsDone() && canSee)
+            if (seeker.IsDone() && canSee)
             {
                 seeker.StartPath(rb.position, player.position, OnPathComplete);
             }
@@ -64,7 +132,7 @@ namespace TeamBobFPS
 
         void Noticed()
         {
-            if(noticed == false)
+            if (noticed == false)
             {
                 noticed = true;
                 timer = 0;
@@ -80,7 +148,7 @@ namespace TeamBobFPS
             currentDistance = Vector3.Distance(player.transform.position, transform.position);
             //Debug.Log(currentDistance);  
 
-            if(currentDistance < radius && canSee)
+            if (currentDistance < radius && canSee)
             {
                 Noticed();
             }
@@ -96,7 +164,7 @@ namespace TeamBobFPS
                 angle = 90;
             }
 
-            if(noticed && timer < 10)
+            if (noticed && timer < 10)
             {
                 Move();
             }
@@ -107,7 +175,7 @@ namespace TeamBobFPS
 
             LookForPlayer();
 
-            if(noticed && !canSee)
+            if (noticed && !canSee)
             {
                 Search();
             }
@@ -118,9 +186,9 @@ namespace TeamBobFPS
             if (path == null)
                 return;
 
-            if(currentWaypoint >= path.vectorPath.Count)
+            if (currentWaypoint >= path.vectorPath.Count)
             {
-                reachedEndOfPath =true;
+                reachedEndOfPath = true;
                 return;
             }
             else
@@ -136,13 +204,13 @@ namespace TeamBobFPS
             }
 
             float speedChange = speed;
-            if(currentDistance > 3f)
+            if (currentDistance > 3f)
             {
                 Vector3 direction = ((Vector3)path.vectorPath[currentWaypoint] - rb.position).normalized;
                 Vector3 force = direction * speed * Time.deltaTime;
                 rb.AddForce(force, ForceMode.VelocityChange);
             }
-            else if(currentDistance <= 3f)
+            else if (currentDistance <= 3f)
             {
                 speedChange = speed * 0;
             }
@@ -166,7 +234,7 @@ namespace TeamBobFPS
                     Quaternion.LookRotation(player.transform.position - transform.position);
 
                     transform.rotation =
-                    Quaternion.Slerp(transform.rotation, lookOnLook, Time.deltaTime * 5f);                  
+                    Quaternion.Slerp(transform.rotation, lookOnLook, Time.deltaTime * 5f);
                 }
                 else
                 {
@@ -175,7 +243,7 @@ namespace TeamBobFPS
             }
             else
             {
-                canSee= false;
+                canSee = false;
             }
         }
 
@@ -190,7 +258,7 @@ namespace TeamBobFPS
                 {
                     canSee = true;
                     timer = 0;
-                    
+
                     Attack();
                 }
                 else
@@ -228,7 +296,7 @@ namespace TeamBobFPS
 
         private void Search()
         {
-            
+
         }
 
         private IEnumerator Wait()

@@ -7,7 +7,7 @@ namespace TeamBobFPS
 {
     public class InGameState : GameStateBase
     {
-        public override string SceneName { get { return "EnemyTest"; } }
+        public override string SceneName { get { return "PlayerTest"; } }
 
         public override StateType Type { get { return StateType.Arena1; } }
 

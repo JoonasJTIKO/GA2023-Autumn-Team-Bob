@@ -5,11 +5,8 @@ using UnityEngine.InputSystem;
 
 namespace TeamBobFPS
 {
-    public class FirstPersonCamera : BaseUpdateListener
+    public class FirstPersonCamera : BaseFixedUpdateListener
     {
-        [SerializeField]
-        private Transform playerCam;
-
         [SerializeField]
         private float xSensitivity = 10f;
 
@@ -22,6 +19,8 @@ namespace TeamBobFPS
         private float inputX, inputY;
 
         private PlayerUnit playerUnit;
+
+        private Camera playerCam;
 
         private InputAction cameraX, cameraY;
 
@@ -36,6 +35,7 @@ namespace TeamBobFPS
         private void Start()
         {
             playerUnit = GetComponent<PlayerUnit>();
+            playerCam = playerUnit.PlayerCam;
             cameraX = playerUnit.Inputs.Movement.CameraX;
             cameraY = playerUnit.Inputs.Movement.CameraY;
 
@@ -57,11 +57,11 @@ namespace TeamBobFPS
             playerUnit.OnPlayerDied -= OnPlayerDied;
         }
 
-        public override void OnUpdate(float deltaTime)
+        public override void OnFixedUpdate(float fixedDeltaTime)
         {
-            base.OnUpdate(deltaTime);
+            base.OnFixedUpdate(fixedDeltaTime);
 
-            if (lockCamera) return;
+            if (lockCamera || playerCam == null) return;
 
             inputX = input.x * xSensitivity * smoothing;
             inputY = input.y * ySensitivity * smoothing;
