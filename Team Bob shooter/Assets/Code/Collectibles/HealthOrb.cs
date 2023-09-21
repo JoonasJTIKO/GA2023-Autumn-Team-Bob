@@ -40,32 +40,14 @@ namespace TeamBobFPS
 
         public event Action<HealthOrb> Expired;
 
-        private int priority;
 
-        public int Priority
+        protected override void Awake()
         {
-            get { return priority; }
-        }
-
-        public GameObject SelfReference
-        {
-            get
-            {
-                return this.gameObject;
-            }
-        }
-
-        private UpdateManager updateManager;
-
-        private void Awake()
-        {
+            base.Awake();
             mover = GetComponent<Mover>();
             playerPosition = FindObjectOfType<PlayerUnit>().gameObject.transform;
-            //playerHealth = playerPosition.gameObject.GetComponent<PlayerHealth>();
+            playerHealth = playerPosition.gameObject.GetComponent<UnitHealth>();
             mover.Setup(speed);
-
-            updateManager = GameInstance.Instance.GetUpdateManager();
-            //priority = updateManager.GetUniquePriority();
         }
 
        
@@ -73,7 +55,7 @@ namespace TeamBobFPS
 
         public override void OnFixedUpdate(float fixedDeltaTime)
         {
-            //if (canBeCollected && !flyToPlayer && !playerHealth.HealthFull && (playerPosition.position - transform.position).magnitude <= pickUpRange)
+            if (canBeCollected && !flyToPlayer && !playerHealth.HealthFull && (playerPosition.position - transform.position).magnitude <= pickUpRange)
             {
                 flyToPlayer = true;
             }
@@ -81,9 +63,9 @@ namespace TeamBobFPS
             if (flyToPlayer)
             {
                 Vector3 moveDirection = (playerPosition.position - transform.position).normalized;
-              //  mover.Setup(speed);
+                mover.Setup(speed);
                 speed *= acceleration;
-                //mover.Move(moveDirection);
+                mover.Move(moveDirection);
             }
         }
 
@@ -91,15 +73,15 @@ namespace TeamBobFPS
         {
             if (other.gameObject.tag == "Player" && flyToPlayer)
             {
-               // GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_COLLECT_HEALTH, transform.position, make2D: true);
-                //playerHealth.Heal(healAmount);
+                //GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_COLLECT_HEALTH, transform.position, make2D: true);
+                playerHealth.AddHealth(healAmount);
                 Recycle();
             }
         }
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.layer == 11)
+            if (collision.gameObject.layer == 6)
             {
                 GetComponent<Rigidbody>().velocity = Vector3.zero;
             }
@@ -128,7 +110,7 @@ namespace TeamBobFPS
         {
             while (time > 0)
             {
-               // time -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                time -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
                 yield return null;
             }
             canBeCollected = true;
@@ -139,7 +121,7 @@ namespace TeamBobFPS
             aliveTimer = aliveTime;
             while (aliveTimer > 0)
             {
-                //aliveTimer -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                aliveTimer -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
                 yield return null;
             }
 

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3517088280860780279}
   - component: {fileID: 3517088280860780278}
   - component: {fileID: 3517088280860780277}
+  - component: {fileID: 249660379454772369}
   - component: {fileID: 3517088280860780276}
   - component: {fileID: 3517088280860780273}
   - component: {fileID: 3517088280860780274}
@@ -102,6 +103,24 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &249660379454772369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3517088280860780267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a700f6f2d84c1db48b617d9173e1c3a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthOrb: {fileID: 6832559290659420596, guid: 304da4693d26f29419d739d50e806547,
+    type: 3}
+  ammoPickup: {fileID: -8630504381059359644, guid: e6eae512b0c4c00428e76560b8ba84ef,
+    type: 3}
+  minimumOrbs: 1
+  maximumOrbs: 3
 --- !u!114 &3517088280860780276
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -29,6 +29,11 @@ namespace TeamBobFPS
             get; protected set;
         }
 
+        public bool HealthFull 
+        {
+            get { return Health == MaxHealth; }
+        }
+
         public event Action<float> OnHealthUpdate;
 
         public event Action OnDied;

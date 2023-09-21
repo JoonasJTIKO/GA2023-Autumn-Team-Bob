@@ -40,32 +40,13 @@ namespace TeamBobFPS
 
         public event Action<AmmoPickup> Expired;
 
-        private int priority;
-
-        public int Priority
+        protected override void Awake()
         {
-            get { return priority; }
-        }
-
-        public GameObject SelfReference
-        {
-            get
-            {
-                return this.gameObject;
-            }
-        }
-
-        private UpdateManager updateManager;
-
-        private void Awake()
-        {
+            base.Awake();
             mover = GetComponent<Mover>();
             playerPosition = FindObjectOfType<PlayerUnit>().gameObject.transform;
             //playerHealth = playerPosition.gameObject.GetComponent<PlayerHealth>();
             mover.Setup(speed);
-
-            updateManager = GameInstance.Instance.GetUpdateManager();
-            //priority = updateManager.GetUniquePriority();
         }
 
 
@@ -81,9 +62,9 @@ namespace TeamBobFPS
             if (flyToPlayer)
             {
                 Vector3 moveDirection = (playerPosition.position - transform.position).normalized;
-                //  mover.Setup(speed);
+                mover.Setup(speed);
                 speed *= acceleration;
-                //mover.Move(moveDirection);
+                mover.Move(moveDirection);
             }
         }
 
@@ -128,7 +109,7 @@ namespace TeamBobFPS
         {
             while (time > 0)
             {
-                // time -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                time -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
                 yield return null;
             }
             canBeCollected = true;
@@ -139,7 +120,7 @@ namespace TeamBobFPS
             aliveTimer = aliveTime;
             while (aliveTimer > 0)
             {
-                //aliveTimer -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                aliveTimer -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
                 yield return null;
             }
 

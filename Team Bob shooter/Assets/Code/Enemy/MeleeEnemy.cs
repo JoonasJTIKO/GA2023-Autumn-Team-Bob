@@ -48,10 +48,13 @@ namespace TeamBobFPS
 
         public static event Action<WaveData.EnemyType, Transform> OnDefeated;
 
+        private DropSpawner dropSpawner;
+
         void Start()
         {
             seeker = GetComponent<Seeker>();
             rb = GetComponent<Rigidbody>();
+            dropSpawner = GetComponent<DropSpawner>();
 
             //seeker.StartPath(rb.position, player.position, OnPathComplete);
         }
@@ -90,6 +93,7 @@ namespace TeamBobFPS
 
         private void OnDie()
         {
+            dropSpawner.SpawnThings();
             Vector3 pos = transform.position;
             Quaternion rot = transform.rotation;
 
