@@ -41,6 +41,11 @@ namespace TeamBobFPS
             private set;
         }
 
+        public bool CurrentReserveAmmoFull
+        {
+            get { return activeWeapon.CurrentReserveAmmo == activeWeapon.MaxReserveAmmo; }
+        }
+
         protected override void Awake()
         {
             base.Awake();
@@ -128,6 +133,13 @@ namespace TeamBobFPS
                     readyToFire = false;
                 }
             }
+        }
+
+        public void AddAmmo(int amount)
+        {
+            activeWeapon.AddAmmo(amount);
+
+            activeWeapon.UpdateHudAmmo();
         }
 
         private void OnPlayerDied()

@@ -230,7 +230,7 @@ namespace TeamBobFPS
             {
                 if (!Physics.Raycast(transform.position, directionToTarget, radius, wallMask))
                 {
-                    Debug.Log("Player has been detected!");
+                    //Debug.Log("Player has been detected!");
 
                     FieldOfView();
 
@@ -291,7 +291,7 @@ namespace TeamBobFPS
                     if (Mathf.Abs(Vector3.SignedAngle(transform.forward, directionToTarget, Vector3.up)) < angle / 2)
                     {
                         //hit.GetComponent<Health>().TakeDamage(1, false);
-                        Debug.Log("Player hit!");
+                        //Debug.Log("Player hit!");
                         StartCoroutine(Cooldown());
                     }
                 }

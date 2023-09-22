@@ -2171,10 +2171,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8456330329067614950, guid: a9e26fb6e1dd8184f8f0cce11af672ae,
+        type: 3}
+      propertyPath: enemyLayers.m_Bits
+      value: 68608
+      objectReference: {fileID: 0}
     - target: {fileID: 8456330329067614960, guid: a9e26fb6e1dd8184f8f0cce11af672ae,
         type: 3}
       propertyPath: m_Name
       value: PlayerUnit
+      objectReference: {fileID: 0}
+    - target: {fileID: 8456330329067614969, guid: a9e26fb6e1dd8184f8f0cce11af672ae,
+        type: 3}
+      propertyPath: enemyLayers.m_Bits
+      value: 68608
       objectReference: {fileID: 0}
     - target: {fileID: 8456330329067614972, guid: a9e26fb6e1dd8184f8f0cce11af672ae,
         type: 3}

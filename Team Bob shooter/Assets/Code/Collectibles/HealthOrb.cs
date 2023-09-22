@@ -47,16 +47,13 @@ namespace TeamBobFPS
             mover = GetComponent<Mover>();
             playerPosition = FindObjectOfType<PlayerUnit>().gameObject.transform;
             playerHealth = playerPosition.gameObject.GetComponent<UnitHealth>();
-            mover.Setup(speed);
         }
-
-       
-
 
         public override void OnFixedUpdate(float fixedDeltaTime)
         {
             if (canBeCollected && !flyToPlayer && !playerHealth.HealthFull && (playerPosition.position - transform.position).magnitude <= pickUpRange)
             {
+                mover.Setup(speed);
                 flyToPlayer = true;
             }
 
@@ -75,13 +72,14 @@ namespace TeamBobFPS
             {
                 //GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_COLLECT_HEALTH, transform.position, make2D: true);
                 playerHealth.AddHealth(healAmount);
+                flyToPlayer = false;
                 Recycle();
             }
         }
 
-        private void OnCollisionEnter(Collision collision)
+        private void OnTriggerEnter(Collider other)
         {
-            if (collision.gameObject.layer == 6)
+            if (other.gameObject.layer == 6)
             {
                 GetComponent<Rigidbody>().velocity = Vector3.zero;
             }
@@ -89,6 +87,7 @@ namespace TeamBobFPS
 
         public void Create()
         {
+            flyToPlayer = false;
             StartCoroutine(CanBeCollectedTimer(canBeCollectedTimer));
             aliveTimerRoutine = StartCoroutine(AliveTimer());
         }

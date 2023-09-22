@@ -105,7 +105,6 @@ namespace TeamBobFPS
                     return true;
                 }
             }
-
             // Item was not present in this pool. It can't be returned here!
             return false;
         }

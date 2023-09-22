@@ -41,6 +41,8 @@ namespace TeamBobFPS
 
         private bool noAcceleration = true;
 
+        private bool setupComplete = false;
+
         public void Setup(float speed, float accelerationTime = 0f, float decelerationTime = 0f, bool noAcceleration = true)
         {
             collider = GetComponent<CapsuleCollider>();
@@ -57,6 +59,8 @@ namespace TeamBobFPS
             {
                 Debug.LogError("Rigidbody can't be found!");
             }
+
+            setupComplete = true;
         }
 
         public void Move(Vector3 direction)
@@ -74,7 +78,7 @@ namespace TeamBobFPS
                                 -transform.up, out hit, 0.7f, groundLayer);
             }
 
-            if (rb != null)
+            if (rb != null && setupComplete)
             {
                 Move(fixedDeltaTime);
             }

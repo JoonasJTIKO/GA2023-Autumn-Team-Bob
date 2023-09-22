@@ -21,18 +21,14 @@ namespace TeamBobFPS
         private ComponentPool<HealthOrb> healthPool;
         private ComponentPool<AmmoPickup> ammoPool;
 
-
         public void Awake()
         {
-            healthPool = new ComponentPool<HealthOrb>(healthOrb, maximumOrbs);
-            ammoPool = new ComponentPool<AmmoPickup>(ammoPickup, maximumOrbs);
-
+            healthPool = new ComponentPool<HealthOrb>(healthOrb, 10);
+            ammoPool = new ComponentPool<AmmoPickup>(ammoPickup, 10);
         }
-
 
         public void SpawnThings()
         {
-
             int hpOrbAmount = Random.Range(minimumOrbs, maximumOrbs + 1);
             for (int i = 0; i < hpOrbAmount; i++)
             {
@@ -41,7 +37,7 @@ namespace TeamBobFPS
                 spawned.transform.position = this.transform.position;
                 spawned.Create();
 
-                Vector3 randomDirection = new Vector3(Random.Range(-1, 1), 0.8f, Random.Range(-1, 1));
+                Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), 0.8f, Random.Range(-1f, 1f));
                 randomDirection.Normalize();
                 spawned.GetComponent<Rigidbody>().AddForce(randomDirection * 5, ForceMode.Impulse);
             }
@@ -54,7 +50,7 @@ namespace TeamBobFPS
                 spawned.transform.position = this.transform.position;
                 spawned.Create();
 
-                Vector3 randomDirection = new Vector3(Random.Range(-1, 1), 0.8f, Random.Range(-1, 1));
+                Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), 0.8f, Random.Range(-1f, 1f));
                 randomDirection.Normalize();
                 spawned.GetComponent<Rigidbody>().AddForce(randomDirection * 5, ForceMode.Impulse);
             }
@@ -72,7 +68,7 @@ namespace TeamBobFPS
 
         private void OnExpired(AmmoPickup ammoPickup)
         {
-            healthOrb.Expired -= OnExpired;
+            ammoPickup.Expired -= OnExpired;
 
             if (!ammoPool.Return(ammoPickup))
             {

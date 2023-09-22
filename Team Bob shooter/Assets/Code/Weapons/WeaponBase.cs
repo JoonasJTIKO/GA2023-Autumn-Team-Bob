@@ -43,7 +43,16 @@ namespace TeamBobFPS
 
         protected ComponentPool<Transform> hitEffectPool;
 
-        protected int currentReserveAmmo;
+        public int CurrentReserveAmmo
+        {
+            get;
+            protected set;
+        }
+
+        public int MaxReserveAmmo
+        {
+            get { return maxReserveAmmo; }
+        }
 
         protected int currentMagAmmoCount;
 
@@ -64,7 +73,7 @@ namespace TeamBobFPS
         {
             base.Awake();
 
-            currentReserveAmmo = startingReserveAmmo;
+            CurrentReserveAmmo = startingReserveAmmo;
             currentMagAmmoCount = magSize;
             hitEffectPool = new ComponentPool<Transform>(hitEffect.transform, 10);
         }
@@ -91,7 +100,7 @@ namespace TeamBobFPS
             InGameHudCanvas inGameHudCanvas = GameInstance.Instance.GetInGameHudCanvas();
 
             inGameHudCanvas.UpdateMagCount(currentMagAmmoCount);
-            inGameHudCanvas.UpdateReserveCount(currentReserveAmmo);
+            inGameHudCanvas.UpdateReserveCount(CurrentReserveAmmo);
         }
 
         public virtual void Shoot()
@@ -109,14 +118,23 @@ namespace TeamBobFPS
         protected virtual void ReloadCompleted()
         {
             int reloadAmount = magSize - currentMagAmmoCount;
-            if (currentReserveAmmo < reloadAmount) reloadAmount = currentReserveAmmo;
+            if (CurrentReserveAmmo < reloadAmount) reloadAmount = CurrentReserveAmmo;
 
-            currentReserveAmmo -= reloadAmount;
+            CurrentReserveAmmo -= reloadAmount;
             currentMagAmmoCount += reloadAmount;
             if (currentMagAmmoCount > magSize) currentMagAmmoCount = magSize;
 
             UpdateHudAmmo();
             reloading = false;
+        }
+
+        public virtual void AddAmmo(int amount)
+        {
+            CurrentReserveAmmo += amount;
+            if (CurrentReserveAmmo > maxReserveAmmo)
+            {
+                CurrentReserveAmmo = maxReserveAmmo;
+            }
         }
 
         public abstract void AbortReload();
