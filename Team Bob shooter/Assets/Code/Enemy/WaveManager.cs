@@ -10,6 +10,9 @@ namespace TeamBobFPS
         [SerializeField]
         private WaveData[] waves;
 
+        [SerializeField]
+        private ArenaLoadZone levelExit;
+
         private int waveIndex = 0;
 
         private WaveData currentWave;
@@ -86,7 +89,7 @@ namespace TeamBobFPS
             {
                 defeatedCountInfo.Add(enemy, 1);
             }
-            
+
 
             int maxSpawn = totalAmountInfo[enemy] - defeatedCountInfo[enemy];
 
@@ -98,9 +101,12 @@ namespace TeamBobFPS
                     amountToSpawn = maxSpawn;
                 }
 
-                enemySpawning.SpawnEnemies(enemy, amountToSpawn);
-                enemySpawning.SpawnAll();
-                currentWaveEnemies[enemy] += amountToSpawn;
+                if (amountToSpawn > 0)
+                {
+                    enemySpawning.SpawnEnemies(enemy, amountToSpawn);
+                    enemySpawning.SpawnAll();
+                    currentWaveEnemies[enemy] += amountToSpawn;
+                }
             }
 
             foreach (int count in currentWaveEnemies.Values)
@@ -108,6 +114,11 @@ namespace TeamBobFPS
                 if (count > 0) return;
             }
             waveIndex++;
+            if (waveIndex >= waves.Length)
+            {
+                levelExit.gameObject.SetActive(true);
+                return;
+            }
             currentWave = waves[waveIndex];
             StartWave(currentWave);
         }

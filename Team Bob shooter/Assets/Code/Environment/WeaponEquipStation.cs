@@ -27,6 +27,11 @@ namespace TeamBobFPS
             collider = GetComponent<Collider>();
         }
 
+        private void Start()
+        {
+            StartCheck();
+        }
+
         private void OnEnable()
         {
             WeaponLoadout.WeaponUnequipped += CheckOnUnequip;
@@ -35,6 +40,16 @@ namespace TeamBobFPS
         private void OnDisable()
         {
             WeaponLoadout.WeaponUnequipped -= CheckOnUnequip;
+        }
+
+        private void StartCheck()
+        {
+            if (GameInstance.Instance == null) return;
+
+            if (GameInstance.Instance.GetWeaponLoadout().CheckEquipStatus(weapon) == true)
+            {
+                collider.enabled = false;
+            }
         }
 
         public bool OnInteract(int currentWeapon)

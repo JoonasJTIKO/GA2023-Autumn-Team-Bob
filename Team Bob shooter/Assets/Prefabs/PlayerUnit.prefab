@@ -99,6 +99,37 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+--- !u!1 &782361517604340072
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4710696706038393328}
+  m_Layer: 3
+  m_Name: BulletOrigin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4710696706038393328
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 782361517604340072}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.25, y: -0.5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8456330328173409303}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2255451828339494132
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,7 +147,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3712029299311630756
 Transform:
   m_ObjectHideFlags: 0
@@ -333,6 +364,7 @@ Transform:
   - {fileID: 1941143822}
   - {fileID: 7652470638271714780}
   - {fileID: 3712029299311630756}
+  - {fileID: 4710696706038393328}
   m_Father: {fileID: 8456330329067614972}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -891,7 +923,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe850f764ac1b1146baaf3171f3ab9b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletDamage: 10
+  bulletDamage: 40
   fireRate: 8
   maxReserveAmmo: 0
   startingReserveAmmo: 0
@@ -900,6 +932,9 @@ MonoBehaviour:
   hitEffect: {fileID: 8871769595818614711, guid: c697e23899b226f41b0470242eb4dd73,
     type: 3}
   weaponType: 0
+  bulletTrail: {fileID: 3849155513158119204, guid: aa5faebe8ea4dc343960b115c6dd0066,
+    type: 3}
+  bulletOrigin: {fileID: 4710696706038393328}
   Active: 0
   knockbackStrength: 4
   spreadAngle: 0.1
@@ -921,7 +956,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f7d0bde183bed448834c416644eabff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletDamage: 15
+  bulletDamage: 20
   fireRate: 1.5
   maxReserveAmmo: 30
   startingReserveAmmo: 30
@@ -930,6 +965,9 @@ MonoBehaviour:
   hitEffect: {fileID: 8871769595818614711, guid: c697e23899b226f41b0470242eb4dd73,
     type: 3}
   weaponType: 1
+  bulletTrail: {fileID: 3849155513158119204, guid: aa5faebe8ea4dc343960b115c6dd0066,
+    type: 3}
+  bulletOrigin: {fileID: 4710696706038393328}
   Active: 0
   spreadAngle: 0.1
   environmentLayers:
@@ -952,7 +990,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c281809c45bccac47b42e306cae40f33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletDamage: 100
+  bulletDamage: 200
   fireRate: 0.75
   maxReserveAmmo: 10
   startingReserveAmmo: 10
@@ -961,6 +999,9 @@ MonoBehaviour:
   hitEffect: {fileID: 8871769595818614711, guid: c697e23899b226f41b0470242eb4dd73,
     type: 3}
   weaponType: 2
+  bulletTrail: {fileID: 3849155513158119204, guid: aa5faebe8ea4dc343960b115c6dd0066,
+    type: 3}
+  bulletOrigin: {fileID: 4710696706038393328}
   Active: 0
   projectilePrefab: {fileID: 746868465337542646, guid: c96b17df91761e5419dd7cbaf1fd4f31,
     type: 3}
@@ -987,6 +1028,9 @@ MonoBehaviour:
   hitEffect: {fileID: 8871769595818614711, guid: c697e23899b226f41b0470242eb4dd73,
     type: 3}
   weaponType: 3
+  bulletTrail: {fileID: 3849155513158119204, guid: aa5faebe8ea4dc343960b115c6dd0066,
+    type: 3}
+  bulletOrigin: {fileID: 4710696706038393328}
   Active: 0
   spreadAngle: 0
   environmentLayers:
@@ -1017,6 +1061,9 @@ MonoBehaviour:
   hitEffect: {fileID: 8871769595818614711, guid: c697e23899b226f41b0470242eb4dd73,
     type: 3}
   weaponType: 4
+  bulletTrail: {fileID: 3849155513158119204, guid: aa5faebe8ea4dc343960b115c6dd0066,
+    type: 3}
+  bulletOrigin: {fileID: 4710696706038393328}
   Active: 0
   spreadAngle: 0.02
   environmentLayers:

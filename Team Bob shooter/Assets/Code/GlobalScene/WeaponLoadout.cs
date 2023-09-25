@@ -39,5 +39,17 @@ namespace TeamBobFPS
 
             WeaponEquipped?.Invoke(equippedWeapons[slot].WeaponType, slot);
         }
+
+        public bool CheckEquipStatus(EquippableWeapon weapon)
+        {
+            foreach (EquippableWeapon equippedWeapon in equippedWeapons)
+            {
+                if (equippedWeapon.WeaponType == weapon.WeaponType)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

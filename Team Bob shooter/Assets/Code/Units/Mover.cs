@@ -103,7 +103,7 @@ namespace TeamBobFPS
             if (currentSpeed < 0) currentSpeed = 0;
 
             Vector3 velocity = direction * currentSpeed * deltaTime * 70;
-            if (direction.y != 0)
+            if (direction.y != 0 && velocity.magnitude < 1000)
             {
                 rb.velocity = velocity;
             }

@@ -51,6 +51,11 @@ namespace TeamBobFPS
                 angle.y + Random.Range(-spreadAngle, spreadAngle),
                 angle.z + Random.Range(-spreadAngle, spreadAngle));
 
+            BulletTracer bullet = bulletTrailPool.Get();
+            bullet.Expired += RecycleTracer;
+            bullet.transform.position = bulletOrigin.transform.position;
+            bullet.Launch(angle);
+
             if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
                 angle, out hit, Mathf.Infinity, enemyLayers))
             {
@@ -86,7 +91,7 @@ namespace TeamBobFPS
 
             if (!playerUnit.IsGrounded)
             {
-                if (rb.velocity.y < 0) rb.velocity = new(rb.velocity.x, 0, rb.velocity.z);
+                if (rb.velocity.y < 0 && playerUnit.PlayerCam.transform.TransformDirection(transform.forward).y < 0) rb.velocity = new(rb.velocity.x, 0, rb.velocity.z);
 
                 rb.AddForce(-playerUnit.PlayerCam.transform.TransformDirection(Vector3.forward) * knockbackStrength, ForceMode.Impulse);
             }

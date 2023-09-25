@@ -46,6 +46,7 @@ namespace TeamBobFPS
             for (int i = 0; i < ammoPickupAmount; i++)
             {
                 AmmoPickup spawned = ammoPool.Get();
+                if (spawned == null) return;
                 spawned.Expired += OnExpired;
                 spawned.transform.position = this.transform.position;
                 spawned.Create();

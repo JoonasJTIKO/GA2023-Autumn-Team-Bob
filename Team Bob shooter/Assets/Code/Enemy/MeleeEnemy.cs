@@ -100,6 +100,7 @@ namespace TeamBobFPS
             OnDefeated?.Invoke(enemyType, transform);
 
             activeGibbing = enemyGibbingPool.Get();
+            if (activeGibbing == null) return;
             activeGibbing.Completed += ReturnGibToPool;
             activeGibbing.transform.position = pos;
             activeGibbing.transform.rotation = rot;

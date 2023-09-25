@@ -72,6 +72,11 @@ namespace TeamBobFPS
                     angle.y + Random.Range(-spreadAngle, spreadAngle),
                     angle.z + Random.Range(-spreadAngle, spreadAngle));
 
+                BulletTracer bullet = bulletTrailPool.Get();
+                bullet.Expired += RecycleTracer;
+                bullet.transform.position = bulletOrigin.transform.position;
+                bullet.Launch(angle);
+
                 if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
                 angle, out hit, Mathf.Infinity, enemyLayers))
                 {

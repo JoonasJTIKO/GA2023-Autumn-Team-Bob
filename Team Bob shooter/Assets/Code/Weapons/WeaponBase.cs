@@ -41,7 +41,15 @@ namespace TeamBobFPS
         [SerializeField]
         protected WeaponType weaponType;
 
+        [SerializeField]
+        protected BulletTracer bulletTrail;
+
+        [SerializeField]
+        protected Transform bulletOrigin;
+
         protected ComponentPool<Transform> hitEffectPool;
+
+        protected ComponentPool<BulletTracer> bulletTrailPool;
 
         public int CurrentReserveAmmo
         {
@@ -76,6 +84,7 @@ namespace TeamBobFPS
             CurrentReserveAmmo = startingReserveAmmo;
             currentMagAmmoCount = magSize;
             hitEffectPool = new ComponentPool<Transform>(hitEffect.transform, 10);
+            bulletTrailPool = new ComponentPool<BulletTracer>(bulletTrail, 10);
         }
 
         public override void OnUpdate(float deltaTime)
@@ -126,6 +135,18 @@ namespace TeamBobFPS
 
             UpdateHudAmmo();
             reloading = false;
+        }
+
+        protected void RecycleTracer(BulletTracer tracer)
+        {
+            if (!bulletTrailPool.Return(tracer))
+            {
+                Debug.LogError("Can not return tracer to pool!");
+            }
+            else
+            {
+                tracer.Expired -= RecycleTracer;
+            }
         }
 
         public virtual void AddAmmo(int amount)
