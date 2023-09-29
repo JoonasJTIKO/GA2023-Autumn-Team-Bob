@@ -52,7 +52,14 @@ namespace TeamBobFPS
             //Spawn initial enemies
             foreach (WaveData.WaveEnemy enemy in wave.Enemies)
             {
-                enemySpawning.SpawnEnemies(enemy, enemy.MaxConcurrent);
+                if (enemy.SpawnPoints.Length > 0)
+                {
+                    enemySpawning.SpawnEnemies(enemy, enemy.MaxConcurrent, enemy.SpawnPoints);
+                }
+                else
+                {
+                    enemySpawning.SpawnEnemies(enemy, enemy.MaxConcurrent);
+                }
 
                 currentWaveEnemies.Add(enemy, enemy.MaxConcurrent);
                 maxAmountInfo.Add(enemy, enemy.MaxConcurrent);
@@ -103,7 +110,14 @@ namespace TeamBobFPS
 
                 if (amountToSpawn > 0)
                 {
-                    enemySpawning.SpawnEnemies(enemy, amountToSpawn);
+                    if (enemy.SpawnPoints.Length > 0)
+                    {
+                        enemySpawning.SpawnEnemies(enemy, amountToSpawn, enemy.SpawnPoints);
+                    }
+                    else
+                    {
+                        enemySpawning.SpawnEnemies(enemy, amountToSpawn);
+                    }
                     enemySpawning.SpawnAll();
                     currentWaveEnemies[enemy] += amountToSpawn;
                 }

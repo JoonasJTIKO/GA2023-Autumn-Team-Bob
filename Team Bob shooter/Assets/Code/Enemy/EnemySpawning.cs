@@ -27,9 +27,19 @@ namespace TeamBobFPS
             }
         }
 
-        public void SpawnEnemies(WaveData.WaveEnemy enemy, int amount)
+        public void SpawnEnemies(WaveData.WaveEnemy enemy, int amount, EnemySpawnPoint[] specifiedSpawnPoints = null)
         {
-            if (amount / enemy.spawnGroupSize > spawnPoints.Length)
+            EnemySpawnPoint[] possibleSpawnPoints = null;
+            if (specifiedSpawnPoints != null)
+            {
+                possibleSpawnPoints = specifiedSpawnPoints;
+            }
+            else
+            {
+                possibleSpawnPoints = spawnPoints;
+            }
+
+            if (amount / enemy.SpawnGroupSize > possibleSpawnPoints.Length)
             {
                 Debug.LogError("Can not spawn more enemy groups than there are spawn points!");
                 return;
@@ -41,13 +51,13 @@ namespace TeamBobFPS
 
             while (unallocatedAmount > 0)
             {
-                EnemySpawnPoint spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+                EnemySpawnPoint spawnPoint = possibleSpawnPoints[Random.Range(0, possibleSpawnPoints.Length)];
                 if (!selectedPoints.Contains(spawnPoint))
                 {
                     selectedPoints.Add(spawnPoint);
 
-                    int amountToSpawn = enemy.spawnGroupSize;
-                    if (unallocatedAmount - enemy.spawnGroupSize < 0)
+                    int amountToSpawn = enemy.SpawnGroupSize;
+                    if (unallocatedAmount - enemy.SpawnGroupSize < 0)
                     {
                         amountToSpawn = unallocatedAmount;
                     }

@@ -22,7 +22,9 @@ namespace TeamBobFPS
 
             public int ReinforcementThreshold;
 
-            public int spawnGroupSize;
+            public int SpawnGroupSize;
+
+            public EnemySpawnPoint[] SpawnPoints;
         }
 
         public WaveEnemy[] Enemies;

@@ -141,13 +141,14 @@ GameObject:
   - component: {fileID: 3712029299311630756}
   - component: {fileID: 9020788567301422550}
   - component: {fileID: 5656058577782516189}
+  - component: {fileID: 4862770350264875771}
   m_Layer: 9
   m_Name: PistolModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3712029299311630756
 Transform:
   m_ObjectHideFlags: 0
@@ -213,6 +214,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!95 &4862770350264875771
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2255451828339494132}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0b194a2d6bb40084ea638b39e7d5f4d7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6292527540223076491
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,6 +277,7 @@ GameObject:
   - component: {fileID: 7652470638271714780}
   - component: {fileID: 106413147368757928}
   - component: {fileID: 7698339695996380057}
+  - component: {fileID: 6918462753741814940}
   m_Layer: 9
   m_Name: RailgunModel
   m_TagString: Untagged
@@ -327,6 +350,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!95 &6918462753741814940
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6765411897379907481}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f273875f3ee5ef84c9f069bdfad42f8f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8456330328173409320
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,6 +508,7 @@ GameObject:
   - component: {fileID: 8456330328581264115}
   - component: {fileID: 8456330328581264126}
   - component: {fileID: 8456330328581264113}
+  - component: {fileID: 7268896147056074278}
   m_Layer: 9
   m_Name: MinigunModel
   m_TagString: Untagged
@@ -536,6 +581,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!95 &7268896147056074278
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8456330328581264114}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 688f253b949b4ff4eadae86c04c37b27, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8456330328657809712
 GameObject:
   m_ObjectHideFlags: 0
@@ -656,6 +722,7 @@ GameObject:
   - component: {fileID: 8456330328854574408}
   - component: {fileID: 8456330328854574390}
   - component: {fileID: 8456330328854574409}
+  - component: {fileID: 1822674193799905154}
   m_Layer: 9
   m_Name: ShotgunModel
   m_TagString: Untagged
@@ -728,6 +795,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!95 &1822674193799905154
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8456330328854574411}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f3a0a681ef1ddd34781f0db46a07b83e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8456330329067614960
 GameObject:
   m_ObjectHideFlags: 0
@@ -910,7 +998,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xSensitivity: 1
   ySensitivity: 0.5
-  smoothing: 2.5
+  smoothing: 1.5
 --- !u!114 &8456330329067614950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -935,6 +1023,7 @@ MonoBehaviour:
   bulletTrail: {fileID: 3849155513158119204, guid: aa5faebe8ea4dc343960b115c6dd0066,
     type: 3}
   bulletOrigin: {fileID: 4710696706038393328}
+  viewmodelAnimator: {fileID: 7268896147056074278}
   Active: 0
   knockbackStrength: 4
   spreadAngle: 0.1
@@ -968,6 +1057,7 @@ MonoBehaviour:
   bulletTrail: {fileID: 3849155513158119204, guid: aa5faebe8ea4dc343960b115c6dd0066,
     type: 3}
   bulletOrigin: {fileID: 4710696706038393328}
+  viewmodelAnimator: {fileID: 1822674193799905154}
   Active: 0
   spreadAngle: 0.1
   environmentLayers:
@@ -1002,6 +1092,7 @@ MonoBehaviour:
   bulletTrail: {fileID: 3849155513158119204, guid: aa5faebe8ea4dc343960b115c6dd0066,
     type: 3}
   bulletOrigin: {fileID: 4710696706038393328}
+  viewmodelAnimator: {fileID: 0}
   Active: 0
   projectilePrefab: {fileID: 746868465337542646, guid: c96b17df91761e5419dd7cbaf1fd4f31,
     type: 3}
@@ -1031,6 +1122,7 @@ MonoBehaviour:
   bulletTrail: {fileID: 3849155513158119204, guid: aa5faebe8ea4dc343960b115c6dd0066,
     type: 3}
   bulletOrigin: {fileID: 4710696706038393328}
+  viewmodelAnimator: {fileID: 6918462753741814940}
   Active: 0
   spreadAngle: 0
   environmentLayers:
@@ -1064,6 +1156,7 @@ MonoBehaviour:
   bulletTrail: {fileID: 3849155513158119204, guid: aa5faebe8ea4dc343960b115c6dd0066,
     type: 3}
   bulletOrigin: {fileID: 4710696706038393328}
+  viewmodelAnimator: {fileID: 4862770350264875771}
   Active: 0
   spreadAngle: 0.02
   environmentLayers:

@@ -38,6 +38,8 @@ namespace TeamBobFPS
 
         private WeaponSwap weaponSwap;
 
+        private Rigidbody rb;
+
         public event Action<AmmoPickup> Expired;
 
         protected override void Awake()
@@ -46,12 +48,14 @@ namespace TeamBobFPS
             mover = GetComponent<Mover>();
             playerPosition = FindObjectOfType<PlayerUnit>().gameObject.transform;
             weaponSwap = playerPosition.gameObject.GetComponent<WeaponSwap>();
+            rb = GetComponent<Rigidbody>();
         }
 
         public override void OnFixedUpdate(float fixedDeltaTime)
         {
             if (canBeCollected && !flyToPlayer && !weaponSwap.CurrentReserveAmmoFull && (playerPosition.position - transform.position).magnitude <= pickUpRange)
             {
+                rb.constraints = RigidbodyConstraints.None;
                 mover.Setup(speed);
                 flyToPlayer = true;
             }
@@ -80,13 +84,17 @@ namespace TeamBobFPS
         {
             if (other.gameObject.layer == 6)
             {
-                GetComponent<Rigidbody>().velocity = Vector3.zero;
+                rb.velocity = Vector3.zero;
+                rb.useGravity = false;
+                rb.constraints = RigidbodyConstraints.FreezePosition;
             }
         }
 
         public void Create()
         {
             flyToPlayer = false;
+            rb.useGravity = true;
+            rb.constraints = RigidbodyConstraints.None;
             StartCoroutine(CanBeCollectedTimer(canBeCollectedTimer));
             aliveTimerRoutine = StartCoroutine(AliveTimer());
         }
