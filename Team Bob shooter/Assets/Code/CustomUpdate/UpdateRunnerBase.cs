@@ -56,6 +56,13 @@ namespace TeamBobFPS
 
         public void Run(float deltaTime)
         {
+            // Add new listeners
+            while (addedListeners.Count > 0)
+            {
+                T added = addedListeners.Dequeue();
+                Listeners.Add(added);
+            }
+
             // Remove obsolete listeners
             while (removedListeners.Count > 0)
             {
@@ -63,12 +70,6 @@ namespace TeamBobFPS
                 Listeners.Remove(removed);
             }
 
-            // Add new listeners
-            while (addedListeners.Count > 0)
-            {
-                T added = addedListeners.Dequeue();
-                Listeners.Add(added);
-            }
             RunUpdates(deltaTime);
         }
 

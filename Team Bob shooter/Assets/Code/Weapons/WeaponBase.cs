@@ -47,6 +47,9 @@ namespace TeamBobFPS
         [SerializeField]
         protected Transform bulletOrigin;
 
+        [SerializeField]
+        private Animator viewmodelAnimator;
+
         protected ComponentPool<Transform> hitEffectPool;
 
         protected ComponentPool<BulletTracer> bulletTrailPool;
@@ -122,6 +125,11 @@ namespace TeamBobFPS
             readyToFire = false;
             if (fireRate != 0) timer = 1 / fireRate;
             else timer = 0;
+
+            if (viewmodelAnimator != null)
+            {
+                viewmodelAnimator.SetTrigger("Fire");
+            }
         }
 
         protected virtual void ReloadCompleted()

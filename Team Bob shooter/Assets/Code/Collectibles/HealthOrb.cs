@@ -38,6 +38,8 @@ namespace TeamBobFPS
 
         private UnitHealth playerHealth;
 
+        private Rigidbody rb;
+
         public event Action<HealthOrb> Expired;
 
 
@@ -47,12 +49,14 @@ namespace TeamBobFPS
             mover = GetComponent<Mover>();
             playerPosition = FindObjectOfType<PlayerUnit>().gameObject.transform;
             playerHealth = playerPosition.gameObject.GetComponent<UnitHealth>();
+            rb = GetComponent<Rigidbody>();
         }
 
         public override void OnFixedUpdate(float fixedDeltaTime)
         {
             if (canBeCollected && !flyToPlayer && !playerHealth.HealthFull && (playerPosition.position - transform.position).magnitude <= pickUpRange)
             {
+                rb.constraints = RigidbodyConstraints.None;
                 mover.Setup(speed);
                 flyToPlayer = true;
             }
@@ -81,13 +85,17 @@ namespace TeamBobFPS
         {
             if (other.gameObject.layer == 6)
             {
-                GetComponent<Rigidbody>().velocity = Vector3.zero;
+                rb.velocity = Vector3.zero;
+                rb.useGravity = false;
+                rb.constraints = RigidbodyConstraints.FreezePosition;
             }
         }
 
         public void Create()
         {
             flyToPlayer = false;
+            rb.useGravity = true;
+            rb.constraints = RigidbodyConstraints.None;
             StartCoroutine(CanBeCollectedTimer(canBeCollectedTimer));
             aliveTimerRoutine = StartCoroutine(AliveTimer());
         }
