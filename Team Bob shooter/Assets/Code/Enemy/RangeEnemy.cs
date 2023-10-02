@@ -2,6 +2,7 @@ using Pathfinding;
 using System.Collections;
 using UnityEngine;
 using static Unity.VisualScripting.Member;
+using static UnityEngine.GraphicsBuffer;
 
 namespace TeamBobFPS
 {
@@ -39,8 +40,6 @@ namespace TeamBobFPS
         {
             seeker = GetComponent<Seeker>();
             rb = GetComponent<Rigidbody>();
-
-            //seeker.StartPath(rb.position, player.position, OnPathComplete);
         }
 
         void UpdatePath()
@@ -92,7 +91,6 @@ namespace TeamBobFPS
             timer += Time.deltaTime;
 
             currentDistance = Vector3.Distance(player.transform.position, transform.position);
-            //Debug.Log(currentDistance);  
 
             if (currentDistance < radius && canSee)
             {
@@ -109,10 +107,6 @@ namespace TeamBobFPS
                 noticed = false;
                 angle = 90;
             }
-            //if (!noticed && timer >= 10)
-            //{
-            //    Move();
-            //}
 
             if (posChange)
             {
@@ -124,9 +118,15 @@ namespace TeamBobFPS
                 }
             }
 
-            if (currentDistance > 15f && noticed)
+            if (currentDistance > 15f && noticed && canSee || currentDistance > 15f && noticed && !canSee)
             {
+                posChange = false;
                 InvokeRepeating("UpdatePath", 0f, .5f);
+                Move();
+            }
+            else if(currentDistance <= 15f && noticed && !canSee)
+            {
+                UpdatePath();
                 Move();
             }
 
@@ -143,7 +143,6 @@ namespace TeamBobFPS
                 point.y = 0;
                 point += transform.position;
                 seeker.StartPath(rb.position, point, OnPathComplete);
-                
                 posChange = true;
             }
             else
@@ -174,19 +173,9 @@ namespace TeamBobFPS
                 currentWaypoint++;
             }
 
-            //float speedChange = speed;
-            //if (currentDistance > 5f && noticed)
-            //{
-                Vector3 direction = ((Vector3)path.vectorPath[currentWaypoint] - rb.position).normalized;
-                Vector3 force = direction * speed * Time.deltaTime;
-                rb.AddForce(force, ForceMode.VelocityChange);
-            //}
-            //else if (currentDistance <= 5f && noticed)
-            //{
-            //    speedChange = speed * 0;
-            //}
-
-            //rb.MovePosition(path.vectorPath[currentWaypoint] * speed * Time.deltaTime);
+            Vector3 direction = ((Vector3)path.vectorPath[currentWaypoint] - rb.position).normalized;
+            Vector3 force = direction * speed * Time.deltaTime;
+            rb.AddForce(force, ForceMode.VelocityChange);
         }
 
         private void LookForPlayer()
@@ -198,15 +187,15 @@ namespace TeamBobFPS
                 if (!Physics.Raycast(transform.position, directionToTarget, radius, wallMask))
                 {
                     FieldOfView();
-
-                    Quaternion lookOnLook =
-                    Quaternion.LookRotation(player.transform.position - transform.position);
-
-                    transform.rotation =
-                    Quaternion.Slerp(transform.rotation, lookOnLook, Time.deltaTime * 5f);
                 }
-                else
+                else if (Physics.Raycast(transform.position, directionToTarget, radius, wallMask))
                 {
+                    var lookPos = (Vector3)path.vectorPath[currentWaypoint] - transform.position;
+                    lookPos.y = 0;
+
+                    Quaternion lookForward = Quaternion.LookRotation(lookPos);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, lookForward, Time.deltaTime * 5f);
+
                     canSee = false;
                 }
             }
@@ -218,6 +207,12 @@ namespace TeamBobFPS
 
         private void FieldOfView()
         {
+            var lookPos = player.transform.position - transform.position;
+            lookPos.y = 0;
+
+            Quaternion lookOnLook = Quaternion.LookRotation(lookPos);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookOnLook, Time.deltaTime * 5f);
+
             Vector3 directionToTarget = (player.transform.position - transform.position).normalized;
             float kulma = Mathf.Abs(Vector3.SignedAngle(transform.forward, directionToTarget, Vector3.up));
 

@@ -10,10 +10,12 @@ namespace TeamBobFPS
         [SerializeField] private float speed;
         public Rigidbody rb;
         public Transform projectilePos;
+        public Transform player;
 
         void Start()
         {
-            rb.velocity = projectilePos.transform.forward * speed;
+            //var direction = player.transform.position - transform.position;
+            //rb.velocity = direction * speed;
         }
 
         void FixedUpdate()
@@ -23,7 +25,8 @@ namespace TeamBobFPS
 
         private new void OnEnable()
         {
-            rb.velocity = projectilePos.transform.forward * speed;
+            var direction = (player.transform.position - transform.position).normalized;
+            rb.velocity = direction * speed * Time.deltaTime;
         }
 
         private new void OnDisable()

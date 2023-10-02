@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 3517088280860780274}
   - component: {fileID: 1663529465}
   m_Layer: 10
-  m_Name: Enemy
+  m_Name: MeleeEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -133,13 +133,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc96d8b166534fb468535dd2f4005344, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 8456330329067614972, guid: a9e26fb6e1dd8184f8f0cce11af672ae, type: 3}
   targetMask:
     serializedVersion: 2
     m_Bits: 8
   wallMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   radius: 10
   angle: 90
   canSee: 0
