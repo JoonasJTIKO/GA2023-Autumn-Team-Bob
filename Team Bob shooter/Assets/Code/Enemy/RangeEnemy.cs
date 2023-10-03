@@ -226,20 +226,18 @@ namespace TeamBobFPS
                     break;
                 case ActionState.fire:
                     TurnTowardsPlayer(fixedDeltaTime);
-                    if (!Shoot())
+                    if (Shoot())
                     {
-                        if (changePosDirection == Vector3.zero)
+                        mover.Move(Vector3.zero);
+                        changePosDirection = Vector3.zero;
+
+                        if (UnityEngine.Random.value < 0.5f)
                         {
                             changePosDirection = (transform.position - player.transform.position).normalized;
                             changePosDirection = new Vector3(changePosDirection.x, 0, changePosDirection.z);
                             changePosDirection = Quaternion.Euler(0, UnityEngine.Random.Range(-90f, 90f), 0) * changePosDirection;
                             StartCoroutine(ChangePositionRoutine(changePosDirection));
                         }
-                    }
-                    else
-                    {
-                        mover.Move(Vector3.zero);
-                        changePosDirection = Vector3.zero;
                     }
                     break;
             }
@@ -338,14 +336,14 @@ namespace TeamBobFPS
                 }
                 else if (Physics.Raycast(transform.position, directionToTarget, currentDistance, wallMask))
                 {
-                    //if (path != null)
-                    //{
-                    //    var lookPos = (Vector3)path.vectorPath[currentWaypoint] - transform.position;
-                    //    lookPos.y = 0;
+                    if (path != null && currentWaypoint < path.vectorPath.Count)
+                    {
+                        var lookPos = (Vector3)path.vectorPath[currentWaypoint] - transform.position;
+                        lookPos.y = 0;
 
-                    //    Quaternion lookForward = Quaternion.LookRotation(lookPos);
-                    //    transform.rotation = Quaternion.Slerp(transform.rotation, lookForward, Time.deltaTime * 5f);
-                    //}
+                        Quaternion lookForward = Quaternion.LookRotation(lookPos);
+                        transform.rotation = Quaternion.Slerp(transform.rotation, lookForward, Time.deltaTime * 5f);
+                    }
 
                     canSee = false;
                 }

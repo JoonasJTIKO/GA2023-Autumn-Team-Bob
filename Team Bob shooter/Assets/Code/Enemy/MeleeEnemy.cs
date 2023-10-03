@@ -154,7 +154,7 @@ namespace TeamBobFPS
         {
             base.OnFixedUpdate(fixedDeltaTime);
 
-            timer += Time.deltaTime;
+            timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
 
             currentDistance = Vector3.Distance(player.transform.position, transform.position);
             //Debug.Log(currentDistance);  
