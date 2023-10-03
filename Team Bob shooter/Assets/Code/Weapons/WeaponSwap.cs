@@ -142,6 +142,21 @@ namespace TeamBobFPS
             activeWeapon.UpdateHudAmmo();
         }
 
+        public void SetCurrentWeaponWalking(bool state)
+        {
+            activeWeapon.SetWalking(state);
+        }
+
+        public void CurrentWeaponJump()
+        {
+            activeWeapon.Jump();
+        }
+
+        public void CurrentWeaponLand()
+        {
+            activeWeapon.Land();
+        }
+
         private void OnPlayerDied()
         {
             swapAction.performed -= SwapWeapon;
@@ -178,7 +193,7 @@ namespace TeamBobFPS
         private void SwapWeapon(InputAction.CallbackContext context)
         {
             equippedWeapons[activeWeaponIndex].AbortReload();
-            equippedWeapons[activeWeaponIndex].Active = false;
+            equippedWeapons[activeWeaponIndex].Activate(false);
 
             if (context.ReadValue<float>() > 0)
             {
@@ -232,7 +247,7 @@ namespace TeamBobFPS
             }
 
             activeWeapon = equippedWeapons[index];
-            activeWeapon.Active = true;
+            activeWeapon.Activate(true);
             activeWeapon.UpdateHudAmmo();
             ActivateViewmodel(weaponType);
             playerUnit.CurrentWeaponSlot = activeWeaponIndex;

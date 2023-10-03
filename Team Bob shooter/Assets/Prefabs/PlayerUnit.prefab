@@ -1024,7 +1024,6 @@ MonoBehaviour:
     type: 3}
   bulletOrigin: {fileID: 4710696706038393328}
   viewmodelAnimator: {fileID: 7268896147056074278}
-  Active: 0
   knockbackStrength: 4
   spreadAngle: 0.1
   environmentLayers:
@@ -1058,7 +1057,6 @@ MonoBehaviour:
     type: 3}
   bulletOrigin: {fileID: 4710696706038393328}
   viewmodelAnimator: {fileID: 1822674193799905154}
-  Active: 0
   spreadAngle: 0.1
   environmentLayers:
     serializedVersion: 2
@@ -1093,7 +1091,6 @@ MonoBehaviour:
     type: 3}
   bulletOrigin: {fileID: 4710696706038393328}
   viewmodelAnimator: {fileID: 0}
-  Active: 0
   projectilePrefab: {fileID: 746868465337542646, guid: c96b17df91761e5419dd7cbaf1fd4f31,
     type: 3}
   launchPosition: {fileID: 270676369799797726}
@@ -1123,7 +1120,6 @@ MonoBehaviour:
     type: 3}
   bulletOrigin: {fileID: 4710696706038393328}
   viewmodelAnimator: {fileID: 6918462753741814940}
-  Active: 0
   spreadAngle: 0
   environmentLayers:
     serializedVersion: 2
@@ -1157,7 +1153,6 @@ MonoBehaviour:
     type: 3}
   bulletOrigin: {fileID: 4710696706038393328}
   viewmodelAnimator: {fileID: 4862770350264875771}
-  Active: 0
   spreadAngle: 0.02
   environmentLayers:
     serializedVersion: 2

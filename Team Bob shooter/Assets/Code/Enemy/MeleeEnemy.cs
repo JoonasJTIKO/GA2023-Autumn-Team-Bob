@@ -146,8 +146,10 @@ namespace TeamBobFPS
             }
         }
 
-        void FixedUpdate()
+        public override void OnFixedUpdate(float fixedDeltaTime)
         {
+            base.OnFixedUpdate(fixedDeltaTime);
+
             timer += Time.deltaTime;
 
             currentDistance = Vector3.Distance(player.transform.position, transform.position);

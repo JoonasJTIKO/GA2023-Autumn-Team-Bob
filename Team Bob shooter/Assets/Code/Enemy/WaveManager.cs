@@ -29,16 +29,18 @@ namespace TeamBobFPS
         {
             enemySpawning = GetComponent<EnemySpawning>();
             currentWave = waves[waveIndex];
-            StartWave(currentWave);
+            StartCoroutine(StartFirstWave());
         }
 
         private void OnEnable()
         {
             MeleeEnemy.OnDefeated += EnemyDefeated;
+            RangeEnemy.OnDefeated += EnemyDefeated;
         }
         private void OnDisable()
         {
             MeleeEnemy.OnDefeated -= EnemyDefeated;
+            RangeEnemy.OnDefeated -= EnemyDefeated;
         }
 
         private void StartWave(WaveData wave)
@@ -74,7 +76,7 @@ namespace TeamBobFPS
 
         public void EnemyDefeated(WaveData.EnemyType enemyType, Transform item)
         {
-            enemySpawning.ReturnToPool(enemyType, item);
+            StartCoroutine(enemySpawning.ReturnToPool(enemyType, item));
 
             WaveData.WaveEnemy enemy = null;
             switch (enemyType)
@@ -134,6 +136,17 @@ namespace TeamBobFPS
                 return;
             }
             currentWave = waves[waveIndex];
+            StartWave(currentWave);
+        }
+
+        private IEnumerator StartFirstWave()
+        {
+            float timer = 0;
+            while (timer < 1)
+            {
+                timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                yield return null;
+            }
             StartWave(currentWave);
         }
     }

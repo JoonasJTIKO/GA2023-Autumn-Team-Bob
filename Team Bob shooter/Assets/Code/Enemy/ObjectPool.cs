@@ -14,10 +14,7 @@ namespace TeamBobFPS
         void Awake()
         {
             SharedInstance = this;
-        }
 
-        void Start()
-        {
             pooledObjects = new List<GameObject>();
             GameObject tmp;
             for (int i = 0; i < amountToPool; i++)

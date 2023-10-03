@@ -42,6 +42,8 @@ namespace TeamBobFPS
 
         private Camera playerCam;
 
+        private WeaponSwap weaponSwap;
+
         public Camera PlayerCam
         {
             get { return playerCam; }
@@ -56,6 +58,8 @@ namespace TeamBobFPS
         public int CurrentWeaponSlot;
 
         public float MoveSpeedModifier = 0f;
+
+        private float SetJumpStrength = 0f;
 
         public bool IsGrounded
         {
@@ -81,6 +85,7 @@ namespace TeamBobFPS
             base.Awake();
             if (GameInstance.Instance == null) return;
 
+            weaponSwap = GetComponent<WeaponSwap>();
             mover = GetComponent<Mover>();
             mover.Setup(speed, accelerationTime, decelerationTime, false);
             rb = GetComponent<Rigidbody>();
@@ -125,9 +130,10 @@ namespace TeamBobFPS
                 {
                     waitFrames--;
                 }
-                else
+                else if (jumping)
                 {
                     jumping = false;
+                    weaponSwap.CurrentWeaponLand();
                 }
             }
 
@@ -139,7 +145,7 @@ namespace TeamBobFPS
             if (doJump)
             {
                 doJump = false;
-                Jump();
+                Jump(SetJumpStrength);
             }
 
             if (!LockMovement) rb.useGravity = !mover.OnSlope();
@@ -156,6 +162,15 @@ namespace TeamBobFPS
 
             Vector3 move = moveAction.ReadValue<Vector3>();
             move.Normalize();
+
+            if (move != Vector3.zero && IsGrounded)
+            {
+                weaponSwap.SetCurrentWeaponWalking(true);
+            }
+            else if (!IsGrounded || move == Vector3.zero)
+            {
+                weaponSwap.SetCurrentWeaponWalking(false);
+            }
 
             if (move != Vector3.zero)
             {
@@ -180,7 +195,13 @@ namespace TeamBobFPS
             doJump = true;
         }
 
-        private void Jump()
+        public void QueueJump(float jumpStrength)
+        {
+            SetJumpStrength = jumpStrength;
+            doJump = true;
+        }
+
+        private void Jump(float strength = 0)
         {
             if (!IsGrounded)
             {
@@ -194,9 +215,13 @@ namespace TeamBobFPS
 
             rb.useGravity = true;
             rb.velocity = new(rb.velocity.x, 0, rb.velocity.z);
-            rb.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
+            if (strength == 0) strength = jumpStrength;
+            rb.AddForce(Vector3.up * strength, ForceMode.Impulse);
             jumping = true;
             waitFrames = 10;
+            SetJumpStrength = 0f;
+
+            weaponSwap.CurrentWeaponJump();
         }
 
         private void ReceiveKnockback(Vector3 origin, float strength)
