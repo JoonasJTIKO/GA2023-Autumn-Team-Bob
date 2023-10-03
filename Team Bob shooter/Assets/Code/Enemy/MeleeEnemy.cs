@@ -50,11 +50,15 @@ namespace TeamBobFPS
 
         private DropSpawner dropSpawner;
 
+        private Mover mover;
+
         void Start()
         {
             seeker = GetComponent<Seeker>();
             rb = GetComponent<Rigidbody>();
             dropSpawner = GetComponent<DropSpawner>();
+            mover = GetComponent<Mover>();
+            mover.Setup(speed);
 
             //seeker.StartPath(rb.position, player.position, OnPathComplete);
         }
@@ -211,11 +215,13 @@ namespace TeamBobFPS
             }
 
             float speedChange = speed;
-            if (currentDistance > 3f)
+            if (currentDistance > 3f && currentWaypoint < path.vectorPath.Count)
             {
                 Vector3 direction = ((Vector3)path.vectorPath[currentWaypoint] - rb.position).normalized;
-                Vector3 force = direction * speed * Time.deltaTime;
-                rb.AddForce(force, ForceMode.VelocityChange);
+                direction = new Vector3(direction.x, 0, direction.z);
+                mover.Move(mover.GetSlopeDirection(direction));
+                //Vector3 force = direction * speed * Time.deltaTime;
+                //rb.AddForce(force, ForceMode.VelocityChange);
             }
             else if (currentDistance <= 3f)
             {

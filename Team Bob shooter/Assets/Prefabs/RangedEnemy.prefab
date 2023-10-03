@@ -130,7 +130,7 @@ MonoBehaviour:
   angle: 90
   canSee: 0
   shootTimer: 1
-  speed: 5
+  speed: 2
   timer: 0
   noticed: 0
   projectilePos: {fileID: 2175300155955546702}

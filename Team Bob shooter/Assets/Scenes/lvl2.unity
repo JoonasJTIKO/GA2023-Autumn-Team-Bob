@@ -40507,7 +40507,7 @@ PrefabInstance:
     - target: {fileID: 473119136965676290, guid: 9879e9c6350687245860ef4c6a46411f,
         type: 3}
       propertyPath: waves.Array.data[0].Enemies.Array.data[0].TotalAmount
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 473119136965676290, guid: 9879e9c6350687245860ef4c6a46411f,
         type: 3}
@@ -40522,7 +40522,7 @@ PrefabInstance:
     - target: {fileID: 473119136965676290, guid: 9879e9c6350687245860ef4c6a46411f,
         type: 3}
       propertyPath: waves.Array.data[0].Enemies.Array.data[0].MaxConcurrent
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 473119136965676290, guid: 9879e9c6350687245860ef4c6a46411f,
         type: 3}
@@ -40537,7 +40537,7 @@ PrefabInstance:
     - target: {fileID: 473119136965676290, guid: 9879e9c6350687245860ef4c6a46411f,
         type: 3}
       propertyPath: waves.Array.data[0].Enemies.Array.data[0].SpawnGroupSize
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 473119136965676290, guid: 9879e9c6350687245860ef4c6a46411f,
         type: 3}
@@ -40552,7 +40552,7 @@ PrefabInstance:
     - target: {fileID: 473119136965676290, guid: 9879e9c6350687245860ef4c6a46411f,
         type: 3}
       propertyPath: waves.Array.data[0].Enemies.Array.data[0].SpawnPoints.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 473119136965676290, guid: 9879e9c6350687245860ef4c6a46411f,
         type: 3}

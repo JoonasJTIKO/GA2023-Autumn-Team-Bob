@@ -295,7 +295,7 @@ namespace TeamBobFPS
                 return;
             }
         }
-    
+
         private void Move()
         {
             if (path == null)
@@ -317,9 +317,12 @@ namespace TeamBobFPS
             {
                 currentWaypoint++;
             }
-
-            Vector3 direction = ((Vector3)path.vectorPath[currentWaypoint] - rb.position).normalized;
-            mover.Move(direction);
+            if (currentWaypoint < path.vectorPath.Count)
+            {
+                Vector3 direction = ((Vector3)path.vectorPath[currentWaypoint] - rb.position).normalized;
+                direction = new Vector3(direction.x, 0, direction.z);
+                mover.Move(mover.GetSlopeDirection(direction));
+            }
             //Vector3 force = direction * speed * Time.deltaTime;
             //rb.AddForce(force, ForceMode.VelocityChange);
         }
@@ -394,7 +397,7 @@ namespace TeamBobFPS
                     Vector3 toPlayer = (player.transform.position - transform.position).normalized;
                     Vector3 lookDirection = transform.forward;
                     Vector3 shootDirection = new Vector3(lookDirection.x, toPlayer.y, lookDirection.z);
-                    
+
                     return shootComponent.Fire(shootDirection);
 
                     //Wait();
