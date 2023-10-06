@@ -3,7 +3,27 @@ guid: 189b9bb2739304b44992d9d6d60e0661
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.002
+    second: {fileID: 2100000, guid: cd7408d1592ccb64d9d64fe28671886b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: barrel
+    second: {fileID: 2100000, guid: 05a4d09a3d2ab454e91b804cc59a8c2b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: color
+    second: {fileID: 2100000, guid: fb6dba6a8bbc72340a0050bf527c39ed, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pipes
+    second: {fileID: 2100000, guid: a881f70dac8307041b6989d476b85086, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

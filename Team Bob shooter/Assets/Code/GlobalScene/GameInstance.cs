@@ -25,6 +25,8 @@ namespace TeamBobFPS
 
         private WeaponLoadout weaponLoadout;
 
+        private MapAreaManager mapAreaManager;
+
         public AudioListener AudioListener
         {
             get;
@@ -63,6 +65,7 @@ namespace TeamBobFPS
             gameStateManager = GetComponent<GameStateManager>();
             weaponLoadout = GetComponent<WeaponLoadout>();
             AudioListener = GetComponent<AudioListener>();
+            mapAreaManager = GetComponent<MapAreaManager>();
             UsingController = Gamepad.all.Count > 0;
             //Application.targetFrameRate = 60;
         }
@@ -83,6 +86,8 @@ namespace TeamBobFPS
         public GameStateManager GetGameStateManager() { return gameStateManager; }
 
         public WeaponLoadout GetWeaponLoadout() { return weaponLoadout; }
+
+        public MapAreaManager GetMapAreaManager() {  return mapAreaManager; }
     }
 }
 
