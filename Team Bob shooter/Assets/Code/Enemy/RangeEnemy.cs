@@ -30,7 +30,7 @@ namespace TeamBobFPS
         Rigidbody rb;
         private int currentWaypoint = 0;
         private float nextWaypointDistance = 3f;
-        private bool reachedEndOfPath = false;
+        public bool reachedEndOfPath = false;
         [SerializeField] private int speed = 25;
 
         public float timer;
@@ -64,6 +64,8 @@ namespace TeamBobFPS
 
         [SerializeField]
         private float fireRange = 10f;
+
+        public bool roam = false;
 
         private enum ActionState
         {
@@ -191,16 +193,11 @@ namespace TeamBobFPS
 
             currentDistance = Vector3.Distance(player.transform.position, transform.position);
 
-            if (currentDistance < radius)
+            if (currentDistance < radius && noticed)
             {
                 currentState = ActionState.chase;
 
-                if (canSee)
-                {
-                    Noticed();
-                }
-
-                if (currentDistance < fireRange || posChange)
+                if (currentDistance < fireRange && canSee || posChange)
                 {
                     currentState = ActionState.fire;
                 }
@@ -220,9 +217,21 @@ namespace TeamBobFPS
 
             switch (currentState)
             {
+                case ActionState.idle:
+                    IdleRoam();
+                    break;
                 case ActionState.chase:
+                    if (roam)
+                    {
+                        roam = false;
+                    }
                     UpdatePath();
                     Move();
+                    if (currentDistance < 25)
+                    {
+                        TurnTowardsPlayer(fixedDeltaTime);
+                        Shoot();
+                    }
                     break;
                 case ActionState.fire:
                     TurnTowardsPlayer(fixedDeltaTime);
@@ -276,21 +285,26 @@ namespace TeamBobFPS
             transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, targetDirection, deltaTime * 100, 0));
         }
 
-        private void ChangePosition()
+        private void IdleRoam()
         {
-            if (!posChange)
+            if (!roam && !isInCooldown)
             {
                 float posRange;
-                posRange = radius / 3.5f;
+                posRange = radius;
                 var point = UnityEngine.Random.insideUnitSphere * posRange;
                 point.y = 0;
                 point += transform.position;
                 seeker.StartPath(rb.position, point, OnPathComplete);
-                posChange = true;
+                roam = true;
             }
             else
             {
-                return;
+                Move();
+                if (reachedEndOfPath)
+                {
+                    roam = false;
+                    StartCoroutine(Cooldown());
+                }
             }
         }
 
@@ -370,6 +384,7 @@ namespace TeamBobFPS
                 if (!Physics.Raycast(transform.position, directionToTarget, currentDistance, wallMask))
                 {
                     canSee = true;
+                    Noticed();
                     timer = 0;
 
                     //Shoot();
@@ -388,16 +403,13 @@ namespace TeamBobFPS
         }
         public bool Shoot()
         {
-            if (canSee)
+            if (canSee && noticed)
             {
-                if (isInCooldown == false)
-                {
-                    Vector3 toPlayer = (player.transform.position - transform.position).normalized;
-                    Vector3 lookDirection = transform.forward;
-                    Vector3 shootDirection = new Vector3(lookDirection.x, toPlayer.y, lookDirection.z);
+                Vector3 toPlayer = (player.transform.position - transform.position).normalized;
+                Vector3 lookDirection = transform.forward;
+                Vector3 shootDirection = new Vector3(lookDirection.x, toPlayer.y, lookDirection.z);
 
-                    return shootComponent.Fire(shootDirection);
-
+                return shootComponent.Fire(shootDirection);
                     //Wait();
                     //GameObject bullet = ObjectPool.SharedInstance.GetPooledObject();
                     //if (bullet != null)
@@ -407,19 +419,18 @@ namespace TeamBobFPS
                     //    bullet.SetActive(true);
                     //}
                     //StartCoroutine(Cooldown());
-                }
             }
             return false;
         }
         private IEnumerator Wait()
         {
-            yield return new WaitForSeconds(0.75f);
+            yield return new WaitForSeconds(2f);
         }
 
         private IEnumerator Cooldown()
         {
             isInCooldown = true;
-            yield return new WaitForSeconds(shootTimer);
+            yield return new WaitForSeconds(4f);
             isInCooldown = false;
         }
 
