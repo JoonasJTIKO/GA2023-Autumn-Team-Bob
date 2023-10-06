@@ -545,6 +545,7 @@ GameObject:
   - component: {fileID: 458228138}
   - component: {fileID: 458228139}
   - component: {fileID: 458228140}
+  - component: {fileID: 458228141}
   m_Layer: 0
   m_Name: GameInstance
   m_TagString: Untagged
@@ -624,6 +625,19 @@ MonoBehaviour:
   startingLoadout:
   - WeaponType: 0
   - WeaponType: 1
+--- !u!114 &458228141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 458228135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6d8f9b6b7c2a6e4690712bcd20e3198, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerLocation: 0
 --- !u!1 &482790616
 GameObject:
   m_ObjectHideFlags: 0

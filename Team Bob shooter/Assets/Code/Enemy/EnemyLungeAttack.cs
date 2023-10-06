@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -5,17 +6,24 @@ using UnityEngine;
 
 namespace TeamBobFPS
 {
-    public class EnemyLungeAttack : MonoBehaviour
+    public class EnemyLungeAttack : BaseFixedUpdateListener
     {
+        [SerializeField]
+        private float damage = 25f;
+
         [SerializeField]
         private float angle = 40f;
 
         [SerializeField]
+        private float heightCap = 2f;
+
+        [SerializeField]
         private float cooldown = 2f;
 
-        private Vector3 targetPos;
+        [SerializeField]
+        private DamageBox damageBox;
 
-        public bool launch = false;
+        private Vector3 targetPos;
 
         private bool onCooldown = false;
 
@@ -23,26 +31,29 @@ namespace TeamBobFPS
 
         private PlayerUnit playerUnit;
 
-        private void Awake()
+        public event Action AttackEnd;
+
+        protected override void Awake()
         {
+            base.Awake();
+
             rb = GetComponent<Rigidbody>();
             playerUnit = FindObjectOfType<PlayerUnit>();
+            damageBox.Damage = damage;
         }
 
-        private void FixedUpdate()
+        public override void OnFixedUpdate(float fixedDeltaTime)
         {
-            rb.AddForce(Physics.gravity * rb.mass, ForceMode.Acceleration);
+            base.OnFixedUpdate(fixedDeltaTime);
 
-            if (launch)
-            {
-                Lunge();
-                launch = false;
-            }
+            rb.AddForce(Physics.gravity * rb.mass, ForceMode.Acceleration);
         }
 
         private void OnCollisionEnter(Collision collision)
         {
             rb.velocity = Vector3.zero;
+            damageBox.gameObject.SetActive(false);
+            AttackEnd?.Invoke();
         }
 
         public bool Lunge()
@@ -54,13 +65,22 @@ namespace TeamBobFPS
             float distance = Vector3.Distance(transform.position, targetPos);
             float gravity = Physics.gravity.y * rb.mass;
             float height = targetPos.y - transform.position.y;
+            if (height > heightCap) height = heightCap;
 
             float velocityX = Mathf.Sqrt(gravity * distance * distance /
                 (2f * (height - distance * Mathf.Tan(angle * Mathf.Deg2Rad))));
             float velocityY = Mathf.Tan(angle * Mathf.Deg2Rad) * velocityX;
 
             transform.LookAt(targetPos);
+
+            Vector3 newVelocity = transform.TransformDirection(new Vector3(0f, velocityY, velocityX));
+            if (newVelocity.x == float.NaN ||  newVelocity.y == float.NaN || newVelocity.z == float.NaN)
+            {
+                return false;
+            }
+
             rb.velocity = transform.TransformDirection(new Vector3(0f, velocityY, velocityX));
+            damageBox.gameObject.SetActive(true);
             StartCoroutine(Cooldown());
             return true;
         }
@@ -69,7 +89,7 @@ namespace TeamBobFPS
         {
             Vector3 playerPos = playerUnit.transform.position;
             Vector3 toPlayer = playerPos - transform.position;
-            Vector3 targetPos = transform.position + toPlayer.normalized * (toPlayer.magnitude - 1);
+            Vector3 targetPos = transform.position + toPlayer;
 
             return targetPos;
         }
@@ -84,7 +104,6 @@ namespace TeamBobFPS
                 timer -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
                 yield return null;
             }
-
             onCooldown = false;
         }
     }

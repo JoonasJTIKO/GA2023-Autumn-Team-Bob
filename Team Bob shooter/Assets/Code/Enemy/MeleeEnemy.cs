@@ -9,10 +9,20 @@ namespace TeamBobFPS
 {
     public class MeleeEnemy : BaseFixedUpdateListener
     {
+        public int CurrentMapArea = 0;
+
+        public bool pathUpdating = false;
+
         public Transform player;
         [SerializeField] private LayerMask targetMask;
         [SerializeField] private LayerMask wallMask;
 
+        [SerializeField]
+        private float attackRange = 5f;
+
+        private EnemyLungeAttack enemyLungeAttack;
+
+        private bool attacking = false;
 
         public float radius;
         [Range(0, 360)]
@@ -52,6 +62,8 @@ namespace TeamBobFPS
 
         private Mover mover;
 
+        private MapAreaManager mapAreaManager;
+
         void Start()
         {
             seeker = GetComponent<Seeker>();
@@ -59,6 +71,8 @@ namespace TeamBobFPS
             dropSpawner = GetComponent<DropSpawner>();
             mover = GetComponent<Mover>();
             mover.Setup(speed);
+
+            mapAreaManager = GameInstance.Instance.GetMapAreaManager();
 
             //seeker.StartPath(rb.position, player.position, OnPathComplete);
         }
@@ -68,11 +82,25 @@ namespace TeamBobFPS
             base.Awake();
 
             enemyGibbingPool = new ComponentPool<EnemyGibbing>(gibPrefab, 2);
+            enemyLungeAttack = GetComponent<EnemyLungeAttack>();
+        }
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+
+            if (enemyLungeAttack != null)
+            {
+                enemyLungeAttack.AttackEnd += OnAttackEnd;
+            }
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
+
+            CancelInvoke("UpdatePath");
+            pathUpdating = false;
 
             if (unitHealth != null)
             {
@@ -83,6 +111,11 @@ namespace TeamBobFPS
             {
                 activeGibbing.Completed -= ReturnGibToPool;
                 activeGibbing = null;
+            }
+
+            if (enemyLungeAttack != null)
+            {
+                enemyLungeAttack.AttackEnd -= OnAttackEnd;
             }
         }
 
@@ -156,6 +189,17 @@ namespace TeamBobFPS
 
             timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
 
+            if (!pathUpdating && mapAreaManager.PlayerInArea(CurrentMapArea))
+            {
+                InvokeRepeating("UpdatePath", 0f, 0.5f);
+                pathUpdating = true;
+            }
+            else if (pathUpdating && !mapAreaManager.PlayerInArea(CurrentMapArea))
+            {
+                CancelInvoke("UpdatePath");
+                pathUpdating = false;
+            }
+
             currentDistance = Vector3.Distance(player.transform.position, transform.position);
             //Debug.Log(currentDistance);  
 
@@ -174,10 +218,16 @@ namespace TeamBobFPS
                 noticed = false;
                 angle = 90;
             }
-
             if (noticed && timer < 10)
             {
-                Move();
+                if (currentDistance < attackRange && !attacking)
+                {
+                    Attack();
+                }
+                else if (!attacking)
+                {
+                    Move();
+                }
             }
             //if(!noticed && timer >= 10)
             //{
@@ -195,7 +245,9 @@ namespace TeamBobFPS
         private void Move()
         {
             if (path == null)
+            {
                 return;
+            }
 
             if (currentWaypoint >= path.vectorPath.Count)
             {
@@ -234,17 +286,21 @@ namespace TeamBobFPS
         private void LookForPlayer()
         {
             Vector3 directionToTarget = (player.transform.position - transform.position).normalized;
+            float distance = (player.transform.position - transform.position).magnitude;
 
             if (currentDistance < radius)
             {
-                if (!Physics.Raycast(transform.position, directionToTarget, radius, wallMask))
+                if (!Physics.Raycast(transform.position, directionToTarget, distance, wallMask))
                 {
                     //Debug.Log("Player has been detected!");
 
                     FieldOfView();
 
+                    Vector3 toPlayer = player.transform.position - transform.position;
+                    toPlayer = new Vector3(toPlayer.x, 0, toPlayer.z);
+
                     Quaternion lookOnLook =
-                    Quaternion.LookRotation(player.transform.position - transform.position);
+                    Quaternion.LookRotation(toPlayer);
 
                     transform.rotation =
                     Quaternion.Slerp(transform.rotation, lookOnLook, Time.deltaTime * 5f);
@@ -263,16 +319,17 @@ namespace TeamBobFPS
         private void FieldOfView()
         {
             Vector3 directionToTarget = (player.transform.position - transform.position).normalized;
+            float distance = (player.transform.position - transform.position).magnitude;
             float kulma = Mathf.Abs(Vector3.SignedAngle(transform.forward, directionToTarget, Vector3.up));
 
             if (kulma < angle / 2)
             {
-                if (!Physics.Raycast(transform.position, directionToTarget, radius, wallMask))
+                if (!Physics.Raycast(transform.position, directionToTarget, distance, wallMask))
                 {
                     canSee = true;
                     timer = 0;
 
-                    Attack();
+                    //Attack();
                 }
                 else
                 {
@@ -289,22 +346,29 @@ namespace TeamBobFPS
         }
         public void Attack()
         {
-            InvokeRepeating("UpdatePath", 0f, .5f);
-
-            if (canSee && currentDistance < 5)
+            if (enemyLungeAttack.Lunge())
             {
-                if (isInCooldown == false)
-                {
-                    StartCoroutine(Wait());
-                    Vector3 directionToTarget = (player.transform.position - transform.position).normalized;
-                    if (Mathf.Abs(Vector3.SignedAngle(transform.forward, directionToTarget, Vector3.up)) < angle / 2)
-                    {
-                        //hit.GetComponent<Health>().TakeDamage(1, false);
-                        //Debug.Log("Player hit!");
-                        StartCoroutine(Cooldown());
-                    }
-                }
+                mover.enabled = false;
+                attacking = true;
+
+                //if (isInCooldown == false)
+                //{
+                //    StartCoroutine(Wait());
+                //    Vector3 directionToTarget = (player.transform.position - transform.position).normalized;
+                //    if (Mathf.Abs(Vector3.SignedAngle(transform.forward, directionToTarget, Vector3.up)) < angle / 2)
+                //    {
+                //        //hit.GetComponent<Health>().TakeDamage(1, false);
+                //        //Debug.Log("Player hit!");
+                //        StartCoroutine(Cooldown());
+                //    }
+                //}
             }
+        }
+
+        private void OnAttackEnd()
+        {
+            mover.enabled = true;
+            attacking = false;
         }
 
         private void Search()

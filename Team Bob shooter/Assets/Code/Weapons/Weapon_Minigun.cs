@@ -96,5 +96,14 @@ namespace TeamBobFPS
                 rb.AddForce(-playerUnit.PlayerCam.transform.TransformDirection(Vector3.forward) * knockbackStrength, ForceMode.Impulse);
             }
         }
+
+        public override void AddAmmo(int amount)
+        {
+            currentMagAmmoCount += amount;
+            if (currentMagAmmoCount > magSize)
+            {
+                currentMagAmmoCount = magSize;
+            }
+        }
     }
 }
