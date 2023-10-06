@@ -118,10 +118,11 @@ MonoBehaviour:
   wallMask:
     serializedVersion: 2
     m_Bits: 320
-  radius: 20
+  radius: 10
   angle: 90
   canSee: 0
   shootTimer: 1
+  reachedEndOfPath: 0
   speed: 2
   timer: 0
   noticed: 0
@@ -131,6 +132,7 @@ MonoBehaviour:
     type: 3}
   enemyType: 1
   fireRange: 10
+  roam: 0
 --- !u!114 &2175300154265779482
 MonoBehaviour:
   m_ObjectHideFlags: 0
