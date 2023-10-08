@@ -14,18 +14,28 @@ namespace TeamBobFPS
             get { return areaIndex; }
         }
 
+        private List<GameObject> enemiesInArea = new List<GameObject>();
+
         private void OnTriggerStay(Collider other)
         {
             if (other.gameObject.layer == 3)
             {
                 GameInstance.Instance.GetMapAreaManager().PlayerLocation = areaIndex;
             }
-            else if (other.gameObject.layer == 10)
+            else if (other.gameObject.layer == 7 && !enemiesInArea.Contains(other.gameObject))
             {
+                enemiesInArea.Add(other.gameObject);
+
                 MeleeEnemy meleeEnemy = other.gameObject.GetComponent<MeleeEnemy>();
                 if (meleeEnemy != null)
                 {
                     meleeEnemy.CurrentMapArea = areaIndex;
+                    return;
+                }
+                RangeEnemy rangeEnemy = other.gameObject.GetComponent<RangeEnemy>();
+                if (rangeEnemy != null)
+                {
+                    rangeEnemy.CurrentMapArea = areaIndex;
                 }
             }
         }

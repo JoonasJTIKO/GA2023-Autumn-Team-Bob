@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3849155513158119205}
   - component: {fileID: 3849155513158119202}
   - component: {fileID: 3849155513158119204}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,7 +86,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.08805084
+        value: 0.25980958
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -190,5 +190,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30a3f4fb72647c64eab6be6fdaa1bd5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 200
-  aliveDuration: 0.5
+  speed: 500
+  aliveDuration: 0.1

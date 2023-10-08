@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3544882853123475064}
   - component: {fileID: 3544882853123475069}
   - component: {fileID: 3544882853123475068}
-  m_Layer: 7
+  m_Layer: 17
   m_Name: Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 3544882853123475063}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.107, y: 0.3, z: 0.927}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 724ce2dd0c035d1499d02eca7b5abac1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -111,7 +111,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03d9dc8ae4130184c95b03895d38ffb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1000
+  speed: 15
+  damage: 34
   rb: {fileID: 3544882853123475068}
   projectilePos: {fileID: 0}
   player: {fileID: 8456330329067614972, guid: a9e26fb6e1dd8184f8f0cce11af672ae, type: 3}

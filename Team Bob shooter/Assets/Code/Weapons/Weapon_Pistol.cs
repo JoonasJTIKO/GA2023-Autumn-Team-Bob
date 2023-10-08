@@ -79,7 +79,7 @@ namespace TeamBobFPS
                     damage *= 1.5f;
                 }
 
-                hit.collider.gameObject.GetComponent<UnitHealth>().RemoveHealth(damage);
+                hit.collider.gameObject.GetComponentInParent<UnitHealth>().RemoveHealth(damage);
 
                 if (activeHitEffects[index] != null)
                 {

@@ -48,19 +48,19 @@ namespace TeamBobFPS
         protected Transform bulletOrigin;
 
         [SerializeField]
-        private Animator viewmodelAnimator;
+        protected Animator viewmodelAnimator;
 
         protected ComponentPool<Transform> hitEffectPool;
 
         protected ComponentPool<BulletTracer> bulletTrailPool;
 
-        public int CurrentReserveAmmo
+        public virtual int CurrentReserveAmmo
         {
             get;
             protected set;
         }
 
-        public int MaxReserveAmmo
+        public virtual int MaxReserveAmmo
         {
             get { return maxReserveAmmo; }
         }
@@ -124,6 +124,10 @@ namespace TeamBobFPS
 
             inGameHudCanvas.UpdateMagCount(currentMagAmmoCount);
             inGameHudCanvas.UpdateReserveCount(CurrentReserveAmmo);
+        }
+
+        public virtual void FireButtonHeld(bool state)
+        {
         }
 
         public virtual void Shoot()
