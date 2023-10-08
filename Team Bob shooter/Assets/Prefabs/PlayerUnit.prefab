@@ -1057,7 +1057,7 @@ MonoBehaviour:
   bulletOrigin: {fileID: 7358208459258160413}
   viewmodelAnimator: {fileID: 7684352785478708736}
   knockbackStrength: 4
-  spreadAngle: 0.1
+  spreadAngle: 0.075
   environmentLayers:
     serializedVersion: 2
     m_Bits: 320
@@ -1089,7 +1089,7 @@ MonoBehaviour:
     type: 3}
   bulletOrigin: {fileID: 4710696706038393328}
   viewmodelAnimator: {fileID: 1822674193799905154}
-  spreadAngle: 0.1
+  spreadAngle: 0.05
   environmentLayers:
     serializedVersion: 2
     m_Bits: 320
