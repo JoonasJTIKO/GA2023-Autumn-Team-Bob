@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace TeamBobFPS
@@ -33,6 +34,8 @@ namespace TeamBobFPS
 
         public event Action AttackEnd;
 
+        private Coroutine cooldownRoutine = null;
+
         protected override void Awake()
         {
             base.Awake();
@@ -40,6 +43,17 @@ namespace TeamBobFPS
             rb = GetComponent<Rigidbody>();
             playerUnit = FindObjectOfType<PlayerUnit>();
             damageBox.Damage = damage;
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+
+            if (cooldownRoutine != null)
+            {
+                StopCoroutine(cooldownRoutine);
+            }
+            onCooldown = false;
         }
 
         public override void OnFixedUpdate(float fixedDeltaTime)
@@ -81,7 +95,7 @@ namespace TeamBobFPS
 
             rb.velocity = transform.TransformDirection(new Vector3(0f, velocityY, velocityX));
             damageBox.gameObject.SetActive(true);
-            StartCoroutine(Cooldown());
+            cooldownRoutine = StartCoroutine(Cooldown());
             return true;
         }
 
@@ -89,7 +103,7 @@ namespace TeamBobFPS
         {
             Vector3 playerPos = playerUnit.transform.position;
             Vector3 toPlayer = playerPos - transform.position;
-            Vector3 targetPos = transform.position + toPlayer;
+            Vector3 targetPos = transform.position + toPlayer * 1.1f;
 
             return targetPos;
         }

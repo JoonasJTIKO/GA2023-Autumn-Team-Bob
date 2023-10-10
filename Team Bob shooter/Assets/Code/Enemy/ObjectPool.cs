@@ -34,6 +34,7 @@ namespace TeamBobFPS
                     return pooledObjects[i];
                 }
             }
+            Debug.Log("All active, cant get");
             return null;
         }
     }

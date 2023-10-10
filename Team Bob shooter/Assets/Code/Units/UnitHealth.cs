@@ -36,6 +36,8 @@ namespace TeamBobFPS
 
         public event Action<float> OnHealthUpdate;
 
+        public event Action OnTakeDamage;
+
         public event Action OnDied;
 
         protected Rigidbody rb;
@@ -101,6 +103,7 @@ namespace TeamBobFPS
                 Invincible = true;
                 StartCoroutine(InvincibilityTimer());
                 OnHealthUpdate?.Invoke(-amount * damageMultiplier);
+                OnTakeDamage?.Invoke();
                 return true;
             }
             return false;

@@ -23,7 +23,7 @@ namespace TeamBobFPS
             int i = 0;
             foreach (Transform enemyPrefab in enemyPrefabs)
             {
-                enemyPools[i] = new ComponentPool<Transform>(enemyPrefab.transform, 30);
+                enemyPools[i] = new ComponentPool<Transform>(enemyPrefab.transform, 40);
                 i++;
             }
         }

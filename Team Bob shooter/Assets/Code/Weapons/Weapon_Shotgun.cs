@@ -86,7 +86,7 @@ namespace TeamBobFPS
                         damage *= 1.5f;
                     }
 
-                    UnitHealth component = hit.collider.GetComponent<UnitHealth>();
+                    UnitHealth component = hit.collider.GetComponentInParent<UnitHealth>();
                     if (damages.ContainsKey(component))
                     {
                         damages[component] += damage;

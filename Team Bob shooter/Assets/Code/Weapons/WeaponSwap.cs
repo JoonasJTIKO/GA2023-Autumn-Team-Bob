@@ -120,13 +120,15 @@ namespace TeamBobFPS
         {
             base.OnUpdate(deltaTime);
 
-            if (!readyToFire && shootAction.phase == InputActionPhase.Waiting)
+            if (shootAction.phase == InputActionPhase.Waiting)
             {
+                activeWeapon.FireButtonHeld(false);
                 readyToFire = true;
             }
 
             if (shootAction.phase == InputActionPhase.Performed && !playerDead && readyToFire)
             {
+                activeWeapon.FireButtonHeld(true);
                 ShootActiveWeapon();
                 if (!fullAutoMode)
                 {

@@ -31,7 +31,7 @@ namespace TeamBobFPS
             base.OnEnable();
 
             var direction = (player.transform.position - transform.position).normalized;
-            rb.velocity = transform.forward * speed * Time.deltaTime;
+            rb.velocity = transform.forward * speed;
         }
 
         protected override void OnDisable()

@@ -55,7 +55,7 @@ namespace TeamBobFPS
             {
                 if (hit.collider.gameObject.layer == 10)
                 {
-                    hit.collider.GetComponent<UnitHealth>().RemoveHealth(damage);
+                    hit.collider.GetComponentInParent<UnitHealth>().RemoveHealth(damage);
                 }
                 else if (hit.collider.gameObject.layer == 3)
                 {

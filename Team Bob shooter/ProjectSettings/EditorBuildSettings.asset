@@ -8,18 +8,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GlobalScene.unity
     guid: 7f00e3369e89fdf4bb648cab4cc7cf24
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/PlayerTest.unity
     guid: 6e4060c7e571ea9408e42e85a8bbbf5b
+  - enabled: 0
+    path: Assets/Scenes/EnemyTest.unity
+    guid: 6d3da1c687951e24c997989e22361243
   - enabled: 1
     path: Assets/Scenes/HubScene.unity
     guid: f13880e18507dae49b13fc24f86e3b09
-  - enabled: 1
-    path: Assets/Scenes/MainMenu.unity
-    guid: 79791f0c4e27cee43871b295ca5c5343
-  - enabled: 1
-    path: Assets/Scenes/EnemyTest.unity
-    guid: 6d3da1c687951e24c997989e22361243
   - enabled: 1
     path: Assets/Scenes/lvl2.unity
     guid: 4ecee979ab3b7374a989ac24560f7afc

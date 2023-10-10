@@ -224,7 +224,7 @@ namespace TeamBobFPS
                 {
                     Attack();
                 }
-                else if (!attacking)
+                if (!attacking)
                 {
                     Move();
                 }
@@ -234,7 +234,7 @@ namespace TeamBobFPS
             //    Move();
             //}
 
-            LookForPlayer();
+            if (!attacking) LookForPlayer();
 
             if (noticed && !canSee)
             {
@@ -303,7 +303,7 @@ namespace TeamBobFPS
                     Quaternion.LookRotation(toPlayer);
 
                     transform.rotation =
-                    Quaternion.Slerp(transform.rotation, lookOnLook, Time.deltaTime * 5f);
+                    Quaternion.Slerp(transform.rotation, lookOnLook, Time.deltaTime * 10f);
                 }
                 else
                 {

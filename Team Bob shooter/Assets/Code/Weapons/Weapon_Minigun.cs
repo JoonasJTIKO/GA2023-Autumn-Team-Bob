@@ -26,6 +26,16 @@ namespace TeamBobFPS
 
         private int index = 0;
 
+        public override int CurrentReserveAmmo
+        {
+            get { return currentMagAmmoCount; }
+        }
+
+        public override int MaxReserveAmmo
+        {
+            get { return magSize; }
+        }
+
         protected override void Awake()
         {
             base.Awake();
@@ -60,12 +70,12 @@ namespace TeamBobFPS
                 angle, out hit, Mathf.Infinity, enemyLayers))
             {
                 float damage = bulletDamage;
-                if (hit.collider.gameObject.layer == 16)
+                if (hit.collider.gameObject.layer == 11)
                 {
                     damage *= 1.5f;
                 }
 
-                hit.collider.gameObject.GetComponent<UnitHealth>().RemoveHealth(damage);
+                hit.collider.gameObject.GetComponentInParent<UnitHealth>().RemoveHealth(damage);
 
                 if (activeHitEffects[index] != null)
                 {
@@ -104,6 +114,11 @@ namespace TeamBobFPS
             {
                 currentMagAmmoCount = magSize;
             }
+        }
+
+        public override void FireButtonHeld(bool state)
+        {
+            viewmodelAnimator.SetBool("Firing", state);
         }
     }
 }

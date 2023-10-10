@@ -11,6 +11,8 @@ namespace TeamBobFPS
 {
     public class RangeEnemy : BaseFixedUpdateListener
     {
+        public int CurrentMapArea = 0;
+
         public Transform player;
         [SerializeField] private LayerMask targetMask;
         [SerializeField] private LayerMask wallMask;
@@ -36,9 +38,13 @@ namespace TeamBobFPS
         public float timer;
         public bool noticed = false;
 
+        private float idleWalkTimer = 0;
+
         public Transform projectilePos;
 
-        public bool posChange = false;
+        private bool posChange = false;
+
+        private bool firing = false;
 
         private UnitHealth unitHealth;
 
@@ -67,6 +73,16 @@ namespace TeamBobFPS
 
         public bool roam = false;
 
+        private MapAreaManager mapAreaManager;
+
+        [SerializeField]
+        private Animator animator;
+
+        [SerializeField]
+        private float damageLockoutTime = 0.5f;
+
+        private bool damageLockout = false;
+
         private enum ActionState
         {
             idle = 0,
@@ -84,6 +100,8 @@ namespace TeamBobFPS
             shootComponent = GetComponent<EnemyFireAtPlayer>();
             mover = GetComponent<Mover>();
             mover.Setup(speed);
+
+            mapAreaManager = GameInstance.Instance.GetMapAreaManager();
         }
 
         protected override void Awake()
@@ -100,6 +118,7 @@ namespace TeamBobFPS
             if (unitHealth != null)
             {
                 unitHealth.OnDied -= OnDie;
+                unitHealth.OnTakeDamage -= OnTakeDamage;
             }
 
             if (activeGibbing != null)
@@ -116,6 +135,9 @@ namespace TeamBobFPS
             unitHealth = GetComponent<UnitHealth>();
             unitHealth.AddHealth(unitHealth.MaxHealth);
             unitHealth.OnDied += OnDie;
+            unitHealth.OnTakeDamage += OnTakeDamage;
+
+            damageLockout = false;
         }
 
         private void OnDie()
@@ -193,11 +215,11 @@ namespace TeamBobFPS
 
             currentDistance = Vector3.Distance(player.transform.position, transform.position);
 
-            if (currentDistance < radius && noticed)
+            if (currentDistance < radius && noticed && mapAreaManager.PlayerInArea(CurrentMapArea))
             {
                 currentState = ActionState.chase;
 
-                if (currentDistance < fireRange && canSee || posChange)
+                if (currentDistance < fireRange && canSee || posChange || firing)
                 {
                     currentState = ActionState.fire;
                 }
@@ -206,6 +228,11 @@ namespace TeamBobFPS
             {
                 currentState = ActionState.idle;
                 canSee = false;
+            }
+
+            if (damageLockout)
+            {
+                return;
             }
 
             if (timer >= 10 && noticed)
@@ -218,7 +245,7 @@ namespace TeamBobFPS
             switch (currentState)
             {
                 case ActionState.idle:
-                    IdleRoam();
+                    IdleRoam(fixedDeltaTime);
                     break;
                 case ActionState.chase:
                     if (roam)
@@ -230,23 +257,15 @@ namespace TeamBobFPS
                     if (currentDistance < 25)
                     {
                         TurnTowardsPlayer(fixedDeltaTime);
-                        Shoot();
                     }
                     break;
                 case ActionState.fire:
                     TurnTowardsPlayer(fixedDeltaTime);
-                    if (Shoot())
+                    if (StartAttack())
                     {
+                        firing = true;
                         mover.Move(Vector3.zero);
                         changePosDirection = Vector3.zero;
-
-                        if (UnityEngine.Random.value < 0.5f)
-                        {
-                            changePosDirection = (transform.position - player.transform.position).normalized;
-                            changePosDirection = new Vector3(changePosDirection.x, 0, changePosDirection.z);
-                            changePosDirection = Quaternion.Euler(0, UnityEngine.Random.Range(-90f, 90f), 0) * changePosDirection;
-                            StartCoroutine(ChangePositionRoutine(changePosDirection));
-                        }
                     }
                     break;
             }
@@ -282,36 +301,47 @@ namespace TeamBobFPS
             targetDirection.y = 0f;
             Vector3.Normalize(targetDirection);
 
-            transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, targetDirection, deltaTime * 100, 0));
+            transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, targetDirection, deltaTime * 10, 0));
         }
 
-        private void IdleRoam()
+        private void IdleRoam(float deltaTime)
         {
             if (!roam && !isInCooldown)
             {
-                float posRange;
-                posRange = radius;
-                var point = UnityEngine.Random.insideUnitSphere * posRange;
-                point.y = 0;
-                point += transform.position;
-                seeker.StartPath(rb.position, point, OnPathComplete);
+                changePosDirection = Quaternion.Euler(0, UnityEngine.Random.Range(0f, 360f), 0) * Vector3.forward;
+
+
+                //float posRange;
+                //posRange = radius;
+                //var point = UnityEngine.Random.insideUnitSphere * posRange;
+                //point.y = 0;
+                //point += transform.position;
+                //seeker.StartPath(rb.position, point, OnPathComplete);
                 roam = true;
+                idleWalkTimer = 4f;
             }
-            else
+            else if (roam)
             {
-                Move();
-                if (reachedEndOfPath)
+                if (idleWalkTimer <= 0 || Physics.SphereCast(new Ray(transform.position, mover.GetSlopeDirection(changePosDirection)), 1, 1, LayerMask.GetMask("Ground", "Environment", "LevelBorder")))
                 {
                     roam = false;
-                    StartCoroutine(Cooldown());
+                    isInCooldown = true;
+                    StartCoroutine(Cooldown(3f));
                 }
+                transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, changePosDirection, deltaTime * 10, 0));
+                mover.Move(mover.GetSlopeDirection(changePosDirection));
+                animator.SetBool("Moving", true);
+
+                idleWalkTimer -= deltaTime;
+                return;
             }
+
+            animator.SetBool("Moving", false);
         }
 
         private void Move()
         {
-            if (path == null)
-                return;
+            if (path == null) return;
 
             if (currentWaypoint >= path.vectorPath.Count)
             {
@@ -334,6 +364,12 @@ namespace TeamBobFPS
                 Vector3 direction = ((Vector3)path.vectorPath[currentWaypoint] - rb.position).normalized;
                 direction = new Vector3(direction.x, 0, direction.z);
                 mover.Move(mover.GetSlopeDirection(direction));
+
+                animator.SetBool("Moving", true);
+            }
+            else
+            {
+                animator.SetBool("Moving", false);
             }
             //Vector3 force = direction * speed * Time.deltaTime;
             //rb.AddForce(force, ForceMode.VelocityChange);
@@ -350,14 +386,14 @@ namespace TeamBobFPS
                 }
                 else if (Physics.Raycast(transform.position, directionToTarget, currentDistance, wallMask))
                 {
-                    if (path != null && currentWaypoint < path.vectorPath.Count)
-                    {
-                        var lookPos = (Vector3)path.vectorPath[currentWaypoint] - transform.position;
-                        lookPos.y = 0;
+                    //if (path != null && currentWaypoint < path.vectorPath.Count)
+                    //{
+                    //    var lookPos = (Vector3)path.vectorPath[currentWaypoint] - transform.position;
+                    //    lookPos.y = 0;
 
-                        Quaternion lookForward = Quaternion.LookRotation(lookPos);
-                        transform.rotation = Quaternion.Slerp(transform.rotation, lookForward, Time.deltaTime * 5f);
-                    }
+                    //    Quaternion lookForward = Quaternion.LookRotation(lookPos);
+                    //    transform.rotation = Quaternion.Slerp(transform.rotation, lookForward, Time.deltaTime * 10f);
+                    //}
 
                     canSee = false;
                 }
@@ -401,36 +437,81 @@ namespace TeamBobFPS
                 canSee = false;
             }
         }
-        public bool Shoot()
-        {
-            if (canSee && noticed)
-            {
-                Vector3 toPlayer = (player.transform.position - transform.position).normalized;
-                Vector3 lookDirection = transform.forward;
-                Vector3 shootDirection = new Vector3(lookDirection.x, toPlayer.y, lookDirection.z);
 
-                return shootComponent.Fire(shootDirection);
-                    //Wait();
-                    //GameObject bullet = ObjectPool.SharedInstance.GetPooledObject();
-                    //if (bullet != null)
-                    //{
-                    //    bullet.transform.position = projectilePos.transform.position;
-                    //    bullet.transform.rotation = projectilePos.transform.rotation;
-                    //    bullet.SetActive(true);
-                    //}
-                    //StartCoroutine(Cooldown());
+        private bool StartAttack()
+        {
+            if (canSee && noticed && shootComponent.Ready && !firing && !posChange)
+            {
+                animator.SetTrigger("Attack");
+                return true;
             }
             return false;
         }
+
+        public void Shoot()
+        {
+            shootComponent.Fire(new Vector3(transform.forward.x, 
+                (player.transform.position - transform.position).normalized.y, transform.forward.z));
+
+            //Wait();
+            //GameObject bullet = ObjectPool.SharedInstance.GetPooledObject();
+            //if (bullet != null)
+            //{
+            //    bullet.transform.position = projectilePos.transform.position;
+            //    bullet.transform.rotation = projectilePos.transform.rotation;
+            //    bullet.SetActive(true);
+            //}
+            //StartCoroutine(Cooldown());
+
+        }
+
+        public void AttemptPositionChange()
+        {
+            firing = false;
+
+            if (UnityEngine.Random.value < 0.5f)
+            {
+                changePosDirection = (transform.position - player.transform.position).normalized;
+                changePosDirection = new Vector3(changePosDirection.x, 0, changePosDirection.z);
+                changePosDirection = Quaternion.Euler(0, UnityEngine.Random.Range(-90f, 90f), 0) * changePosDirection;
+                StartCoroutine(ChangePositionRoutine(changePosDirection));
+            }
+        }
+
+        private void OnTakeDamage()
+        {
+            firing = false;
+
+            animator.SetTrigger("Damage");
+            StartCoroutine(DamageLockout());
+        }
+
         private IEnumerator Wait()
         {
             yield return new WaitForSeconds(2f);
         }
 
-        private IEnumerator Cooldown()
+        private IEnumerator DamageLockout()
+        {
+            damageLockout = true;
+            float timer = damageLockoutTime;
+            while (timer > 0)
+            {
+                timer -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                yield return null;
+            }
+            damageLockout = false;
+        }
+
+        private IEnumerator Cooldown(float time)
         {
             isInCooldown = true;
-            yield return new WaitForSeconds(4f);
+            timer = 0;
+            while (timer < time)
+            {
+                timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                yield return null;
+            }
             isInCooldown = false;
         }
 
@@ -438,13 +519,15 @@ namespace TeamBobFPS
         {
             posChange = true;
             float timer = 2;
-            while (timer > 0)
+            while (timer > 0 && !Physics.SphereCast(new Ray(transform.position, mover.GetSlopeDirection(changePosDirection)), 1, 1, LayerMask.GetMask("Ground", "Environment", "LevelBorder")))
             {
                 mover.Move(mover.GetSlopeDirection(direction));
+                animator.SetBool("Moving", true);
                 timer -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
                 yield return null;
             }
             posChange = false;
+            animator.SetBool("Moving", false);
         }
     }
 }
