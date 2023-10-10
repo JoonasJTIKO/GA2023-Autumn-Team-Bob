@@ -5,11 +5,11 @@ using UnityEngine.SceneManagement;
 
 namespace TeamBobFPS
 {
-    public class InGameState : GameStateBase
+    public class MainMenuState : GameStateBase
     {
-        public override string SceneName { get { return "lvl2"; } }
+        public override string SceneName { get { return "MainMenu"; } }
 
-        public override StateType Type { get { return StateType.Arena1; } }
+        public override StateType Type { get { return StateType.MainMenu; } }
 
         public override void Activate(bool loadScene = true)
         {
@@ -27,10 +27,10 @@ namespace TeamBobFPS
             GameInstance.Instance.GetInGameHudCanvas().Hide();
         }
 
-        public InGameState() : base() 
+        public MainMenuState() : base()
         {
             AddTargetState(StateType.MainMenu);
-            AddTargetState(StateType.Hub);
+            AddTargetState(StateType.Arena1);
         }
     }
 }

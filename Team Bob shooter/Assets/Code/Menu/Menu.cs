@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TeamBobFPS.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 namespace TeamBobFPS
 {
-    public class Menu : BaseFixedUpdateListener
+    public class Menu : MenuCanvas
     {
         private PlayerInputs playerInputs;
         private InputAction menu;
@@ -28,7 +29,7 @@ namespace TeamBobFPS
 
         public void PlayGame()
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            SceneManager.LoadScene(2);
         }
 
         public void Quit()
