@@ -255,7 +255,7 @@ MonoBehaviour:
     m_Bits: 8
   wallMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 320
   attackRange: 10
   radius: 20
   angle: 360

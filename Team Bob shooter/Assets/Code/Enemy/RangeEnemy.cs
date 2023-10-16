@@ -140,11 +140,13 @@ namespace TeamBobFPS
             damageLockout = false;
         }
 
-        private void OnDie()
+        private void OnDie(EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
         {
             dropSpawner.SpawnThings();
-            Vector3 pos = transform.position;
-            Quaternion rot = transform.rotation;
+            Vector3 pos = new Vector3(transform.position.x, transform.position.y - 0.9f, transform.position.z);
+            Vector3 vRot = transform.rotation.eulerAngles;
+
+            Quaternion rot = Quaternion.Euler(new Vector3(vRot.x, vRot.y + 180f, vRot.z));
 
             OnDefeated?.Invoke(enemyType, transform);
 
@@ -153,7 +155,7 @@ namespace TeamBobFPS
             activeGibbing.Completed += ReturnGibToPool;
             activeGibbing.transform.position = pos;
             activeGibbing.transform.rotation = rot;
-            activeGibbing.Activate();
+            activeGibbing.Activate(deathType);
         }
 
         private void ReturnGibToPool(EnemyGibbing item)

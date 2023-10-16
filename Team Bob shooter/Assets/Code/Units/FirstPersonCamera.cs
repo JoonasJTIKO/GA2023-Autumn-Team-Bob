@@ -83,5 +83,10 @@ namespace TeamBobFPS
         {
             lockCamera = true;
         }
+
+        public void LockInputs(bool state)
+        {
+            lockCamera = state;
+        }
     }
 }

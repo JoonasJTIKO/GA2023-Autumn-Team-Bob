@@ -80,8 +80,10 @@ namespace TeamBobFPS
                 if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
                 angle, out hit, Mathf.Infinity, enemyLayers))
                 {
+                    if (hit.collider.gameObject.tag == "EnemyRagdoll") continue;
+
                     float damage = bulletDamage;
-                    if (hit.collider.gameObject.layer == 16)
+                    if (hit.collider.gameObject.tag == "EnemyHead")
                     {
                         damage *= 1.5f;
                     }
@@ -121,7 +123,7 @@ namespace TeamBobFPS
 
             foreach (KeyValuePair<UnitHealth, float> item in damages)
             {
-                item.Key.RemoveHealth(item.Value);
+                item.Key.RemoveHealth(item.Value, EnemyGibbing.DeathType.Explode);
             }
         }
     }

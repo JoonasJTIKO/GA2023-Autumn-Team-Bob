@@ -38,7 +38,7 @@ namespace TeamBobFPS
 
         public event Action OnTakeDamage;
 
-        public event Action OnDied;
+        public event Action<EnemyGibbing.DeathType> OnDied;
 
         protected Rigidbody rb;
 
@@ -86,7 +86,7 @@ namespace TeamBobFPS
         /// </summary>
         /// <param name="amount">Amount to remove</param>
         /// <returns>True if health could be removed, false if not</returns>
-        public virtual bool RemoveHealth(float amount)
+        public virtual bool RemoveHealth(float amount, EnemyGibbing.DeathType potentialDeathType = EnemyGibbing.DeathType.Normal)
         {
             if (Health > 0 && !Invincible && damageMultiplier != 0)
             {
@@ -97,7 +97,7 @@ namespace TeamBobFPS
                 }
                 if (Health == 0)
                 {
-                    Die();
+                    Die(potentialDeathType);
                     return true;
                 }
                 Invincible = true;
@@ -121,9 +121,9 @@ namespace TeamBobFPS
             rb.AddForce(knockbackDirection * knockbackAmount, ForceMode.Impulse);
         }
 
-        private void Die()
+        private void Die(EnemyGibbing.DeathType deathType)
         {
-            OnDied?.Invoke();
+            OnDied?.Invoke(deathType);
         }
 
         private IEnumerator InvincibilityTimer()

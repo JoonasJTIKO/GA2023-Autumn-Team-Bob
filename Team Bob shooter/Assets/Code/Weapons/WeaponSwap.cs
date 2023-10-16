@@ -33,6 +33,8 @@ namespace TeamBobFPS
 
         private bool readyToFire = true;
 
+        private bool lockInputs = false;
+
         private Vector3 baseGravity;
 
         public WeaponBase ActiveWeapon
@@ -126,7 +128,7 @@ namespace TeamBobFPS
                 readyToFire = true;
             }
 
-            if (shootAction.phase == InputActionPhase.Performed && !playerDead && readyToFire)
+            if (shootAction.phase == InputActionPhase.Performed && !playerDead && readyToFire && !lockInputs)
             {
                 activeWeapon.FireButtonHeld(true);
                 ShootActiveWeapon();
@@ -135,6 +137,11 @@ namespace TeamBobFPS
                     readyToFire = false;
                 }
             }
+        }
+
+        public void LockInputs(bool state)
+        {
+            lockInputs = state;
         }
 
         public void AddAmmo(int amount)
@@ -194,6 +201,8 @@ namespace TeamBobFPS
 
         private void SwapWeapon(InputAction.CallbackContext context)
         {
+            if (lockInputs) return;
+
             equippedWeapons[activeWeaponIndex].AbortReload();
             equippedWeapons[activeWeaponIndex].Activate(false);
 
@@ -285,16 +294,22 @@ namespace TeamBobFPS
 
         private void ShootActiveWeapon()
         {
+            if (lockInputs) return;
+
             activeWeapon.Shoot();
         }
 
         private void ReloadActiveWeapon(InputAction.CallbackContext context)
         {
+            if (lockInputs) return;
+
             activeWeapon.BeginReload();
         }
 
         private void ShotgunDash(InputAction.CallbackContext context)
         {
+            if (lockInputs) return;
+
             playerDash.Dash();
         }
     }

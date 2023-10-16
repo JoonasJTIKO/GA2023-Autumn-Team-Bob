@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,12 @@ namespace TeamBobFPS
         [SerializeField]
         private ArenaLoadZone levelExit;
 
+        [SerializeField]
+        private int levelIndex = 1;
+
+        [SerializeField]
+        private bool endless = false;
+
         private int waveIndex = 0;
 
         private WaveData currentWave;
@@ -24,6 +31,10 @@ namespace TeamBobFPS
         private Dictionary<WaveData.WaveEnemy, int> totalAmountInfo = new Dictionary<WaveData.WaveEnemy, int>();
 
         private EnemySpawning enemySpawning;
+
+        public static event Action<int> OnWaveCleared;
+
+        public static event Action<int> OnLevelCleared;
 
         private void Start()
         {
@@ -43,7 +54,7 @@ namespace TeamBobFPS
             RangeEnemy.OnDefeated -= EnemyDefeated;
         }
 
-        private void StartWave(WaveData wave)
+        public void StartWave(WaveData wave)
         {
             currentWaveEnemies.Clear();
             maxAmountInfo.Clear();
@@ -129,14 +140,29 @@ namespace TeamBobFPS
             {
                 if (count > 0) return;
             }
+            OnWaveCleared?.Invoke(waveIndex);
             waveIndex++;
             if (waveIndex >= waves.Length)
             {
-                levelExit.gameObject.SetActive(true);
-                return;
+                if (endless)
+                {
+                    waveIndex--;
+                }
+                else
+                {
+                    AllWavesCleared();
+                    return;
+                }
             }
             currentWave = waves[waveIndex];
             StartWave(currentWave);
+        }
+
+        private void AllWavesCleared()
+        {
+            levelExit.gameObject.SetActive(true);
+            GameInstance.Instance.GetGameProgressionManager().UpdateGameProgress(levelIndex);
+            OnLevelCleared?.Invoke(1);
         }
 
         private IEnumerator StartFirstWave()

@@ -42,6 +42,8 @@ namespace TeamBobFPS
 
         private Camera playerCam;
 
+        private FirstPersonCamera firstPersonCamera;
+
         private WeaponSwap weaponSwap;
 
         public Camera PlayerCam
@@ -78,6 +80,8 @@ namespace TeamBobFPS
 
         private bool canDoubleJump = true;
 
+        private bool lockInputs = false;
+
         public event Action OnPlayerDied;
 
         protected override void Awake()
@@ -85,6 +89,7 @@ namespace TeamBobFPS
             base.Awake();
             if (GameInstance.Instance == null) return;
 
+            firstPersonCamera = GetComponent<FirstPersonCamera>();
             weaponSwap = GetComponent<WeaponSwap>();
             mover = GetComponent<Mover>();
             mover.Setup(speed, accelerationTime, decelerationTime, false);
@@ -142,7 +147,7 @@ namespace TeamBobFPS
                 rb.velocity = new(rb.velocity.x, 0, rb.velocity.z);
             }
 
-            if (doJump)
+            if (doJump && !lockInputs)
             {
                 doJump = false;
                 Jump(SetJumpStrength);
@@ -153,6 +158,13 @@ namespace TeamBobFPS
             if (!mover.OnSlope() && !IsGrounded && rb.useGravity)
             {
                 rb.AddForce(Physics.gravity * rb.mass * fallSpeedModifier, ForceMode.Force);
+            }
+
+            if (lockInputs)
+            {
+                mover.Move(Vector3.zero);
+                weaponSwap.SetCurrentWeaponWalking(false);
+                return;
             }
 
             Vector3 camForward = new(playerCam.transform.forward.x, 0, playerCam.transform.forward.z);
@@ -234,7 +246,7 @@ namespace TeamBobFPS
             rb.AddForce(direction * strength, ForceMode.Impulse);
         }
 
-        private void OnDie()
+        private void OnDie(EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
         {
             OnPlayerDied?.Invoke();
 
@@ -256,6 +268,13 @@ namespace TeamBobFPS
             if (mover == null) return;
 
             mover.Setup(speed * MoveSpeedModifier, accelerationTime, decelerationTime, false);
+        }
+
+        public void LockControls(bool lockMovement = false, bool lockWeapons = false, bool lockLook = false)
+        {
+            lockInputs = lockMovement;
+            weaponSwap.LockInputs(lockWeapons);
+            firstPersonCamera.LockInputs(lockLook);
         }
     }
 }
