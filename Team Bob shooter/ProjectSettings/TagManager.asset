@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - EnemyBody
+  - EnemyHead
+  - EnemyArmR
+  - EnemyArmL
+  - EnemyLegR
+  - EnemyLegL
+  - EnemyRagdoll
   layers:
   - Default
   - TransparentFX
@@ -15,15 +22,15 @@ TagManager:
   - Enemy
   - Environment
   - Viewmodel
-  - EnemyBody
-  - EnemyHead
+  - 
+  - 
   - Interactable
   - PlayerProjectile
   - Pickup
-  - 
-  - 
-  - 
-  - 
+  - LevelBorder
+  - UnitDetect
+  - EnemyProjectile
+  - GibPiece
   - 
   - 
   - 

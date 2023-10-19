@@ -73,13 +73,38 @@ namespace TeamBobFPS
             if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
                 angle, out hit, Mathf.Infinity, enemyLayers))
             {
+                if (hit.collider.gameObject.tag == "EnemyRagdoll") return;
+
                 float damage = bulletDamage;
-                if (hit.collider.gameObject.layer == 16)
+                if (hit.collider.gameObject.tag == "EnemyHead")
                 {
                     damage *= 1.5f;
                 }
 
-                hit.collider.gameObject.GetComponent<UnitHealth>().RemoveHealth(damage);
+                EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal;
+                switch (hit.collider.gameObject.tag)
+                {
+                    case "EnemyBody":
+                        deathType = EnemyGibbing.DeathType.Normal;
+                        break;
+                    case "EnemyHead":
+                        deathType = EnemyGibbing.DeathType.Head;
+                        break;
+                    case "EnemyArmR":
+                        deathType = EnemyGibbing.DeathType.RightArm;
+                        break;
+                    case "EnemyArmL":
+                        deathType = EnemyGibbing.DeathType.LeftArm;
+                        break;
+                    case "EnemyLegR":
+                        deathType = EnemyGibbing.DeathType.RightLeg;
+                        break;
+                    case "EnemyLegL":
+                        deathType = EnemyGibbing.DeathType.LeftLeg;
+                        break;
+                }
+
+                hit.collider.gameObject.GetComponentInParent<UnitHealth>().RemoveHealth(damage, deathType);
 
                 if (activeHitEffects[index] != null)
                 {

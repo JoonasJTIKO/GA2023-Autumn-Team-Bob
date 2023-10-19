@@ -48,19 +48,19 @@ namespace TeamBobFPS
         protected Transform bulletOrigin;
 
         [SerializeField]
-        private Animator viewmodelAnimator;
+        protected Animator viewmodelAnimator;
 
         protected ComponentPool<Transform> hitEffectPool;
 
         protected ComponentPool<BulletTracer> bulletTrailPool;
 
-        public int CurrentReserveAmmo
+        public virtual int CurrentReserveAmmo
         {
             get;
             protected set;
         }
 
-        public int MaxReserveAmmo
+        public virtual int MaxReserveAmmo
         {
             get { return maxReserveAmmo; }
         }
@@ -73,7 +73,7 @@ namespace TeamBobFPS
 
         protected bool reloading = false;
 
-        public bool Active = false;
+        protected bool active = false;
 
         public WeaponType WeaponType
         {
@@ -105,9 +105,20 @@ namespace TeamBobFPS
             }
         }
 
+        public virtual void Activate(bool state)
+        {
+            if (state)
+            {
+                StartCoroutine(OnActivate());
+            }
+            else
+            {
+                active = false;
+            }
+        }
+
         public virtual void UpdateHudAmmo()
         {
-            if (!Active) return;
 
             InGameHudCanvas inGameHudCanvas = GameInstance.Instance.GetInGameHudCanvas();
 
@@ -115,9 +126,13 @@ namespace TeamBobFPS
             inGameHudCanvas.UpdateReserveCount(CurrentReserveAmmo);
         }
 
+        public virtual void FireButtonHeld(bool state)
+        {
+        }
+
         public virtual void Shoot()
         {
-            if (currentMagAmmoCount == 0 || !readyToFire || reloading) return;
+            if (currentMagAmmoCount == 0 || !readyToFire || reloading || !active) return;
 
             currentMagAmmoCount -= shotAmmoCost;
             Fire();
@@ -129,6 +144,32 @@ namespace TeamBobFPS
             if (viewmodelAnimator != null)
             {
                 viewmodelAnimator.SetTrigger("Fire");
+            }
+        }
+        
+        public virtual void SetWalking(bool state)
+        {
+            if (viewmodelAnimator != null)
+            {
+                viewmodelAnimator.SetBool("Walking", state);
+            }
+        }
+
+        public virtual void Jump()
+        {
+            if (viewmodelAnimator != null)
+            {
+                viewmodelAnimator.ResetTrigger("Land");
+                viewmodelAnimator.SetTrigger("Jump");
+            }
+        }
+
+        public virtual void Land()
+        {
+            if (viewmodelAnimator != null)
+            {
+                viewmodelAnimator.ResetTrigger("Jump");
+                viewmodelAnimator.SetTrigger("Land");
             }
         }
 
@@ -164,6 +205,17 @@ namespace TeamBobFPS
             {
                 CurrentReserveAmmo = maxReserveAmmo;
             }
+        }
+
+        private IEnumerator OnActivate()
+        {
+            float timer = 0.2f;
+            while (timer > 0)
+            {
+                timer -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                yield return null;
+            }
+            active = true;
         }
 
         public abstract void AbortReload();

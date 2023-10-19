@@ -42,6 +42,10 @@ namespace TeamBobFPS
 
         private Camera playerCam;
 
+        private FirstPersonCamera firstPersonCamera;
+
+        private WeaponSwap weaponSwap;
+
         public Camera PlayerCam
         {
             get { return playerCam; }
@@ -56,6 +60,8 @@ namespace TeamBobFPS
         public int CurrentWeaponSlot;
 
         public float MoveSpeedModifier = 0f;
+
+        private float SetJumpStrength = 0f;
 
         public bool IsGrounded
         {
@@ -74,6 +80,8 @@ namespace TeamBobFPS
 
         private bool canDoubleJump = true;
 
+        private bool lockInputs = false;
+
         public event Action OnPlayerDied;
 
         protected override void Awake()
@@ -81,6 +89,8 @@ namespace TeamBobFPS
             base.Awake();
             if (GameInstance.Instance == null) return;
 
+            firstPersonCamera = GetComponent<FirstPersonCamera>();
+            weaponSwap = GetComponent<WeaponSwap>();
             mover = GetComponent<Mover>();
             mover.Setup(speed, accelerationTime, decelerationTime, false);
             rb = GetComponent<Rigidbody>();
@@ -125,9 +135,10 @@ namespace TeamBobFPS
                 {
                     waitFrames--;
                 }
-                else
+                else if (jumping)
                 {
                     jumping = false;
+                    weaponSwap.CurrentWeaponLand();
                 }
             }
 
@@ -136,10 +147,10 @@ namespace TeamBobFPS
                 rb.velocity = new(rb.velocity.x, 0, rb.velocity.z);
             }
 
-            if (doJump)
+            if (doJump && !lockInputs)
             {
                 doJump = false;
-                Jump();
+                Jump(SetJumpStrength);
             }
 
             if (!LockMovement) rb.useGravity = !mover.OnSlope();
@@ -149,6 +160,13 @@ namespace TeamBobFPS
                 rb.AddForce(Physics.gravity * rb.mass * fallSpeedModifier, ForceMode.Force);
             }
 
+            if (lockInputs)
+            {
+                mover.Move(Vector3.zero);
+                weaponSwap.SetCurrentWeaponWalking(false);
+                return;
+            }
+
             Vector3 camForward = new(playerCam.transform.forward.x, 0, playerCam.transform.forward.z);
             Vector3 camRight = new(playerCam.transform.right.x, 0, playerCam.transform.right.z);
             camForward.Normalize();
@@ -156,6 +174,15 @@ namespace TeamBobFPS
 
             Vector3 move = moveAction.ReadValue<Vector3>();
             move.Normalize();
+
+            if (move != Vector3.zero && IsGrounded)
+            {
+                weaponSwap.SetCurrentWeaponWalking(true);
+            }
+            else if (!IsGrounded || move == Vector3.zero)
+            {
+                weaponSwap.SetCurrentWeaponWalking(false);
+            }
 
             if (move != Vector3.zero)
             {
@@ -180,7 +207,13 @@ namespace TeamBobFPS
             doJump = true;
         }
 
-        private void Jump()
+        public void QueueJump(float jumpStrength)
+        {
+            SetJumpStrength = jumpStrength;
+            doJump = true;
+        }
+
+        private void Jump(float strength = 0)
         {
             if (!IsGrounded)
             {
@@ -194,9 +227,13 @@ namespace TeamBobFPS
 
             rb.useGravity = true;
             rb.velocity = new(rb.velocity.x, 0, rb.velocity.z);
-            rb.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
+            if (strength == 0) strength = jumpStrength;
+            rb.AddForce(Vector3.up * strength, ForceMode.Impulse);
             jumping = true;
             waitFrames = 10;
+            SetJumpStrength = 0f;
+
+            weaponSwap.CurrentWeaponJump();
         }
 
         private void ReceiveKnockback(Vector3 origin, float strength)
@@ -209,7 +246,7 @@ namespace TeamBobFPS
             rb.AddForce(direction * strength, ForceMode.Impulse);
         }
 
-        private void OnDie()
+        private void OnDie(EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
         {
             OnPlayerDied?.Invoke();
 
@@ -231,6 +268,13 @@ namespace TeamBobFPS
             if (mover == null) return;
 
             mover.Setup(speed * MoveSpeedModifier, accelerationTime, decelerationTime, false);
+        }
+
+        public void LockControls(bool lockMovement = false, bool lockWeapons = false, bool lockLook = false)
+        {
+            lockInputs = lockMovement;
+            weaponSwap.LockInputs(lockWeapons);
+            firstPersonCamera.LockInputs(lockLook);
         }
     }
 }

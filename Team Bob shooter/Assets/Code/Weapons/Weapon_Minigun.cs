@@ -26,6 +26,16 @@ namespace TeamBobFPS
 
         private int index = 0;
 
+        public override int CurrentReserveAmmo
+        {
+            get { return currentMagAmmoCount; }
+        }
+
+        public override int MaxReserveAmmo
+        {
+            get { return magSize; }
+        }
+
         protected override void Awake()
         {
             base.Awake();
@@ -59,13 +69,38 @@ namespace TeamBobFPS
             if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
                 angle, out hit, Mathf.Infinity, enemyLayers))
             {
+                if (hit.collider.gameObject.tag == "EnemyRagdoll") return;
+
                 float damage = bulletDamage;
-                if (hit.collider.gameObject.layer == 16)
+                if (hit.collider.gameObject.tag == "EnemyHead")
                 {
                     damage *= 1.5f;
                 }
 
-                hit.collider.gameObject.GetComponent<UnitHealth>().RemoveHealth(damage);
+                EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal;
+                switch (hit.collider.gameObject.tag)
+                {
+                    case "EnemyBody":
+                        deathType = EnemyGibbing.DeathType.Normal;
+                        break;
+                    case "EnemyHead":
+                        deathType = EnemyGibbing.DeathType.Head;
+                        break;
+                    case "EnemyArmR":
+                        deathType = EnemyGibbing.DeathType.RightArm;
+                        break;
+                    case "EnemyArmL":
+                        deathType = EnemyGibbing.DeathType.LeftArm;
+                        break;
+                    case "EnemyLegR":
+                        deathType = EnemyGibbing.DeathType.RightLeg;
+                        break;
+                    case "EnemyLegL":
+                        deathType = EnemyGibbing.DeathType.LeftLeg;
+                        break;
+                }
+
+                hit.collider.gameObject.GetComponentInParent<UnitHealth>().RemoveHealth(damage, deathType);
 
                 if (activeHitEffects[index] != null)
                 {
@@ -95,6 +130,20 @@ namespace TeamBobFPS
 
                 rb.AddForce(-playerUnit.PlayerCam.transform.TransformDirection(Vector3.forward) * knockbackStrength, ForceMode.Impulse);
             }
+        }
+
+        public override void AddAmmo(int amount)
+        {
+            currentMagAmmoCount += amount;
+            if (currentMagAmmoCount > magSize)
+            {
+                currentMagAmmoCount = magSize;
+            }
+        }
+
+        public override void FireButtonHeld(bool state)
+        {
+            viewmodelAnimator.SetBool("Firing", state);
         }
     }
 }

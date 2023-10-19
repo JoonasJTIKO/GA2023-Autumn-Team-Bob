@@ -10,6 +10,6 @@ namespace TeamBobFPS
 
         bool AddHealth(float amount);
 
-        bool RemoveHealth(float amount);
+        bool RemoveHealth(float amount, EnemyGibbing.DeathType potentialDeathType = EnemyGibbing.DeathType.Normal);
     }
 }

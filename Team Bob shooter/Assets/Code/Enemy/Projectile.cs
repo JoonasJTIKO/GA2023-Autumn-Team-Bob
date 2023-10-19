@@ -8,40 +8,46 @@ namespace TeamBobFPS
     {
         private float aliveTime = 5;
         [SerializeField] private float speed;
+        [SerializeField] private float damage = 34f;
         public Rigidbody rb;
         public Transform projectilePos;
+        public Transform player;
 
         void Start()
         {
-            rb.velocity = projectilePos.transform.forward * speed;
+            //var direction = player.transform.position - transform.position;
+            //rb.velocity = direction * speed;
         }
 
-        void FixedUpdate()
+        public override void OnFixedUpdate(float fixedDeltaTime)
         {
+            base.OnFixedUpdate(fixedDeltaTime);
+
             StartCoroutine(AliveTimer());
         }
 
-        private new void OnEnable()
+        protected override void OnEnable()
         {
-            rb.velocity = projectilePos.transform.forward * speed;
+            base.OnEnable();
+
+            var direction = (player.transform.position - transform.position).normalized;
+            rb.velocity = transform.forward * speed;
         }
 
-        private new void OnDisable()
+        protected override void OnDisable()
         {
+            base.OnDisable();
+
             CancelInvoke();
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            //if (other.CompareTag("Enemy"))
-            //{
-            //    //other.GetComponent<Health>().TakeDamage(1, false);
-            //    DestroyProjectile();
-            //}
-            //if (other.CompareTag("Wall"))
-            //{
-            //    DestroyProjectile();
-            //}
+            if (other.gameObject.layer == 3)
+            {
+                other.GetComponent<UnitHealth>().RemoveHealth(damage);
+            }
+            DestroyProjectile();
         }
 
         void DestroyProjectile()

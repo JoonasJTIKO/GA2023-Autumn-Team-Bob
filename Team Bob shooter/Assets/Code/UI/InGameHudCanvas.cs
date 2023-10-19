@@ -16,6 +16,26 @@ namespace TeamBobFPS.UI
         [SerializeField]
         private TMP_Text interactText;
 
+        [SerializeField]
+        private TMP_Text newWaveTestText;
+
+        [SerializeField]
+        private string[] newWaveTexts;
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+
+            WaveManager.OnWaveCleared += ActivateNewWaveTestText;
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+
+            WaveManager.OnWaveCleared -= ActivateNewWaveTestText;
+        }
+
         public void UpdateMagCount(int amount)
         {
             magCountText.text = amount.ToString();
@@ -29,6 +49,53 @@ namespace TeamBobFPS.UI
         public void SetInteractText(string text)
         {
             interactText.text = text;
+        }
+
+        private void ActivateNewWaveTestText(int waveIndex)
+        {
+            newWaveTestText.text = newWaveTexts[waveIndex];
+            StartCoroutine(TextFade());
+        }
+
+        private IEnumerator TextFade()
+        {
+            newWaveTestText.enabled = true;
+
+            Color32 textColor = newWaveTestText.color;
+
+            float fadeTime = 1f;
+            float timer = fadeTime;
+            float alpha = 0f;
+            while (timer >= 0f)
+            {
+                alpha = 100 - (timer / fadeTime) * 100;
+                textColor.a = (byte)alpha;
+                newWaveTestText.color = textColor;
+                timer -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                yield return null;
+            }
+
+            textColor.a = 100;
+            newWaveTestText.color = textColor;
+
+            timer = 2f;
+            while (timer >= 0f)
+            {
+                timer -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                yield return null;
+            }
+
+            timer = fadeTime;
+            while (timer >= 0f)
+            {
+                alpha = (timer / fadeTime) * 100;
+                textColor.a = (byte)alpha;
+                newWaveTestText.color = textColor;
+                timer -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                yield return null;
+            }
+
+            newWaveTestText.enabled = false;
         }
     }
 }

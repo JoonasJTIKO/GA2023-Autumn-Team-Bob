@@ -33,6 +33,8 @@ namespace TeamBobFPS
 
         private bool readyToFire = true;
 
+        private bool lockInputs = false;
+
         private Vector3 baseGravity;
 
         public WeaponBase ActiveWeapon
@@ -120,13 +122,15 @@ namespace TeamBobFPS
         {
             base.OnUpdate(deltaTime);
 
-            if (!readyToFire && shootAction.phase == InputActionPhase.Waiting)
+            if (shootAction.phase == InputActionPhase.Waiting)
             {
+                activeWeapon.FireButtonHeld(false);
                 readyToFire = true;
             }
 
-            if (shootAction.phase == InputActionPhase.Performed && !playerDead && readyToFire)
+            if (shootAction.phase == InputActionPhase.Performed && !playerDead && readyToFire && !lockInputs)
             {
+                activeWeapon.FireButtonHeld(true);
                 ShootActiveWeapon();
                 if (!fullAutoMode)
                 {
@@ -135,11 +139,31 @@ namespace TeamBobFPS
             }
         }
 
+        public void LockInputs(bool state)
+        {
+            lockInputs = state;
+        }
+
         public void AddAmmo(int amount)
         {
             activeWeapon.AddAmmo(amount);
 
             activeWeapon.UpdateHudAmmo();
+        }
+
+        public void SetCurrentWeaponWalking(bool state)
+        {
+            activeWeapon.SetWalking(state);
+        }
+
+        public void CurrentWeaponJump()
+        {
+            activeWeapon.Jump();
+        }
+
+        public void CurrentWeaponLand()
+        {
+            activeWeapon.Land();
         }
 
         private void OnPlayerDied()
@@ -177,8 +201,10 @@ namespace TeamBobFPS
 
         private void SwapWeapon(InputAction.CallbackContext context)
         {
+            if (lockInputs) return;
+
             equippedWeapons[activeWeaponIndex].AbortReload();
-            equippedWeapons[activeWeaponIndex].Active = false;
+            equippedWeapons[activeWeaponIndex].Activate(false);
 
             if (context.ReadValue<float>() > 0)
             {
@@ -232,7 +258,7 @@ namespace TeamBobFPS
             }
 
             activeWeapon = equippedWeapons[index];
-            activeWeapon.Active = true;
+            activeWeapon.Activate(true);
             activeWeapon.UpdateHudAmmo();
             ActivateViewmodel(weaponType);
             playerUnit.CurrentWeaponSlot = activeWeaponIndex;
@@ -268,16 +294,22 @@ namespace TeamBobFPS
 
         private void ShootActiveWeapon()
         {
+            if (lockInputs) return;
+
             activeWeapon.Shoot();
         }
 
         private void ReloadActiveWeapon(InputAction.CallbackContext context)
         {
+            if (lockInputs) return;
+
             activeWeapon.BeginReload();
         }
 
         private void ShotgunDash(InputAction.CallbackContext context)
         {
+            if (lockInputs) return;
+
             playerDash.Dash();
         }
     }

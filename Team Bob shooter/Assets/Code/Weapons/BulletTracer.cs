@@ -15,8 +15,6 @@ namespace TeamBobFPS
 
         private Mover mover;
 
-        private Vector3 moveDirection;
-
         private TrailRenderer trailRenderer;
 
         public event Action<BulletTracer> Expired;
@@ -30,7 +28,8 @@ namespace TeamBobFPS
 
         public void Launch(Vector3 direction)
         {
-            moveDirection = direction;
+            transform.forward = direction;
+
             StartCoroutine(Go());
         }
 
@@ -38,14 +37,14 @@ namespace TeamBobFPS
         {
             trailRenderer.enabled = true;
             trailRenderer.Clear();
+
             float timer = aliveDuration;
             while (timer > 0)
             {
-                mover.Move(moveDirection);
+                mover.Move(transform.forward);
                 timer -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
                 yield return null;
             }
-            moveDirection = Vector3.zero;
             trailRenderer.enabled = false;
             Expired?.Invoke(this);
         }

@@ -46,9 +46,11 @@ namespace TeamBobFPS
         {
             if (GameInstance.Instance == null) return;
 
-            if (GameInstance.Instance.GetWeaponLoadout().CheckEquipStatus(weapon) == true)
+            if (GameInstance.Instance.GetWeaponLoadout().CheckEquipStatus(weapon) == true
+                || !GameInstance.Instance.GetGameProgressionManager().CheckWeaponUnlockState(weapon))
             {
                 collider.enabled = false;
+                model.gameObject.SetActive(false);
             }
         }
 
@@ -56,6 +58,7 @@ namespace TeamBobFPS
         {
             GameInstance.Instance.GetWeaponLoadout().EquipWeapon(weapon, currentWeapon);
             collider.enabled = false;
+            model.gameObject.SetActive(false);
 
             return true;
         }
@@ -65,6 +68,7 @@ namespace TeamBobFPS
             if (weapon.WeaponType == this.weapon.WeaponType)
             {
                 collider.enabled = true;
+                model.gameObject.SetActive(true);
             }
         }
     }

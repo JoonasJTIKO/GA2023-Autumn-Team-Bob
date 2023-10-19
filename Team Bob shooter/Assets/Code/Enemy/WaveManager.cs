@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,12 @@ namespace TeamBobFPS
         [SerializeField]
         private ArenaLoadZone levelExit;
 
+        [SerializeField]
+        private int levelIndex = 1;
+
+        [SerializeField]
+        private bool endless = false;
+
         private int waveIndex = 0;
 
         private WaveData currentWave;
@@ -25,23 +32,29 @@ namespace TeamBobFPS
 
         private EnemySpawning enemySpawning;
 
+        public static event Action<int> OnWaveCleared;
+
+        public static event Action<int> OnLevelCleared;
+
         private void Start()
         {
             enemySpawning = GetComponent<EnemySpawning>();
             currentWave = waves[waveIndex];
-            StartWave(currentWave);
+            StartCoroutine(StartFirstWave());
         }
 
         private void OnEnable()
         {
             MeleeEnemy.OnDefeated += EnemyDefeated;
+            RangeEnemy.OnDefeated += EnemyDefeated;
         }
         private void OnDisable()
         {
             MeleeEnemy.OnDefeated -= EnemyDefeated;
+            RangeEnemy.OnDefeated -= EnemyDefeated;
         }
 
-        private void StartWave(WaveData wave)
+        public void StartWave(WaveData wave)
         {
             currentWaveEnemies.Clear();
             maxAmountInfo.Clear();
@@ -74,7 +87,7 @@ namespace TeamBobFPS
 
         public void EnemyDefeated(WaveData.EnemyType enemyType, Transform item)
         {
-            enemySpawning.ReturnToPool(enemyType, item);
+            StartCoroutine(enemySpawning.ReturnToPool(enemyType, item));
 
             WaveData.WaveEnemy enemy = null;
             switch (enemyType)
@@ -127,13 +140,39 @@ namespace TeamBobFPS
             {
                 if (count > 0) return;
             }
+            OnWaveCleared?.Invoke(waveIndex);
             waveIndex++;
             if (waveIndex >= waves.Length)
             {
-                levelExit.gameObject.SetActive(true);
-                return;
+                if (endless)
+                {
+                    waveIndex--;
+                }
+                else
+                {
+                    AllWavesCleared();
+                    return;
+                }
             }
             currentWave = waves[waveIndex];
+            StartWave(currentWave);
+        }
+
+        private void AllWavesCleared()
+        {
+            levelExit.gameObject.SetActive(true);
+            GameInstance.Instance.GetGameProgressionManager().UpdateGameProgress(levelIndex);
+            OnLevelCleared?.Invoke(1);
+        }
+
+        private IEnumerator StartFirstWave()
+        {
+            float timer = 0;
+            while (timer < 1)
+            {
+                timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                yield return null;
+            }
             StartWave(currentWave);
         }
     }

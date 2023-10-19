@@ -53,9 +53,11 @@ namespace TeamBobFPS
 
             foreach (RaycastHit hit in hits )
             {
-                if (hit.collider.gameObject.layer == 10)
+                if (hit.collider.gameObject.layer == 7)
                 {
-                    hit.collider.GetComponent<UnitHealth>().RemoveHealth(damage);
+                    if (hit.collider.gameObject.tag == "EnemyRagdoll") continue;
+
+                    hit.collider.GetComponentInParent<UnitHealth>().RemoveHealth(damage, EnemyGibbing.DeathType.Explode);
                 }
                 else if (hit.collider.gameObject.layer == 3)
                 {

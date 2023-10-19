@@ -14,10 +14,7 @@ namespace TeamBobFPS
         void Awake()
         {
             SharedInstance = this;
-        }
 
-        void Start()
-        {
             pooledObjects = new List<GameObject>();
             GameObject tmp;
             for (int i = 0; i < amountToPool; i++)
@@ -37,6 +34,7 @@ namespace TeamBobFPS
                     return pooledObjects[i];
                 }
             }
+            Debug.Log("All active, cant get");
             return null;
         }
     }

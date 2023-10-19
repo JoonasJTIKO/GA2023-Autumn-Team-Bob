@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,13 +23,15 @@ namespace TeamBobFPS
             int i = 0;
             foreach (Transform enemyPrefab in enemyPrefabs)
             {
-                enemyPools[i] = new ComponentPool<Transform>(enemyPrefab.transform, 50);
+                enemyPools[i] = new ComponentPool<Transform>(enemyPrefab.transform, 40);
                 i++;
             }
         }
 
         public void SpawnEnemies(WaveData.WaveEnemy enemy, int amount, EnemySpawnPoint[] specifiedSpawnPoints = null)
         {
+            if (amount <= 0) return;
+
             EnemySpawnPoint[] possibleSpawnPoints = null;
             if (specifiedSpawnPoints != null)
             {
@@ -51,7 +54,7 @@ namespace TeamBobFPS
 
             while (unallocatedAmount > 0)
             {
-                EnemySpawnPoint spawnPoint = possibleSpawnPoints[Random.Range(0, possibleSpawnPoints.Length)];
+                EnemySpawnPoint spawnPoint = possibleSpawnPoints[UnityEngine.Random.Range(0, possibleSpawnPoints.Length)];
                 if (!selectedPoints.Contains(spawnPoint))
                 {
                     selectedPoints.Add(spawnPoint);
@@ -74,19 +77,19 @@ namespace TeamBobFPS
 
         public void SpawnEnemy(WaveData.WaveEnemy enemy, Vector3 position)
         {
-            int index = 0;
+            GameObject spawned = null;
             switch (enemy.EnemyType)
             {
                 case WaveData.EnemyType.MeleeStandard:
-                    index = 0;
+                    spawned = enemyPools[0].Get().gameObject;
+                    spawned.GetComponent<MeleeEnemy>().Initialize();
                     break;
-                case WaveData.EnemyType.RangedStandard: 
-                    index = 1; 
+                case WaveData.EnemyType.RangedStandard:
+                    spawned = enemyPools[1].Get().gameObject;
+                    spawned.GetComponent<RangeEnemy>().Initialize();
                     break;
             }
 
-            GameObject spawned = enemyPools[index].Get().gameObject;
-            spawned.GetComponent<MeleeEnemy>().Initialize();
             spawned.transform.position = position;
         }
 
@@ -98,8 +101,10 @@ namespace TeamBobFPS
             }
         }
 
-        public void ReturnToPool(WaveData.EnemyType enemy, Transform item)
+        public IEnumerator ReturnToPool(WaveData.EnemyType enemy, Transform item)
         {
+            yield return null;
+
             int index = 0;
             switch (enemy)
             {
