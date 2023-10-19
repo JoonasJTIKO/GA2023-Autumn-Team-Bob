@@ -108,21 +108,22 @@ namespace TeamBobFPS
                 }
                 activeHitEffects[index] = hitEffectPool.Get();
                 activeHitEffects[index].position = hit.point;
+                activeHitEffects[index].transform.up = -angle;
                 index++;
                 if (index >= activeHitEffects.Length) index = 0;
             }
-            else if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
-                angle, out hit, Mathf.Infinity, environmentLayers))
-            {
-                if (activeHitEffects[index] != null)
-                {
-                    hitEffectPool.Return(activeHitEffects[index]);
-                }
-                activeHitEffects[index] = hitEffectPool.Get();
-                activeHitEffects[index].position = hit.point;
-                index++;
-                if (index >= activeHitEffects.Length) index = 0;
-            }
+            //else if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
+            //    angle, out hit, Mathf.Infinity, environmentLayers))
+            //{
+            //    if (activeHitEffects[index] != null)
+            //    {
+            //        hitEffectPool.Return(activeHitEffects[index]);
+            //    }
+            //    activeHitEffects[index] = hitEffectPool.Get();
+            //    activeHitEffects[index].position = hit.point;
+            //    index++;
+            //    if (index >= activeHitEffects.Length) index = 0;
+            //}
 
             if (!playerUnit.IsGrounded)
             {

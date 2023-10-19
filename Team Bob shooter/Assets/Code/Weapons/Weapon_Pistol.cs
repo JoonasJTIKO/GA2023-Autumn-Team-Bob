@@ -53,12 +53,20 @@ namespace TeamBobFPS
 
         private IEnumerator ReloadAfterDelay()
         {
-            yield return new WaitForSeconds(reloadTime);
+            float timer = 0;
+            while (timer < reloadTime)
+            {
+                timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                yield return null;
+            }
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_PISTOL_RELOAD, transform.position, volume: 0.5f, make2D: true);
             ReloadCompleted();
         }
 
         protected override void Fire()
         {
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_PISTOL_SHOOT, transform.position, volume: 0.5f, make2D: true);
+
             RaycastHit hit;
             Vector3 angle = playerUnit.PlayerCam.transform.TransformDirection(Vector3.forward);
             angle = new(angle.x + Random.Range(-spreadAngle, spreadAngle),
@@ -115,18 +123,18 @@ namespace TeamBobFPS
                 index++;
                 if (index >= activeHitEffects.Length) index = 0;
             }
-            else if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
-                angle, out hit, Mathf.Infinity, environmentLayers))
-            {
-                if (activeHitEffects[index] != null)
-                {
-                    hitEffectPool.Return(activeHitEffects[index]);
-                }
-                activeHitEffects[index] = hitEffectPool.Get();
-                activeHitEffects[index].position = hit.point;
-                index++;
-                if (index >= activeHitEffects.Length) index = 0;
-            }
+            //else if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
+            //    angle, out hit, Mathf.Infinity, environmentLayers))
+            //{
+            //    if (activeHitEffects[index] != null)
+            //    {
+            //        hitEffectPool.Return(activeHitEffects[index]);
+            //    }
+            //    activeHitEffects[index] = hitEffectPool.Get();
+            //    activeHitEffects[index].position = hit.point;
+            //    index++;
+            //    if (index >= activeHitEffects.Length) index = 0;
+            //}
         }
     }
 }

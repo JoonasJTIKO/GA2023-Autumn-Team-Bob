@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace TeamBobFPS
 {
@@ -28,17 +29,23 @@ namespace TeamBobFPS
         private float gibStrength = 10;
 
         [SerializeField]
-        private int gibCount = 3;
+        private float lifeTime = 5f;
+
+        [SerializeField]
+        private LayerMask layerMask;
 
         private Vector3[] bodyPieceDefaultPositions;
 
         private RagdollBehavior ragdollBehavior;
+
+        private DecalPaint decalPaint;
 
         public event Action<EnemyGibbing> Completed;
 
         private void Awake()
         {
             ragdollBehavior = GetComponent<RagdollBehavior>();
+            decalPaint = GetComponent<DecalPaint>();
         }
 
         private void SaveInitialPositions()
@@ -71,6 +78,7 @@ namespace TeamBobFPS
             SaveInitialPositions();
 
             ragdollBehavior.EnableRagdoll();
+            ragdollBehavior.PushRagdoll(transform.forward * 10);
 
             switch (deathType)
             {
@@ -136,12 +144,53 @@ namespace TeamBobFPS
                 rigidbody.AddTorque(angle * 0.1f, ForceMode.Impulse);
             }
 
+            StartCoroutine(SplatterRoutine());
             StartCoroutine(Dissapear());
+        }
+
+        private void CastBloodSplatter()
+        {
+            bool success = false;
+
+            while (!success)
+            {
+                Vector3 direction = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f));
+                RaycastHit hit;
+                if (Physics.Raycast(transform.position, direction, out hit, 10, layerMask))
+                {
+                    decalPaint.ApplyDecal(hit.point, hit.normal);
+                    success = true;
+                }
+            }
+        }
+
+        private IEnumerator SplatterRoutine()
+        {
+            int splatterCount = 0;
+            while (splatterCount < 3)
+            {
+                float randomTime = Random.Range(0.1f, 0.3f);
+                while (randomTime > 0)
+                {
+                    randomTime -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                    yield return null;
+                }
+                CastBloodSplatter();
+                splatterCount++;
+
+                yield return null;
+            }
         }
 
         private IEnumerator Dissapear()
         {
-            yield return new WaitForSeconds(2);
+            float timer = lifeTime;
+
+            while (lifeTime > 0)
+            {
+                timer -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                yield return null;
+            }
 
             foreach (Transform piece in bodyPieces)
             {

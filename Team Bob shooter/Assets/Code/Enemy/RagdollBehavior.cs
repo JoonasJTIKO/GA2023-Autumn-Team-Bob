@@ -14,6 +14,14 @@ namespace TeamBobFPS
             DisableRagdoll();
         }
 
+        public void PushRagdoll(Vector3 force)
+        {
+            foreach (var rb in ragdollRigidbodies)
+            {
+                rb.AddForce(force, ForceMode.Impulse);
+            }
+        }
+
         public void DisableRagdoll()
         {
             foreach (var rb in ragdollRigidbodies)

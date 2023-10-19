@@ -625,8 +625,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingLoadout:
-  - WeaponType: 0
-  - WeaponType: 1
+  - WeaponType: 3
+  - WeaponType: 4
 --- !u!114 &458228141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -696,14 +696,14 @@ MonoBehaviour:
   playerTakeDamage: {fileID: 0}
   playerTakeDamage2: {fileID: 0}
   playerDie: {fileID: 0}
-  shotgunShoot: {fileID: 0}
-  shotgunReload: {fileID: 0}
-  pistolShoot: {fileID: 0}
-  pistolReload: {fileID: 0}
-  minigunShoot: {fileID: 0}
+  shotgunShoot: {fileID: 8300000, guid: 1df1429981f76644097c7fd47fc5f239, type: 3}
+  shotgunReload: {fileID: 8300000, guid: af63539a5e39c99489395bdea2471f60, type: 3}
+  pistolShoot: {fileID: 8300000, guid: be64544bade297e4d872dd74c66256d2, type: 3}
+  pistolReload: {fileID: 8300000, guid: 406c929b7299afb469c82778f8d15d5b, type: 3}
+  minigunShoot: {fileID: 8300000, guid: 48283adefda01514e851c40517a63d59, type: 3}
   rocketLauncherShoot: {fileID: 0}
   rocketLauncherReload: {fileID: 0}
-  railgunShoot: {fileID: 0}
+  railgunShoot: {fileID: 8300000, guid: fecc3e7a0166a104cb810435f6fdf37b, type: 3}
   railgunReload: {fileID: 0}
   gnomeWalk: {fileID: 0}
   gnomeAttack: {fileID: 0}
@@ -1360,6 +1360,11 @@ MonoBehaviour:
   newWaveTestText: {fileID: 1665832399}
   newWaveTexts:
   - More freaks to blow up... fine by me!
+  - It's like they want me to shoot them!
+  - It's like they want me to shoot them!
+  - It's like they want me to shoot them!
+  - It's like they want me to shoot them!
+  - It's like they want me to shoot them!
   - It's like they want me to shoot them!
 --- !u!1 &1665832397
 GameObject:

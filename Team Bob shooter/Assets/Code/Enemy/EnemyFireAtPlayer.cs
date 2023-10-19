@@ -44,7 +44,6 @@ namespace TeamBobFPS
             if (!Ready) return false;
 
             GameObject bullet = ObjectPool.SharedInstance.GetPooledObject();
-            Debug.Log("null " + bullet == null);
             if (bullet != null)
             {
                 bullet.transform.position = projectilePos.position;
