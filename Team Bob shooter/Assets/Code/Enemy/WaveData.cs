@@ -28,5 +28,7 @@ namespace TeamBobFPS
         }
 
         public WaveEnemy[] Enemies;
+
+        public float SpawnRate = 0.25f;
     }
 }

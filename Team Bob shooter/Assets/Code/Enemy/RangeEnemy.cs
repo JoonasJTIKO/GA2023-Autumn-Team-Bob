@@ -104,7 +104,6 @@ namespace TeamBobFPS
             mover.Setup(speed);
 
             mapAreaManager = GameInstance.Instance.GetMapAreaManager();
-            spawnEffect = GetComponentInChildren<EnemySpawnEffect>();
         }
 
         protected override void Awake()
@@ -112,6 +111,7 @@ namespace TeamBobFPS
             base.Awake();
 
             enemyGibbingPool = new ComponentPool<EnemyGibbing>(gibPrefab, 2);
+            spawnEffect = GetComponentInChildren<EnemySpawnEffect>();
         }
 
         protected override void OnDisable()
@@ -123,6 +123,11 @@ namespace TeamBobFPS
                 unitHealth.OnDied -= OnDie;
                 unitHealth.OnTakeDamage -= OnTakeDamage;
             }
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
 
             if (activeGibbing != null)
             {
@@ -224,15 +229,19 @@ namespace TeamBobFPS
             if (currentDistance < radius && noticed && mapAreaManager.PlayerInArea(CurrentMapArea))
             {
                 currentState = ActionState.chase;
-
-                if (currentDistance < fireRange && canSee || posChange || firing)
-                {
-                    currentState = ActionState.fire;
-                }
             }
             else
             {
                 currentState = ActionState.idle;
+            }
+
+            if (currentDistance < fireRange && canSee || posChange || firing)
+            {
+                currentState = ActionState.fire;
+            }
+
+            if (currentState == ActionState.idle)
+            {
                 canSee = false;
             }
 

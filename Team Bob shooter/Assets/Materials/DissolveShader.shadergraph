@@ -899,10 +899,10 @@
     "m_UseCustomSlotLabel": false,
     "m_CustomSlotLabel": "",
     "m_Precision": 0,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
+    "overrideHLSLDeclaration": true,
+    "hlslDeclarationOverride": 3,
     "m_Hidden": false,
-    "m_Value": 0.0,
+    "m_Value": -1.0,
     "m_FloatType": 0,
     "m_RangeValues": {
         "x": 0.0,
@@ -1263,8 +1263,8 @@
     "m_Color": {
         "color": {
             "r": 0.0,
-            "g": 509.9921569824219,
-            "b": 1024.0,
+            "g": 32.0,
+            "b": 0.125490203499794,
             "a": 0.0
         },
         "mode": 1

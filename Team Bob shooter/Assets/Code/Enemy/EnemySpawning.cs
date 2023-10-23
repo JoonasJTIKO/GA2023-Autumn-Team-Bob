@@ -18,6 +18,8 @@ namespace TeamBobFPS
 
         private ComponentPool<Transform>[] enemyPools = new ComponentPool<Transform>[5];
 
+        public float SpawnRate;
+
         private void Awake()
         {
             int i = 0;
@@ -97,7 +99,7 @@ namespace TeamBobFPS
         {
             foreach (EnemySpawnPoint spawnPoint in spawnPoints)
             {
-                spawnPoint.SpawnQueuedEnemies();
+                spawnPoint.SpawnQueuedEnemies(SpawnRate);
             }
         }
 

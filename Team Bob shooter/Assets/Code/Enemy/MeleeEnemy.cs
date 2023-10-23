@@ -107,15 +107,20 @@ namespace TeamBobFPS
                 unitHealth.OnDied -= OnDie;
             }
 
+            if (enemyLungeAttack != null)
+            {
+                enemyLungeAttack.AttackEnd -= OnAttackEnd;
+            }
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
             if (activeGibbing != null)
             {
                 activeGibbing.Completed -= ReturnGibToPool;
                 activeGibbing = null;
-            }
-
-            if (enemyLungeAttack != null)
-            {
-                enemyLungeAttack.AttackEnd -= OnAttackEnd;
             }
         }
 

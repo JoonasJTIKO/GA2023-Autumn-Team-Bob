@@ -32,7 +32,7 @@ namespace TeamBobFPS
 
         private EnemySpawning enemySpawning;
 
-        public static event Action<int> OnWaveCleared;
+        public static event Action<int, int> OnWaveCleared;
 
         public static event Action<int> OnLevelCleared;
 
@@ -40,6 +40,7 @@ namespace TeamBobFPS
         {
             enemySpawning = GetComponent<EnemySpawning>();
             currentWave = waves[waveIndex];
+            OnWaveCleared?.Invoke(waveIndex - 1, levelIndex);
             StartCoroutine(StartFirstWave());
         }
 
@@ -79,6 +80,7 @@ namespace TeamBobFPS
                 reinforcementInfo.Add(enemy, enemy.ReinforcementThreshold);
                 totalAmountInfo.Add(enemy, enemy.TotalAmount);
             }
+            enemySpawning.SpawnRate = wave.SpawnRate;
             enemySpawning.SpawnAll();
 
 
@@ -140,7 +142,7 @@ namespace TeamBobFPS
             {
                 if (count > 0) return;
             }
-            OnWaveCleared?.Invoke(waveIndex);
+            OnWaveCleared?.Invoke(waveIndex, levelIndex);
             waveIndex++;
             if (waveIndex >= waves.Length)
             {

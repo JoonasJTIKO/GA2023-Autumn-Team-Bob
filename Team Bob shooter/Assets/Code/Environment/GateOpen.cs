@@ -21,9 +21,9 @@ namespace TeamBobFPS
             }
         }
 
-        protected override bool DoAction(int waveIndex)
+        protected override bool DoAction(int waveIndex, int levelIndex)
         {
-            if (!base.DoAction(waveIndex)) return false;
+            if (!base.DoAction(waveIndex, levelIndex)) return false;
 
             StartCoroutine(Open());
             return true;

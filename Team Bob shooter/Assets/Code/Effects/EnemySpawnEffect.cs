@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,19 +9,9 @@ namespace TeamBobFPS
     {
         private SkinnedMeshRenderer[] renderers;
 
-        private Material[] materials;
-
         private void Awake()
         {
             renderers = GetComponentsInChildren<SkinnedMeshRenderer>();
-            materials = new Material[renderers.Length];
-
-            int index = 0;
-            foreach (var ren in renderers)
-            {
-                materials[index] = ren.material;
-                index++;
-            }
         }
 
         public void PlayEffect()
@@ -33,14 +24,15 @@ namespace TeamBobFPS
             float progress = 0.5f;
             while (progress > -1)
             {
-                progress -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
-
-                foreach (var material in materials)
+                foreach (var renderer in renderers)
                 {
-                    material.SetFloat("FadeProgress", progress);
+                    renderer.material.SetFloat("_FadeProgress", progress);
                 }
+                progress -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale * 0.5f;
                 yield return null;
             }
         }
+
+        
     }
 }

@@ -70,11 +70,15 @@ namespace TeamBobFPS
                 Rigidbody rigidbody = bodyPieces[i].gameObject.GetComponent<Rigidbody>();
                 rigidbody.useGravity = false;
             }
+
+            foreach (var piece in ragdollPieces)
+            {
+                piece.SetActive(true);
+            }
         }
 
         public void Activate(DeathType deathType = DeathType.Normal)
         {
-            ResetPositions();
             SaveInitialPositions();
 
             ragdollBehavior.EnableRagdoll();
@@ -186,16 +190,21 @@ namespace TeamBobFPS
         {
             float timer = lifeTime;
 
-            while (lifeTime > 0)
+            while (timer > 0)
             {
                 timer -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
                 yield return null;
             }
 
+            ResetPositions();
+
             foreach (Transform piece in bodyPieces)
             {
                 piece.gameObject.SetActive(false);
             }
+
+            ragdollBehavior.DisableRagdoll();
+
             Completed?.Invoke(this);
         }
     }

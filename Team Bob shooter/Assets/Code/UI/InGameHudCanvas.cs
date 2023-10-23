@@ -51,8 +51,10 @@ namespace TeamBobFPS.UI
             interactText.text = text;
         }
 
-        private void ActivateNewWaveTestText(int waveIndex)
+        private void ActivateNewWaveTestText(int waveIndex, int levelIndex)
         {
+            if (waveIndex < 0) return;
+
             newWaveTestText.text = newWaveTexts[waveIndex];
             StartCoroutine(TextFade());
         }
