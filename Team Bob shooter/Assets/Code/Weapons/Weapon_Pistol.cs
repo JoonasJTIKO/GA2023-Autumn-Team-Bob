@@ -26,11 +26,18 @@ namespace TeamBobFPS
 
         private Coroutine reloadRoutine = null;
 
+        private ScreenShake screenShake;
+
         protected override void Awake()
         {
             base.Awake();
 
             playerUnit = GetComponent<PlayerUnit>();
+        }
+
+        private void Start()
+        {
+            screenShake = playerUnit.PlayerCam.GetComponent<ScreenShake>();
         }
 
         public override void AbortReload()
@@ -65,6 +72,8 @@ namespace TeamBobFPS
 
         protected override void Fire()
         {
+            screenShake.Shake(1);
+
             GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_PISTOL_SHOOT, transform.position, volume: 0.5f, make2D: true);
 
             RaycastHit hit;

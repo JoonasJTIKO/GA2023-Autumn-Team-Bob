@@ -47,6 +47,15 @@ namespace TeamBobFPS
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             playerUnit.OnPlayerDied += OnPlayerDied;
+
+            if (GameInstance.Instance != null)
+            {
+                if (GameInstance.Instance.UsingController)
+                {
+                    xSensitivity *= 3;
+                    ySensitivity *= 3;
+                }
+            }
         }
 
         protected override void OnDisable()

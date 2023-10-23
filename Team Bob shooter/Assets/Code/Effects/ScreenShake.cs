@@ -10,14 +10,20 @@ namespace TeamBobFPS
         private float duration = 0.5f;
 
         [SerializeField]
-        private AnimationCurve animationCurve;
+        private AnimationCurve[] animationCurves;
 
-        public void Shake()
+        private Coroutine shakeRoutine = null;
+
+        public void Shake(int curveIndex)
         {
-            StartCoroutine(Shaking());
+            if (shakeRoutine != null)
+            {
+                StopCoroutine(shakeRoutine);
+            }
+            shakeRoutine = StartCoroutine(Shaking(curveIndex));
         }
 
-        private IEnumerator Shaking()
+        private IEnumerator Shaking(int curveIndex)
         {
             Vector3 startPos = transform.localPosition;
             float timer = 0f;
@@ -25,12 +31,13 @@ namespace TeamBobFPS
             while (timer < duration)
             {
                 timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
-                float strength = animationCurve.Evaluate(timer / duration);
+                float strength = animationCurves[curveIndex].Evaluate(timer / duration);
                 transform.localPosition = startPos + Random.insideUnitSphere * strength;
                 yield return null;
             }
 
             transform.localPosition = startPos;
+            shakeRoutine = null;
         }
     }
 }

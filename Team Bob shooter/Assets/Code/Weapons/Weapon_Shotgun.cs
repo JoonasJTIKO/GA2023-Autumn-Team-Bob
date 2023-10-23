@@ -78,7 +78,7 @@ namespace TeamBobFPS
 
         protected override void Fire()
         {
-            screenShake.Shake();
+            screenShake.Shake(0);
             GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_SHOTGUN_SHOOT, transform.position, volume: 0.5f, make2D: true);
 
             Dictionary<UnitHealth, float> damages = new Dictionary<UnitHealth, float>();
@@ -126,18 +126,18 @@ namespace TeamBobFPS
                     index++;
                     if (index >= activeHitEffects.Length) index = 0;
                 }
-                else if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
-                    angle, out hit, Mathf.Infinity, environmentLayers))
-                {
-                    if (activeHitEffects[index] != null)
-                    {
-                        hitEffectPool.Return(activeHitEffects[index]);
-                    }
-                    activeHitEffects[index] = hitEffectPool.Get();
-                    activeHitEffects[index].position = hit.point;
-                    index++;
-                    if (index >= activeHitEffects.Length) index = 0;
-                }
+                //else if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
+                //    angle, out hit, Mathf.Infinity, environmentLayers))
+                //{
+                //    if (activeHitEffects[index] != null)
+                //    {
+                //        hitEffectPool.Return(activeHitEffects[index]);
+                //    }
+                //    activeHitEffects[index] = hitEffectPool.Get();
+                //    activeHitEffects[index].position = hit.point;
+                //    index++;
+                //    if (index >= activeHitEffects.Length) index = 0;
+                //}
             }
 
             foreach (KeyValuePair<UnitHealth, float> item in damages)

@@ -36,12 +36,19 @@ namespace TeamBobFPS
             get { return magSize; }
         }
 
+        private ScreenShake screenShake;
+
         protected override void Awake()
         {
             base.Awake();
 
             playerUnit = GetComponent<PlayerUnit>();
             rb = GetComponent<Rigidbody>();
+        }
+
+        private void Start()
+        {
+            screenShake = playerUnit.PlayerCam.GetComponent<ScreenShake>();
         }
 
         public override void AbortReload()
@@ -55,6 +62,8 @@ namespace TeamBobFPS
 
         protected override void Fire()
         {
+            screenShake.Shake(1);
+
             RaycastHit hit;
             Vector3 angle = playerUnit.PlayerCam.transform.TransformDirection(Vector3.forward);
             angle = new(angle.x + Random.Range(-spreadAngle, spreadAngle),

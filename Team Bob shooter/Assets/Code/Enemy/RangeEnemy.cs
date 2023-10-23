@@ -83,6 +83,8 @@ namespace TeamBobFPS
 
         private bool damageLockout = false;
 
+        private EnemySpawnEffect spawnEffect;
+
         private enum ActionState
         {
             idle = 0,
@@ -102,6 +104,7 @@ namespace TeamBobFPS
             mover.Setup(speed);
 
             mapAreaManager = GameInstance.Instance.GetMapAreaManager();
+            spawnEffect = GetComponentInChildren<EnemySpawnEffect>();
         }
 
         protected override void Awake()
@@ -138,6 +141,7 @@ namespace TeamBobFPS
             unitHealth.OnTakeDamage += OnTakeDamage;
 
             damageLockout = false;
+            spawnEffect.PlayEffect();
         }
 
         private void OnDie(EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)

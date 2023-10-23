@@ -30138,7 +30138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c04b887861de7c4496a30174c21013e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waveIndex: 2
+  waveIndex: 1
   targetRotateAmount: 90
   speed: 30
 --- !u!1 &520906059
@@ -41567,7 +41567,7 @@ PrefabInstance:
     - target: {fileID: 473119136965676290, guid: 9879e9c6350687245860ef4c6a46411f,
         type: 3}
       propertyPath: waves.Array.data[0].Enemies.Array.data[1].TotalAmount
-      value: 1
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 473119136965676290, guid: 9879e9c6350687245860ef4c6a46411f,
         type: 3}
@@ -41617,7 +41617,7 @@ PrefabInstance:
     - target: {fileID: 473119136965676290, guid: 9879e9c6350687245860ef4c6a46411f,
         type: 3}
       propertyPath: waves.Array.data[0].Enemies.Array.data[1].MaxConcurrent
-      value: 1
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 473119136965676290, guid: 9879e9c6350687245860ef4c6a46411f,
         type: 3}
@@ -41667,7 +41667,7 @@ PrefabInstance:
     - target: {fileID: 473119136965676290, guid: 9879e9c6350687245860ef4c6a46411f,
         type: 3}
       propertyPath: waves.Array.data[0].Enemies.Array.data[1].SpawnGroupSize
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 473119136965676290, guid: 9879e9c6350687245860ef4c6a46411f,
         type: 3}
@@ -48447,7 +48447,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c04b887861de7c4496a30174c21013e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waveIndex: 2
+  waveIndex: 1
   targetRotateAmount: -90
   speed: 30
 --- !u!1 &845816631

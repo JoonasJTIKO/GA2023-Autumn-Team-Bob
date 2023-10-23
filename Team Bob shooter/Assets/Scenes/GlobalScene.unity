@@ -625,7 +625,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingLoadout:
-  - WeaponType: 3
+  - WeaponType: 0
   - WeaponType: 4
 --- !u!114 &458228141
 MonoBehaviour:
