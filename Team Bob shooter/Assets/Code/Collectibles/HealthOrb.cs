@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TeamBobFPS;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace TeamBobFPS
 {
@@ -42,6 +43,9 @@ namespace TeamBobFPS
 
         public event Action<HealthOrb> Expired;
 
+        private float startDistance;
+
+        private Bezier flightCurve;
 
         protected override void Awake()
         {
@@ -50,6 +54,7 @@ namespace TeamBobFPS
             playerPosition = FindObjectOfType<PlayerUnit>().gameObject.transform;
             playerHealth = playerPosition.gameObject.GetComponent<UnitHealth>();
             rb = GetComponent<Rigidbody>();
+            flightCurve = GetComponent<Bezier>();
         }
 
         public override void OnFixedUpdate(float fixedDeltaTime)
@@ -59,14 +64,25 @@ namespace TeamBobFPS
                 rb.constraints = RigidbodyConstraints.None;
                 mover.Setup(speed);
                 flyToPlayer = true;
+                Vector2 flatPos = new Vector2(transform.position.x, transform.position.z);
+                Vector2 flatPlayerPos = new Vector2(playerPosition.position.x, playerPosition.position.z);
+                startDistance = Vector2.Distance(flatPos, flatPlayerPos);
+                flightCurve.points = new Vector3[3];
+                flightCurve.points[0] = transform.position;
             }
 
             if (flyToPlayer)
             {
-                Vector3 moveDirection = (playerPosition.position - transform.position).normalized;
+                flightCurve.points[1] = transform.position + ((playerPosition.position - transform.position).normalized * (startDistance / 3));
+                flightCurve.points[1] = new Vector3(flightCurve.points[1].x, transform.position.y + 2, flightCurve.points[1].z);
+                flightCurve.points[2] = playerPosition.position;
+
+                float currentDistance = Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(playerPosition.position.x, playerPosition.position.z));
+                Vector3 direction = flightCurve.GetDirection(1 - (currentDistance / startDistance));
+
                 mover.Setup(speed);
                 speed *= acceleration;
-                mover.Move(moveDirection);
+                mover.Move(direction);
             }
         }
 

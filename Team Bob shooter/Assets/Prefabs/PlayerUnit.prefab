@@ -571,21 +571,21 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.03
-      inSlope: -0.005752337
-      outSlope: -0.005752337
+      value: 0.01
+      inSlope: -0.0007130846
+      outSlope: -0.0007130846
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.06581986
+      outWeight: 0.05592105
     - serializedVersion: 3
       time: 1
       value: 0
-      inSlope: -0.055106588
-      outSlope: -0.055106588
+      inSlope: -0.046882913
+      outSlope: -0.046882913
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.08083141
+      inWeight: 0.067982435
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -1040,6 +1040,7 @@ MonoBehaviour:
   decelerationTime: 0.1
   CurrentWeaponSlot: 0
   MoveSpeedModifier: 0
+  GravityScale: 1
   LockMovement: 0
   EnableDoubleJump: 0
 --- !u!114 &8456330329067614970
@@ -1089,8 +1090,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6982acfe75cbedb4aae3690e38083df0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xSensitivity: 0.5
-  ySensitivity: 0.25
+  xSensitivity: 0.3
+  ySensitivity: 0.15
   smoothing: 1.5
 --- !u!114 &8456330329067614950
 MonoBehaviour:

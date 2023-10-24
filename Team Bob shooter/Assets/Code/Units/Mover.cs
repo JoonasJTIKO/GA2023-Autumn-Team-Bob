@@ -107,7 +107,7 @@ namespace TeamBobFPS
             {
                 rb.velocity = velocity;
             }
-            else
+            else if (velocity.magnitude < 1000)
             {
                 rb.velocity = new Vector3(velocity.x, rb.velocity.y, velocity.z);
             }

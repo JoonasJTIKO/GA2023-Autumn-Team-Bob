@@ -172,6 +172,8 @@ namespace TeamBobFPS
         // game over screen quickly...
         private bool canFadeMusic = false;
 
+        private Coroutine stopLoopRoutine = null;
+
         // Don't play audio before SetDefaults
         // relates to playerprefs
         // private bool m_bIsSetup = false;
@@ -262,7 +264,11 @@ namespace TeamBobFPS
             }
             else
             {
-                StartCoroutine(LoopingAudioFadeOut(intSFX));
+                if (stopLoopRoutine != null)
+                {
+                    StopCoroutine(stopLoopRoutine);
+                }
+                stopLoopRoutine = StartCoroutine(LoopingAudioFadeOut(intSFX));
             }
         }
 
@@ -353,6 +359,12 @@ namespace TeamBobFPS
             {
                 if (loopingAudioList.ContainsKey(intSFX))
                 {
+                    if (stopLoopRoutine != null)
+                    {
+                        StopCoroutine(stopLoopRoutine);
+                    }
+                    loopingAudioList[intSFX].loop = false;
+                    loopingAudioList[intSFX].Stop();
                     loopingAudioList.Remove(intSFX);
                 }
                 loopingAudioList.Add(intSFX, audioSourceSFX);

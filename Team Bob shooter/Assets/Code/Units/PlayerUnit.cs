@@ -68,6 +68,8 @@ namespace TeamBobFPS
             get { return mover.IsGrounded; }
         }
 
+        public float GravityScale = 1f;
+
         public bool LockMovement = false;
 
         private bool jumping = false;
@@ -157,7 +159,7 @@ namespace TeamBobFPS
 
             if (!mover.OnSlope() && !IsGrounded && rb.useGravity)
             {
-                rb.AddForce(Physics.gravity * rb.mass * fallSpeedModifier, ForceMode.Force);
+                rb.AddForce(Physics.gravity * GravityScale * rb.mass * fallSpeedModifier, ForceMode.Force);
             }
 
             if (lockInputs)

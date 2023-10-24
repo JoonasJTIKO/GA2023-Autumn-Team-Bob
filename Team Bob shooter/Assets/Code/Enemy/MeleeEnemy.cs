@@ -131,6 +131,13 @@ namespace TeamBobFPS
             unitHealth = GetComponent<UnitHealth>();
             unitHealth.AddHealth(unitHealth.MaxHealth);
             unitHealth.OnDied += OnDie;
+
+            if (noticed)
+            {
+                radius = radius / 5;
+                noticed = false;
+                angle = 90;
+            }
         }
 
         private void OnDie(EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)

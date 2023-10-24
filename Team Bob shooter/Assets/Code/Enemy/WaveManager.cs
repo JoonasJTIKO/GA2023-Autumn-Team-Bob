@@ -32,6 +32,8 @@ namespace TeamBobFPS
 
         private EnemySpawning enemySpawning;
 
+        private CutsceneManager cutsceneManager;
+
         public static event Action<int, int> OnWaveCleared;
 
         public static event Action<int> OnLevelCleared;
@@ -39,6 +41,7 @@ namespace TeamBobFPS
         private void Start()
         {
             enemySpawning = GetComponent<EnemySpawning>();
+            cutsceneManager = FindObjectOfType<CutsceneManager>();
             currentWave = waves[waveIndex];
             OnWaveCleared?.Invoke(waveIndex - 1, levelIndex);
             StartCoroutine(StartFirstWave());
@@ -143,6 +146,7 @@ namespace TeamBobFPS
                 if (count > 0) return;
             }
             OnWaveCleared?.Invoke(waveIndex, levelIndex);
+            cutsceneManager.PlayCutscene(waveIndex);
             waveIndex++;
             if (waveIndex >= waves.Length)
             {

@@ -71,6 +71,15 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Camera"",
+                    ""type"": ""Value"",
+                    ""id"": ""7e200e36-81bd-401a-83e1-937d79aa0bb7"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -269,6 +278,17 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Controller"",
                     ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bf73be41-664f-42cb-8927-c89e9d75ff2a"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MKB"",
+                    ""action"": ""Camera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -649,6 +669,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_Movement_CameraY = m_Movement.FindAction("CameraY", throwIfNotFound: true);
         m_Movement_Jump = m_Movement.FindAction("Jump", throwIfNotFound: true);
         m_Movement_Interact = m_Movement.FindAction("Interact", throwIfNotFound: true);
+        m_Movement_Camera = m_Movement.FindAction("Camera", throwIfNotFound: true);
         // Weapons
         m_Weapons = asset.FindActionMap("Weapons", throwIfNotFound: true);
         m_Weapons_Swap = m_Weapons.FindAction("Swap", throwIfNotFound: true);
@@ -726,6 +747,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Movement_CameraY;
     private readonly InputAction m_Movement_Jump;
     private readonly InputAction m_Movement_Interact;
+    private readonly InputAction m_Movement_Camera;
     public struct MovementActions
     {
         private @PlayerInputs m_Wrapper;
@@ -735,6 +757,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         public InputAction @CameraY => m_Wrapper.m_Movement_CameraY;
         public InputAction @Jump => m_Wrapper.m_Movement_Jump;
         public InputAction @Interact => m_Wrapper.m_Movement_Interact;
+        public InputAction @Camera => m_Wrapper.m_Movement_Camera;
         public InputActionMap Get() { return m_Wrapper.m_Movement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -759,6 +782,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @Camera.started += instance.OnCamera;
+            @Camera.performed += instance.OnCamera;
+            @Camera.canceled += instance.OnCamera;
         }
 
         private void UnregisterCallbacks(IMovementActions instance)
@@ -778,6 +804,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @Camera.started -= instance.OnCamera;
+            @Camera.performed -= instance.OnCamera;
+            @Camera.canceled -= instance.OnCamera;
         }
 
         public void RemoveCallbacks(IMovementActions instance)
@@ -952,6 +981,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         void OnCameraY(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnCamera(InputAction.CallbackContext context);
     }
     public interface IWeaponsActions
     {

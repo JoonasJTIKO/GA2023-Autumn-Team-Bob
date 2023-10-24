@@ -152,22 +152,6 @@ namespace TeamBobFPS
             StartCoroutine(Dissapear());
         }
 
-        private void CastBloodSplatter()
-        {
-            bool success = false;
-
-            while (!success)
-            {
-                Vector3 direction = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f));
-                RaycastHit hit;
-                if (Physics.Raycast(transform.position, direction, out hit, 10, layerMask))
-                {
-                    decalPaint.ApplyDecal(hit.point, hit.normal);
-                    success = true;
-                }
-            }
-        }
-
         private IEnumerator SplatterRoutine()
         {
             int splatterCount = 0;
@@ -179,7 +163,19 @@ namespace TeamBobFPS
                     randomTime -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
                     yield return null;
                 }
-                CastBloodSplatter();
+                bool success = false;
+
+                while (!success)
+                {
+                    Vector3 direction = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f));
+                    RaycastHit hit;
+                    if (Physics.Raycast(transform.position, direction, out hit, 10, layerMask))
+                    {
+                        decalPaint.ApplyDecal(hit.point, hit.normal);
+                        success = true;
+                    }
+                    yield return null;
+                }
                 splatterCount++;
 
                 yield return null;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace TeamBobFPS
 {
-    public class CameraCutscene : BaseUpdateListener
+    public class CameraCutscene : CutsceneBase
     {
         [System.Serializable]
         public class CameraTarget
@@ -21,13 +21,6 @@ namespace TeamBobFPS
         [SerializeField]
         private CameraTarget[] cameraTargets;
 
-        [SerializeField]
-        private int cutsceneIndex = 0;
-
-        private PlayerUnit playerUnit;
-
-        private bool changingCamera = false;
-
         private bool playCutscene = false;
 
         private int index = 0;
@@ -36,44 +29,19 @@ namespace TeamBobFPS
 
         private Coroutine cameraRoutine;
 
-        protected override void Awake()
+        public override void StopCutscene()
         {
-            base.Awake();
-
-            playerUnit = FindObjectOfType<PlayerUnit>();
-        }
-
-        private void Start()
-        {
-            StartCutscene(0);
-        }
-
-        protected override void OnEnable()
-        {
-            base.OnEnable();
-
-            WaveManager.OnLevelCleared += StartCutscene;
-        }
-
-        protected override void OnDisable()
-        {
-            base.OnDisable();
-
-            WaveManager.OnLevelCleared -= StartCutscene;
-            if (cameraRoutine != null )
+            if (cameraRoutine == null)
             {
                 StopCoroutine(cameraRoutine);
             }
         }
 
-        public void StartCutscene(int cutsceneIndex)
+        public override void StartCutscene()
         {
-            if (cutsceneIndex == this.cutsceneIndex)
-            {
-                playerUnit.LockControls(true, true, true);
-                playCutscene = true;
-                cameraRoutine = StartCoroutine(MoveCamera());
-            }
+            playerUnit.LockControls(true, true, true);
+            playCutscene = true;
+            cameraRoutine = StartCoroutine(MoveCamera());
         }
 
         private IEnumerator MoveCamera()

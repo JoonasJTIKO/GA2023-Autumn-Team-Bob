@@ -333,7 +333,7 @@ namespace TeamBobFPS
                 //point += transform.position;
                 //seeker.StartPath(rb.position, point, OnPathComplete);
                 roam = true;
-                idleWalkTimer = 4f;
+                idleWalkTimer = 2.5f;
             }
             else if (roam)
             {

@@ -153,6 +153,16 @@ namespace TeamBobFPS
             }
         }
 
+        public override void Activate(bool state)
+        {
+            base.Activate(state);
+
+            if (!state)
+            {
+                FireButtonHeld(false);
+            }
+        }
+
         public override void FireButtonHeld(bool state)
         {
             viewmodelAnimator.SetBool("Firing", state);
