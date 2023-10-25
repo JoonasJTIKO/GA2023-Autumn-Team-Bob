@@ -11,6 +11,7 @@ TagManager:
   - EnemyLegR
   - EnemyLegL
   - EnemyRagdoll
+  - EnemyProjectile
   layers:
   - Default
   - TransparentFX
@@ -31,7 +32,7 @@ TagManager:
   - UnitDetect
   - EnemyProjectile
   - GibPiece
-  - 
+  - PostProcessing
   - 
   - 
   - 
