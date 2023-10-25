@@ -6,7 +6,7 @@ using static UnityEngine.GraphicsBuffer;
 
 namespace TeamBobFPS
 {
-    public class ScreenShake : MonoBehaviour
+    public class DamageShake : MonoBehaviour
     {
         public new Camera camera;
         private Vector3 direction;
