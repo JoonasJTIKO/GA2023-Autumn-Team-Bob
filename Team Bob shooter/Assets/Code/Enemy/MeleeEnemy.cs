@@ -107,15 +107,20 @@ namespace TeamBobFPS
                 unitHealth.OnDied -= OnDie;
             }
 
+            if (enemyLungeAttack != null)
+            {
+                enemyLungeAttack.AttackEnd -= OnAttackEnd;
+            }
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
             if (activeGibbing != null)
             {
                 activeGibbing.Completed -= ReturnGibToPool;
                 activeGibbing = null;
-            }
-
-            if (enemyLungeAttack != null)
-            {
-                enemyLungeAttack.AttackEnd -= OnAttackEnd;
             }
         }
 
@@ -126,6 +131,13 @@ namespace TeamBobFPS
             unitHealth = GetComponent<UnitHealth>();
             unitHealth.AddHealth(unitHealth.MaxHealth);
             unitHealth.OnDied += OnDie;
+
+            if (noticed)
+            {
+                radius = radius / 5;
+                noticed = false;
+                angle = 90;
+            }
         }
 
         private void OnDie(EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)

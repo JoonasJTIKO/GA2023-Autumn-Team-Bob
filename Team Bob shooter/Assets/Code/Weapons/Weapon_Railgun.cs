@@ -53,12 +53,21 @@ namespace TeamBobFPS
 
         private IEnumerator ReloadAfterDelay()
         {
-            yield return new WaitForSeconds(reloadTime);
+            float timer = 0;
+            while (timer < reloadTime)
+            {
+                timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                yield return null;
+            }
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_RAILGUN_RELOAD, transform.position, volume: 0.5f, make2D: true);
+
             ReloadCompleted();
         }
 
         protected override void Fire()
         {
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_RAILGUN_SHOOT, transform.position, volume: 0.5f, make2D: true);
+
             RaycastHit hit;
             Vector3 angle = playerUnit.PlayerCam.transform.TransformDirection(Vector3.forward);
             angle = new(angle.x + Random.Range(-spreadAngle, spreadAngle),

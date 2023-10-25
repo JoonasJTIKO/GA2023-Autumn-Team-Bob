@@ -7,7 +7,10 @@ namespace TeamBobFPS
     public class Weapon_Shotgun : WeaponBase
     {
         [SerializeField]
-        private float spreadAngle = 0.5f;
+        private float spreadAngleX = 0.5f;
+
+        [SerializeField]
+        private float spreadAngleY = 0.5f;
 
         [SerializeField]
         private LayerMask environmentLayers;
@@ -29,11 +32,18 @@ namespace TeamBobFPS
 
         private Coroutine reloadRoutine = null;
 
+        private ScreenShake screenShake;
+
         protected override void Awake()
         {
             base.Awake();
 
             playerUnit = GetComponent<PlayerUnit>();
+        }
+
+        private void Start()
+        {
+            screenShake = playerUnit.PlayerCam.GetComponent<ScreenShake>();
         }
 
         public override void AbortReload()
@@ -56,21 +66,30 @@ namespace TeamBobFPS
 
         private IEnumerator ReloadAfterDelay()
         {
-            yield return new WaitForSeconds(reloadTime);
+            float timer = 0;
+            while (timer < reloadTime)
+            {
+                timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                yield return null;
+            }
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_SHOTGUN_RELOAD, transform.position, volume: 0.5f, make2D: true);
             ReloadCompleted();
         }
 
         protected override void Fire()
         {
+            screenShake.Shake(0);
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_SHOTGUN_SHOOT, transform.position, volume: 0.5f, make2D: true);
+
             Dictionary<UnitHealth, float> damages = new Dictionary<UnitHealth, float>();
 
             for (int i = 0; i < pelletCount; i++)
             {
                 RaycastHit hit;
                 Vector3 angle = playerUnit.PlayerCam.transform.TransformDirection(Vector3.forward);
-                angle = new(angle.x + Random.Range(-spreadAngle, spreadAngle),
-                    angle.y + Random.Range(-spreadAngle, spreadAngle),
-                    angle.z + Random.Range(-spreadAngle, spreadAngle));
+                angle = new(angle.x + Random.Range(-spreadAngleX, spreadAngleX),
+                    angle.y + Random.Range(-spreadAngleY, spreadAngleY),
+                    angle.z + Random.Range(-spreadAngleX, spreadAngleX));
 
                 BulletTracer bullet = bulletTrailPool.Get();
                 bullet.Expired += RecycleTracer;
@@ -107,18 +126,18 @@ namespace TeamBobFPS
                     index++;
                     if (index >= activeHitEffects.Length) index = 0;
                 }
-                else if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
-                    angle, out hit, Mathf.Infinity, environmentLayers))
-                {
-                    if (activeHitEffects[index] != null)
-                    {
-                        hitEffectPool.Return(activeHitEffects[index]);
-                    }
-                    activeHitEffects[index] = hitEffectPool.Get();
-                    activeHitEffects[index].position = hit.point;
-                    index++;
-                    if (index >= activeHitEffects.Length) index = 0;
-                }
+                //else if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
+                //    angle, out hit, Mathf.Infinity, environmentLayers))
+                //{
+                //    if (activeHitEffects[index] != null)
+                //    {
+                //        hitEffectPool.Return(activeHitEffects[index]);
+                //    }
+                //    activeHitEffects[index] = hitEffectPool.Get();
+                //    activeHitEffects[index].position = hit.point;
+                //    index++;
+                //    if (index >= activeHitEffects.Length) index = 0;
+                //}
             }
 
             foreach (KeyValuePair<UnitHealth, float> item in damages)

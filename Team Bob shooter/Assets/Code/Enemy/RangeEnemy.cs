@@ -83,6 +83,8 @@ namespace TeamBobFPS
 
         private bool damageLockout = false;
 
+        private EnemySpawnEffect spawnEffect;
+
         private enum ActionState
         {
             idle = 0,
@@ -109,6 +111,7 @@ namespace TeamBobFPS
             base.Awake();
 
             enemyGibbingPool = new ComponentPool<EnemyGibbing>(gibPrefab, 2);
+            spawnEffect = GetComponentInChildren<EnemySpawnEffect>();
         }
 
         protected override void OnDisable()
@@ -120,6 +123,11 @@ namespace TeamBobFPS
                 unitHealth.OnDied -= OnDie;
                 unitHealth.OnTakeDamage -= OnTakeDamage;
             }
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
 
             if (activeGibbing != null)
             {
@@ -138,6 +146,7 @@ namespace TeamBobFPS
             unitHealth.OnTakeDamage += OnTakeDamage;
 
             damageLockout = false;
+            spawnEffect.PlayEffect();
         }
 
         private void OnDie(EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
@@ -220,15 +229,19 @@ namespace TeamBobFPS
             if (currentDistance < radius && noticed && mapAreaManager.PlayerInArea(CurrentMapArea))
             {
                 currentState = ActionState.chase;
-
-                if (currentDistance < fireRange && canSee || posChange || firing)
-                {
-                    currentState = ActionState.fire;
-                }
             }
             else
             {
                 currentState = ActionState.idle;
+            }
+
+            if (currentDistance < fireRange && canSee || posChange || firing)
+            {
+                currentState = ActionState.fire;
+            }
+
+            if (currentState == ActionState.idle)
+            {
                 canSee = false;
             }
 
@@ -320,7 +333,7 @@ namespace TeamBobFPS
                 //point += transform.position;
                 //seeker.StartPath(rb.position, point, OnPathComplete);
                 roam = true;
-                idleWalkTimer = 4f;
+                idleWalkTimer = 2.5f;
             }
             else if (roam)
             {

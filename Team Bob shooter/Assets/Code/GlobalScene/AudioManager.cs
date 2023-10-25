@@ -56,7 +56,7 @@ public enum EGameMusic
 
 namespace TeamBobFPS
 {
-    public class AudioManager : MonoBehaviour, ISaveableConfig
+    public class AudioManager : BaseUpdateListener, ISaveableConfig
     {
         #region Mixer Groups & Audio Controllers
         [Header("Mixer Groups & Audio Controllers")]
@@ -159,6 +159,8 @@ namespace TeamBobFPS
         // If it's in the list, it won't be played again this frame.
         private List<EGameSFX> audioEffectList = new();
 
+        // Dictionary of looping audio sources so they can be managed
+        private Dictionary<EGameSFX, AudioSource> loopingAudioList = new();
 
         // Music is attached to a GameObject, stored here. 
         private GameObject goMusic = null;
@@ -170,12 +172,16 @@ namespace TeamBobFPS
         // game over screen quickly...
         private bool canFadeMusic = false;
 
+        private Coroutine stopLoopRoutine = null;
+
         // Don't play audio before SetDefaults
         // relates to playerprefs
         // private bool m_bIsSetup = false;
 
-        public void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             SFXAudioPool = new GameObject[SFXPoolSize];
             for (int i = 0; i < SFXPoolSize; ++i)
             {
@@ -227,12 +233,59 @@ namespace TeamBobFPS
             //GameInstance.Instance.GetSaveManager().ConfigLoad();
         }
 
+        public override void OnUpdate(float deltaTime)
+        {
+            base.OnUpdate(deltaTime);
+
+            NextFrame();
+        }
+
         /// <summary>
         /// Clear our list of SFX we're not playing again this frame.
         /// </summary>
         public void NextFrame()
         {
             audioEffectList.Clear();
+        }
+
+        /// <summary>
+        /// If the specified audio is currently playing, sets its looping state to false and stops the audio
+        /// </summary>
+        /// <param name="intSFX">SFX given as EGameSFX enum</param>
+        public void StopLoopingAudio(EGameSFX intSFX, bool fadeOut = true)
+        {
+            if (!loopingAudioList.ContainsKey(intSFX)) return;
+
+            if (!fadeOut)
+            {
+                loopingAudioList[intSFX].loop = false;
+                loopingAudioList[intSFX].Stop();
+                loopingAudioList.Remove(intSFX);
+            }
+            else
+            {
+                if (stopLoopRoutine != null)
+                {
+                    StopCoroutine(stopLoopRoutine);
+                }
+                stopLoopRoutine = StartCoroutine(LoopingAudioFadeOut(intSFX));
+            }
+        }
+
+        private IEnumerator LoopingAudioFadeOut(EGameSFX intSFX)
+        {
+            while (loopingAudioList[intSFX].volume > 0)
+            {
+                loopingAudioList[(intSFX)].volume -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale * 3;
+                if (loopingAudioList[(intSFX)].volume < 0)
+                {
+                    loopingAudioList[(intSFX)].volume = 0;
+                }
+                yield return null;
+            }
+            loopingAudioList[intSFX].loop = false;
+            loopingAudioList[intSFX].Stop();
+            loopingAudioList.Remove(intSFX);
         }
 
         /// <summary>
@@ -270,6 +323,17 @@ namespace TeamBobFPS
                 case EGameSFX._SFX_PLAYER_TAKE_DAMAGE2: audioSourceSFX.clip = playerTakeDamage2; break;
                 case EGameSFX._SFX_PLAYER_DIE: audioSourceSFX.clip = playerDie; break;
 
+                // WEAPON SFX
+                case EGameSFX._SFX_SHOTGUN_SHOOT: audioSourceSFX.clip = shotgunShoot; break;
+                case EGameSFX._SFX_SHOTGUN_RELOAD: audioSourceSFX.clip = shotgunReload; break;
+                case EGameSFX._SFX_PISTOL_SHOOT: audioSourceSFX.clip = pistolShoot; break;
+                case EGameSFX._SFX_PISTOL_RELOAD: audioSourceSFX.clip = pistolReload; break;
+                case EGameSFX._SFX_MINIGUN_SHOOT: audioSourceSFX.clip = minigunShoot; break;
+                case EGameSFX._SFX_ROCKETLAUNCHER_SHOOT: audioSourceSFX.clip = rocketLauncherShoot; break;
+                case EGameSFX._SFX_ROCKETLAUNCHER_RELOAD: audioSourceSFX.clip = rocketLauncherReload; break;
+                case EGameSFX._SFX_RAILGUN_SHOOT: audioSourceSFX.clip = railgunShoot; break;
+                case EGameSFX._SFX_RAILGUN_RELOAD: audioSourceSFX.clip = railgunReload; break;
+
                 // ENEMY SFX
                 case EGameSFX._SFX_GNOME_WALK: audioSourceSFX.clip = gnomeWalk; break;
                 case EGameSFX._SFX_GNOME_ATTACK: audioSourceSFX.clip = gnomeAttack; break;
@@ -284,12 +348,28 @@ namespace TeamBobFPS
                 case EGameSFX._SFX_TEXT_TYPE: audioSourceSFX.clip = textType; break;
                 case EGameSFX._SFX_UI_SELECT: audioSourceSFX.clip = UISelect; break;
 
-                #endregion
+                    #endregion
             }
 
             SFXAudioPool[SFXAudioPoolIndex].transform.position = pos;
             audioSourceSFX.volume = volume;
             audioSourceSFX.loop = loop;
+
+            if (loop)
+            {
+                if (loopingAudioList.ContainsKey(intSFX))
+                {
+                    if (stopLoopRoutine != null)
+                    {
+                        StopCoroutine(stopLoopRoutine);
+                    }
+                    loopingAudioList[intSFX].loop = false;
+                    loopingAudioList[intSFX].Stop();
+                    loopingAudioList.Remove(intSFX);
+                }
+                loopingAudioList.Add(intSFX, audioSourceSFX);
+            }
+
             if (make2D)
             {
                 audioSourceSFX.spatialBlend = 0f;
@@ -305,7 +385,6 @@ namespace TeamBobFPS
             if (SFXAudioPoolIndex >= SFXPoolSize) SFXAudioPoolIndex = 0;
         }
 
-        // Helper function for UI objects, who don't care about location...
         public void PlayAudio(EGameSFX intSFX)
         {
             //if (!m_bIsSetup) return;

@@ -26,6 +26,8 @@ namespace TeamBobFPS
 
         private int index = 0;
 
+        private bool shootAudioPlaying = false;
+
         public override int CurrentReserveAmmo
         {
             get { return currentMagAmmoCount; }
@@ -36,12 +38,19 @@ namespace TeamBobFPS
             get { return magSize; }
         }
 
+        private ScreenShake screenShake;
+
         protected override void Awake()
         {
             base.Awake();
 
             playerUnit = GetComponent<PlayerUnit>();
             rb = GetComponent<Rigidbody>();
+        }
+
+        private void Start()
+        {
+            screenShake = playerUnit.PlayerCam.GetComponent<ScreenShake>();
         }
 
         public override void AbortReload()
@@ -55,6 +64,8 @@ namespace TeamBobFPS
 
         protected override void Fire()
         {
+            screenShake.Shake(1);
+
             RaycastHit hit;
             Vector3 angle = playerUnit.PlayerCam.transform.TransformDirection(Vector3.forward);
             angle = new(angle.x + Random.Range(-spreadAngle, spreadAngle),
@@ -108,21 +119,22 @@ namespace TeamBobFPS
                 }
                 activeHitEffects[index] = hitEffectPool.Get();
                 activeHitEffects[index].position = hit.point;
+                activeHitEffects[index].transform.up = -angle;
                 index++;
                 if (index >= activeHitEffects.Length) index = 0;
             }
-            else if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
-                angle, out hit, Mathf.Infinity, environmentLayers))
-            {
-                if (activeHitEffects[index] != null)
-                {
-                    hitEffectPool.Return(activeHitEffects[index]);
-                }
-                activeHitEffects[index] = hitEffectPool.Get();
-                activeHitEffects[index].position = hit.point;
-                index++;
-                if (index >= activeHitEffects.Length) index = 0;
-            }
+            //else if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
+            //    angle, out hit, Mathf.Infinity, environmentLayers))
+            //{
+            //    if (activeHitEffects[index] != null)
+            //    {
+            //        hitEffectPool.Return(activeHitEffects[index]);
+            //    }
+            //    activeHitEffects[index] = hitEffectPool.Get();
+            //    activeHitEffects[index].position = hit.point;
+            //    index++;
+            //    if (index >= activeHitEffects.Length) index = 0;
+            //}
 
             if (!playerUnit.IsGrounded)
             {
@@ -141,9 +153,29 @@ namespace TeamBobFPS
             }
         }
 
+        public override void Activate(bool state)
+        {
+            base.Activate(state);
+
+            if (!state)
+            {
+                FireButtonHeld(false);
+            }
+        }
+
         public override void FireButtonHeld(bool state)
         {
             viewmodelAnimator.SetBool("Firing", state);
+            if (state && !shootAudioPlaying)
+            {
+                GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_MINIGUN_SHOOT, transform.position, volume: 0.5f, loop: true, make2D: true);
+                shootAudioPlaying = true;
+            }
+            else if (!state && shootAudioPlaying)
+            {
+                GameInstance.Instance.GetAudioManager().StopLoopingAudio(EGameSFX._SFX_MINIGUN_SHOOT);
+                shootAudioPlaying = false;
+            }
         }
     }
 }

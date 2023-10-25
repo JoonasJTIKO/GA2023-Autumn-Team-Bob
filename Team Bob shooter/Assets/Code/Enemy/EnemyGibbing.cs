@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace TeamBobFPS
 {
@@ -28,17 +29,23 @@ namespace TeamBobFPS
         private float gibStrength = 10;
 
         [SerializeField]
-        private int gibCount = 3;
+        private float lifeTime = 5f;
+
+        [SerializeField]
+        private LayerMask layerMask;
 
         private Vector3[] bodyPieceDefaultPositions;
 
         private RagdollBehavior ragdollBehavior;
+
+        private DecalPaint decalPaint;
 
         public event Action<EnemyGibbing> Completed;
 
         private void Awake()
         {
             ragdollBehavior = GetComponent<RagdollBehavior>();
+            decalPaint = GetComponent<DecalPaint>();
         }
 
         private void SaveInitialPositions()
@@ -63,14 +70,19 @@ namespace TeamBobFPS
                 Rigidbody rigidbody = bodyPieces[i].gameObject.GetComponent<Rigidbody>();
                 rigidbody.useGravity = false;
             }
+
+            foreach (var piece in ragdollPieces)
+            {
+                piece.SetActive(true);
+            }
         }
 
         public void Activate(DeathType deathType = DeathType.Normal)
         {
-            ResetPositions();
             SaveInitialPositions();
 
             ragdollBehavior.EnableRagdoll();
+            ragdollBehavior.PushRagdoll(transform.forward * 10);
 
             switch (deathType)
             {
@@ -136,17 +148,59 @@ namespace TeamBobFPS
                 rigidbody.AddTorque(angle * 0.1f, ForceMode.Impulse);
             }
 
+            StartCoroutine(SplatterRoutine());
             StartCoroutine(Dissapear());
+        }
+
+        private IEnumerator SplatterRoutine()
+        {
+            int splatterCount = 0;
+            while (splatterCount < 3)
+            {
+                float randomTime = Random.Range(0.1f, 0.3f);
+                while (randomTime > 0)
+                {
+                    randomTime -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                    yield return null;
+                }
+                bool success = false;
+
+                while (!success)
+                {
+                    Vector3 direction = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f));
+                    RaycastHit hit;
+                    if (Physics.Raycast(transform.position, direction, out hit, 10, layerMask))
+                    {
+                        decalPaint.ApplyDecal(hit.point, hit.normal);
+                        success = true;
+                    }
+                    yield return null;
+                }
+                splatterCount++;
+
+                yield return null;
+            }
         }
 
         private IEnumerator Dissapear()
         {
-            yield return new WaitForSeconds(2);
+            float timer = lifeTime;
+
+            while (timer > 0)
+            {
+                timer -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                yield return null;
+            }
+
+            ResetPositions();
 
             foreach (Transform piece in bodyPieces)
             {
                 piece.gameObject.SetActive(false);
             }
+
+            ragdollBehavior.DisableRagdoll();
+
             Completed?.Invoke(this);
         }
     }

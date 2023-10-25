@@ -35,8 +35,6 @@ namespace TeamBobFPS
 
         private bool lockInputs = false;
 
-        private Vector3 baseGravity;
-
         public WeaponBase ActiveWeapon
         {
             get;
@@ -63,8 +61,6 @@ namespace TeamBobFPS
                 EquipWeapon(weapon.WeaponType, slot);
                 slot++;
             }
-
-            baseGravity = Physics.gravity;
         }
 
         private void Start()
@@ -115,7 +111,7 @@ namespace TeamBobFPS
             WeaponLoadout.WeaponEquipped -= EquipWeapon;
             playerUnit.OnPlayerDied -= OnPlayerDied;
 
-            if (baseGravity != Vector3.zero) Physics.gravity = baseGravity;
+            playerUnit.GravityScale = 1f;
         }
 
         public override void OnUpdate(float deltaTime)
@@ -224,7 +220,7 @@ namespace TeamBobFPS
         {
             WeaponType weaponType = equippedWeapons[index].WeaponType;
 
-            if (baseGravity != Vector3.zero) Physics.gravity = baseGravity;
+            playerUnit.GravityScale = 1f;
             if (dashAction != null) dashAction.performed -= ShotgunDash;
             if (playerUnit != null)
             {
@@ -244,7 +240,7 @@ namespace TeamBobFPS
                 case WeaponType.RocketLauncher:
                     break;
                 case WeaponType.Railgun:
-                    if (baseGravity != Vector3.zero) Physics.gravity = baseGravity * 0.3f;
+                    playerUnit.GravityScale = 0.3f;
                     break;
                 case WeaponType.Pistol:
                     if (playerUnit != null)

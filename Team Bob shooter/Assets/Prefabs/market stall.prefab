@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 4365532430359515964}
   - component: {fileID: 7644985451574128713}
   - component: {fileID: 9078157351863888819}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &4365532430359515964
 Transform:
@@ -4823,12 +4823,12 @@ GameObject:
   - component: {fileID: 165062646066518126}
   - component: {fileID: 2612666361002022257}
   - component: {fileID: 2709255099263963855}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: bottles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &165062646066518126
 Transform:
@@ -4906,12 +4906,12 @@ GameObject:
   - component: {fileID: 4677598766355835009}
   - component: {fileID: 6003116232026745149}
   - component: {fileID: 4907099427198031605}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: plugs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &4677598766355835009
 Transform:
@@ -4989,12 +4989,12 @@ GameObject:
   - component: {fileID: 3628633389242015095}
   - component: {fileID: 4961438990682205151}
   - component: {fileID: 5739507882132645732}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Particle System (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &3628633389242015095
 Transform:
@@ -9801,12 +9801,12 @@ GameObject:
   - component: {fileID: 7652869689510588052}
   - component: {fileID: 4937960079994527813}
   - component: {fileID: 3033652044840699459}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: scrolls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &7652869689510588052
 Transform:
@@ -9884,12 +9884,12 @@ GameObject:
   - component: {fileID: 4388937317357089994}
   - component: {fileID: 409309607244272354}
   - component: {fileID: 4034003996642818898}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Particle System (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &4388937317357089994
 Transform:
@@ -14694,12 +14694,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3624069402989793996}
-  m_Layer: 0
+  - component: {fileID: 1242555200770590840}
+  m_Layer: 6
   m_Name: market stall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &3624069402989793996
 Transform:
@@ -14721,6 +14722,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1242555200770590840
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4107449191966558326}
+  m_Material: {fileID: 13400000, guid: 8e2437c515276d54c93c8f2b52f6a4c6, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 2, z: 2}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &4130343186817235737
 GameObject:
   m_ObjectHideFlags: 0
@@ -14732,12 +14746,12 @@ GameObject:
   - component: {fileID: 8676689416753826262}
   - component: {fileID: 436562146848371678}
   - component: {fileID: 1423407793082777615}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &8676689416753826262
 Transform:
@@ -19544,12 +19558,12 @@ GameObject:
   - component: {fileID: 1831176932133565465}
   - component: {fileID: 6229717256908764340}
   - component: {fileID: 5245369857101980820}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: stall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1831176932133565465
 Transform:
@@ -19627,12 +19641,12 @@ GameObject:
   - component: {fileID: 4021798668096989374}
   - component: {fileID: 2081544813857683220}
   - component: {fileID: 9154076475436283079}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: lanterns
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &4021798668096989374
 Transform:
@@ -19793,6 +19807,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: ball (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 776c19c7c7d15da4da412575de509503,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 776c19c7c7d15da4da412575de509503,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 776c19c7c7d15da4da412575de509503, type: 3}
 --- !u!4 &1238614209024507706 stripped
@@ -19892,6 +19916,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ball
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 776c19c7c7d15da4da412575de509503,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 776c19c7c7d15da4da412575de509503,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 776c19c7c7d15da4da412575de509503, type: 3}

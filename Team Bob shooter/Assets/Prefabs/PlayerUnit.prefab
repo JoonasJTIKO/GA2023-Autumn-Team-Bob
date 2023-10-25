@@ -414,6 +414,7 @@ GameObject:
   - component: {fileID: 8456330328173409302}
   - component: {fileID: 8456330328173409321}
   - component: {fileID: 8456330328173409300}
+  - component: {fileID: 6345820495419414195}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -529,6 +530,66 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!114 &6345820495419414195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8456330328173409320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad99340a9f49e974aa848a3ddc724b2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 0.3
+  animationCurves:
+  - serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.1
+      inSlope: -0.054060113
+      outSlope: -0.054060113
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.056581985
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.19299088
+      outSlope: -0.19299088
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.06928408
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.01
+      inSlope: -0.0007130846
+      outSlope: -0.0007130846
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.05592105
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.046882913
+      outSlope: -0.046882913
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.067982435
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!1 &8456330328581264114
 GameObject:
   m_ObjectHideFlags: 0
@@ -912,7 +973,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8456330329067614960}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -980,6 +1041,7 @@ MonoBehaviour:
   decelerationTime: 0.1
   CurrentWeaponSlot: 0
   MoveSpeedModifier: 0
+  GravityScale: 1
   LockMovement: 0
   EnableDoubleJump: 0
 --- !u!114 &8456330329067614970
@@ -1029,8 +1091,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6982acfe75cbedb4aae3690e38083df0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xSensitivity: 0.5
-  ySensitivity: 0.25
+  xSensitivity: 0.3
+  ySensitivity: 0.15
   smoothing: 1.5
 --- !u!114 &8456330329067614950
 MonoBehaviour:
@@ -1050,7 +1112,7 @@ MonoBehaviour:
   startingReserveAmmo: 0
   magSize: 500
   shotAmmoCost: 1
-  hitEffect: {fileID: 8871769595818614711, guid: c697e23899b226f41b0470242eb4dd73,
+  hitEffect: {fileID: 8340699660644369345, guid: 7c10d04b32edda5498d0df4dab19734c,
     type: 3}
   weaponType: 0
   bulletTrail: {fileID: 3849155513158119204, guid: aa5faebe8ea4dc343960b115c6dd0066,
@@ -1077,27 +1139,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f7d0bde183bed448834c416644eabff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletDamage: 20
+  bulletDamage: 30
   fireRate: 1.5
   maxReserveAmmo: 30
   startingReserveAmmo: 30
   magSize: 4
   shotAmmoCost: 1
-  hitEffect: {fileID: 8871769595818614711, guid: c697e23899b226f41b0470242eb4dd73,
+  hitEffect: {fileID: 8340699660644369345, guid: 7c10d04b32edda5498d0df4dab19734c,
     type: 3}
   weaponType: 1
   bulletTrail: {fileID: 3849155513158119204, guid: aa5faebe8ea4dc343960b115c6dd0066,
     type: 3}
   bulletOrigin: {fileID: 4710696706038393328}
   viewmodelAnimator: {fileID: 1822674193799905154}
-  spreadAngle: 0.05
+  spreadAngleX: 0.1
+  spreadAngleY: 0.05
   environmentLayers:
     serializedVersion: 2
     m_Bits: 320
   enemyLayers:
     serializedVersion: 2
     m_Bits: 3200
-  pelletCount: 5
+  pelletCount: 8
   reloadTime: 0.5
 --- !u!114 &2312689975883819350
 MonoBehaviour:
@@ -1117,7 +1180,7 @@ MonoBehaviour:
   startingReserveAmmo: 10
   magSize: 3
   shotAmmoCost: 1
-  hitEffect: {fileID: 8871769595818614711, guid: c697e23899b226f41b0470242eb4dd73,
+  hitEffect: {fileID: 8340699660644369345, guid: 7c10d04b32edda5498d0df4dab19734c,
     type: 3}
   weaponType: 2
   bulletTrail: {fileID: 3849155513158119204, guid: aa5faebe8ea4dc343960b115c6dd0066,
@@ -1146,7 +1209,7 @@ MonoBehaviour:
   startingReserveAmmo: 20
   magSize: 1
   shotAmmoCost: 1
-  hitEffect: {fileID: 8871769595818614711, guid: c697e23899b226f41b0470242eb4dd73,
+  hitEffect: {fileID: 8340699660644369345, guid: 7c10d04b32edda5498d0df4dab19734c,
     type: 3}
   weaponType: 3
   bulletTrail: {fileID: 3849155513158119204, guid: aa5faebe8ea4dc343960b115c6dd0066,
@@ -1179,7 +1242,7 @@ MonoBehaviour:
   startingReserveAmmo: 100
   magSize: 10
   shotAmmoCost: 1
-  hitEffect: {fileID: 8871769595818614711, guid: c697e23899b226f41b0470242eb4dd73,
+  hitEffect: {fileID: 8340699660644369345, guid: 7c10d04b32edda5498d0df4dab19734c,
     type: 3}
   weaponType: 4
   bulletTrail: {fileID: 3849155513158119204, guid: aa5faebe8ea4dc343960b115c6dd0066,
