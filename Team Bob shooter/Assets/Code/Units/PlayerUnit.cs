@@ -103,6 +103,11 @@ namespace TeamBobFPS
             jumpAction = playerInputs.Movement.Jump;
         }
 
+        private void Start()
+        {
+            StartCoroutine(StartLockout());
+        }
+
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -277,6 +282,30 @@ namespace TeamBobFPS
             lockInputs = lockMovement;
             weaponSwap.LockInputs(lockWeapons);
             firstPersonCamera.LockInputs(lockLook);
+        }
+
+        private IEnumerator StartLockout()
+        {
+            lockInputs = true;
+            weaponSwap.LockInputs(true);
+            firstPersonCamera.LockInputs(true);
+
+            float timer = 0;
+            bool fadeOutStarted = false;
+            while (timer < 1f)
+            {
+                timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                if (timer <= 0.5f && !fadeOutStarted)
+                {
+                    fadeOutStarted = true;
+                    GameInstance.Instance.GetFadeCanvas().FadeFrom(0.5f);
+                }
+                yield return null;
+            }
+
+            lockInputs = false;
+            weaponSwap.LockInputs(false);
+            firstPersonCamera.LockInputs(false);
         }
     }
 }

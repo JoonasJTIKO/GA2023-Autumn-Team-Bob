@@ -107,6 +107,11 @@ namespace TeamBobFPS
                         damage *= 1.5f;
                     }
 
+                    if (Vector3.Distance(transform.position, hit.point) > falloffDistance)
+                    {
+                        damage *= 0.5f;
+                    }
+
                     UnitHealth component = hit.collider.GetComponentInParent<UnitHealth>();
                     if (damages.ContainsKey(component))
                     {

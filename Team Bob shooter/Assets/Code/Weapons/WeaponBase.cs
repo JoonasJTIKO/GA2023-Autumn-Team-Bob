@@ -15,6 +15,9 @@ namespace TeamBobFPS
         Pistol = 4,
     }
 
+    /// <summary>
+    /// Base class for player weapons
+    /// </summary>
     public abstract class WeaponBase : BaseUpdateListener
     {
         [SerializeField]
@@ -34,6 +37,9 @@ namespace TeamBobFPS
 
         [SerializeField]
         protected int shotAmmoCost;
+
+        [SerializeField]
+        protected float falloffDistance;
 
         [SerializeField]
         protected GameObject hitEffect;
@@ -105,6 +111,10 @@ namespace TeamBobFPS
             }
         }
 
+        /// <summary>
+        /// Activate / deactivate this weapon. All weapons scripts are connected to player prefab
+        /// </summary>
+        /// <param name="state">true to activate, false to deactivate</param>
         public virtual void Activate(bool state)
         {
             if (state)
@@ -117,6 +127,9 @@ namespace TeamBobFPS
             }
         }
 
+        /// <summary>
+        /// Updates the ammo counters on hud
+        /// </summary>
         public virtual void UpdateHudAmmo()
         {
 
@@ -126,10 +139,17 @@ namespace TeamBobFPS
             inGameHudCanvas.UpdateReserveCount(CurrentReserveAmmo);
         }
 
+        /// <summary>
+        /// Can be used by weapons that need to do something when button is held
+        /// </summary>
+        /// <param name="state">True if held, false if not</param>
         public virtual void FireButtonHeld(bool state)
         {
         }
 
+        /// <summary>
+        /// Checks if weapon is ready to fire. If it is, updates ammo counts, sets firerate timer and calls Fire method where shooting is done.
+        /// </summary>
         public virtual void Shoot()
         {
             if (currentMagAmmoCount == 0 || !readyToFire || reloading || !active) return;
@@ -147,6 +167,8 @@ namespace TeamBobFPS
             }
         }
         
+        // Methods for controlling animation states
+
         public virtual void SetWalking(bool state)
         {
             if (viewmodelAnimator != null)
@@ -173,6 +195,9 @@ namespace TeamBobFPS
             }
         }
 
+        /// <summary>
+        /// Called after reload animation / wait time
+        /// </summary>
         protected virtual void ReloadCompleted()
         {
             int reloadAmount = magSize - currentMagAmmoCount;
@@ -186,6 +211,10 @@ namespace TeamBobFPS
             reloading = false;
         }
 
+        /// <summary>
+        /// Returns bullet tracer effect to pool
+        /// </summary>
+        /// <param name="tracer">Tracer to be returned</param>
         protected void RecycleTracer(BulletTracer tracer)
         {
             if (!bulletTrailPool.Return(tracer))
@@ -198,6 +227,10 @@ namespace TeamBobFPS
             }
         }
 
+        /// <summary>
+        /// Adds ammo to reserves
+        /// </summary>
+        /// <param name="amount">Amount to add</param>
         public virtual void AddAmmo(int amount)
         {
             CurrentReserveAmmo += amount;

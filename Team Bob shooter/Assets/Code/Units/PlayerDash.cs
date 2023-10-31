@@ -15,6 +15,9 @@ namespace TeamBobFPS
         [SerializeField]
         private float dashCooldown = 1f;
 
+        [SerializeField]
+        private GameObject VFX;
+
         private float dashDuration;
 
         private bool canDash = true;
@@ -53,6 +56,9 @@ namespace TeamBobFPS
             playerUnit.OnPlayerDied -= AbortDash;
         }
 
+        /// <summary>
+        /// Initiates dash, setting direction to movement direction / forward if not moving
+        /// </summary>
         public void Dash()
         {
             if (!canDash) return;
@@ -84,6 +90,7 @@ namespace TeamBobFPS
 
         private IEnumerator DashRoutine()
         {
+            VFX.SetActive(true);
             float timer = 0;
             while (timer < dashDuration)
             {
@@ -95,6 +102,19 @@ namespace TeamBobFPS
             playerUnit.LockMovement = false;
             playerUnit.ResetSpeed();
             StartCoroutine(Cooldown());
+            StartCoroutine(VFXDisable());
+        }
+
+        private IEnumerator VFXDisable()
+        {
+            float timer = 0;
+            while (timer < 0.2f)
+            {
+                timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                yield return null;
+            }
+
+            VFX.SetActive(false);
         }
 
         private IEnumerator Cooldown()

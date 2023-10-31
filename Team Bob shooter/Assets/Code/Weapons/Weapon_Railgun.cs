@@ -26,11 +26,18 @@ namespace TeamBobFPS
 
         private Coroutine reloadRoutine = null;
 
+        private ScreenShake screenShake;
+
         protected override void Awake()
         {
             base.Awake();
 
             playerUnit = GetComponent<PlayerUnit>();
+        }
+
+        private void Start()
+        {
+            screenShake = playerUnit.PlayerCam.GetComponent<ScreenShake>();
         }
 
         public override void AbortReload()
@@ -66,9 +73,10 @@ namespace TeamBobFPS
 
         protected override void Fire()
         {
+            screenShake.Shake(0);
             GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_RAILGUN_SHOOT, transform.position, volume: 0.5f, make2D: true);
 
-            RaycastHit hit;
+            RaycastHit rHit;
             Vector3 angle = playerUnit.PlayerCam.transform.TransformDirection(Vector3.forward);
             angle = new(angle.x + Random.Range(-spreadAngle, spreadAngle),
                 angle.y + Random.Range(-spreadAngle, spreadAngle),
@@ -79,60 +87,65 @@ namespace TeamBobFPS
             bullet.transform.position = bulletOrigin.transform.position;
             bullet.Launch(angle);
 
-            if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
-                angle, out hit, Mathf.Infinity, enemyLayers))
+            RaycastHit[] hits = Physics.RaycastAll(playerUnit.PlayerCam.transform.position,
+                angle, Mathf.Infinity, enemyLayers);
+
+            if (hits.Length > 0)
             {
-                if (hit.collider.gameObject.tag == "EnemyRagdoll") return;
-
-                float damage = bulletDamage;
-                if (hit.collider.gameObject.tag == "EnemyHead")
+                foreach (RaycastHit hit in hits)
                 {
-                    damage *= 1.5f;
-                }
+                    if (hit.collider.gameObject.tag == "EnemyRagdoll") return;
 
-                EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal;
-                switch (hit.collider.gameObject.tag)
-                {
-                    case "EnemyBody":
-                        deathType = EnemyGibbing.DeathType.Normal;
-                        break;
-                    case "EnemyHead":
-                        deathType = EnemyGibbing.DeathType.Head;
-                        break;
-                    case "EnemyArmR":
-                        deathType = EnemyGibbing.DeathType.RightArm;
-                        break;
-                    case "EnemyArmL":
-                        deathType = EnemyGibbing.DeathType.LeftArm;
-                        break;
-                    case "EnemyLegR":
-                        deathType = EnemyGibbing.DeathType.RightLeg;
-                        break;
-                    case "EnemyLegL":
-                        deathType = EnemyGibbing.DeathType.LeftLeg;
-                        break;
-                }
+                    float damage = bulletDamage;
+                    if (hit.collider.gameObject.tag == "EnemyHead")
+                    {
+                        damage *= 1.5f;
+                    }
 
-                hit.collider.gameObject.GetComponentInParent<UnitHealth>().RemoveHealth(damage, deathType);
+                    EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal;
+                    switch (hit.collider.gameObject.tag)
+                    {
+                        case "EnemyBody":
+                            deathType = EnemyGibbing.DeathType.Normal;
+                            break;
+                        case "EnemyHead":
+                            deathType = EnemyGibbing.DeathType.Head;
+                            break;
+                        case "EnemyArmR":
+                            deathType = EnemyGibbing.DeathType.RightArm;
+                            break;
+                        case "EnemyArmL":
+                            deathType = EnemyGibbing.DeathType.LeftArm;
+                            break;
+                        case "EnemyLegR":
+                            deathType = EnemyGibbing.DeathType.RightLeg;
+                            break;
+                        case "EnemyLegL":
+                            deathType = EnemyGibbing.DeathType.LeftLeg;
+                            break;
+                    }
 
-                if (activeHitEffects[index] != null)
-                {
-                    hitEffectPool.Return(activeHitEffects[index]);
+                    hit.collider.gameObject.GetComponentInParent<UnitHealth>().RemoveHealth(damage, deathType);
+
+                    if (activeHitEffects[index] != null)
+                    {
+                        hitEffectPool.Return(activeHitEffects[index]);
+                    }
+                    activeHitEffects[index] = hitEffectPool.Get();
+                    activeHitEffects[index].position = hit.point;
+                    index++;
+                    if (index >= activeHitEffects.Length) index = 0;
                 }
-                activeHitEffects[index] = hitEffectPool.Get();
-                activeHitEffects[index].position = hit.point;
-                index++;
-                if (index >= activeHitEffects.Length) index = 0;
             }
             else if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
-                angle, out hit, Mathf.Infinity, environmentLayers))
+                angle, out rHit, Mathf.Infinity, environmentLayers))
             {
                 if (activeHitEffects[index] != null)
                 {
                     hitEffectPool.Return(activeHitEffects[index]);
                 }
                 activeHitEffects[index] = hitEffectPool.Get();
-                activeHitEffects[index].position = hit.point;
+                activeHitEffects[index].position = rHit.point;
                 index++;
                 if (index >= activeHitEffects.Length) index = 0;
             }

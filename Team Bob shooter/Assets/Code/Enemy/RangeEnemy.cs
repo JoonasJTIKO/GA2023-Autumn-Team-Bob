@@ -145,6 +145,7 @@ namespace TeamBobFPS
             unitHealth.OnDied += OnDie;
             unitHealth.OnTakeDamage += OnTakeDamage;
 
+            firing = false;
             damageLockout = false;
             spawnEffect.PlayEffect();
         }

@@ -31,6 +31,11 @@ namespace TeamBobFPS
             }
         }
 
+        /// <summary>
+        /// Equips weapon to slot
+        /// </summary>
+        /// <param name="weapon"></param>
+        /// <param name="slot"></param>
         public void EquipWeapon(EquippableWeapon weapon, int slot)
         {
             WeaponUnequipped?.Invoke(equippedWeapons[slot]);
@@ -40,6 +45,11 @@ namespace TeamBobFPS
             WeaponEquipped?.Invoke(equippedWeapons[slot].WeaponType, slot);
         }
 
+        /// <summary>
+        /// Checks if a weapon is currently equipped
+        /// </summary>
+        /// <param name="weapon"></param>
+        /// <returns></returns>
         public bool CheckEquipStatus(EquippableWeapon weapon)
         {
             foreach (EquippableWeapon equippedWeapon in equippedWeapons)

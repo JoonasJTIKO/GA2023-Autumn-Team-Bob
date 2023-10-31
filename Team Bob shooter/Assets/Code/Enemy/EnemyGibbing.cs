@@ -141,9 +141,9 @@ namespace TeamBobFPS
                 Rigidbody rigidbody = bodyPart.gameObject.GetComponent<Rigidbody>();
                 rigidbody.useGravity = true;
                 Vector3 angle = Vector3.up;
-                angle = new Vector3(angle.x + UnityEngine.Random.Range(-0.5f, 0.5f), 
+                angle = (new Vector3(angle.x + UnityEngine.Random.Range(-0.5f, 0.5f), 
                     angle.y + UnityEngine.Random.Range(-0.5f, 0.5f), 
-                    angle.z + UnityEngine.Random.Range(-0.5f, 0.5f));
+                    angle.z + UnityEngine.Random.Range(-0.5f, 0.5f))).normalized;
                 rigidbody.AddForce(angle * gibStrength, ForceMode.Impulse);
                 rigidbody.AddTorque(angle * 0.1f, ForceMode.Impulse);
             }
