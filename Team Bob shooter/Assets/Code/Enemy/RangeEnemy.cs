@@ -138,6 +138,12 @@ namespace TeamBobFPS
 
         public void Initialize()
         {
+            canSee = false;
+            noticed = false;
+            firing = false;
+            posChange = false;
+            roam = false;
+
             player = FindObjectOfType<PlayerUnit>().transform;
 
             unitHealth = GetComponent<UnitHealth>();

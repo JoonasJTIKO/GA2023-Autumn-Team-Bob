@@ -48,7 +48,7 @@ namespace TeamBobFPS
 
         private float currentSpeed = 1f;
 
-        private float currentDistance;
+        private float currentDistance = 100f;
 
         protected override void Awake()
         {
@@ -67,26 +67,29 @@ namespace TeamBobFPS
                 rb.constraints = RigidbodyConstraints.None;
                 mover.Setup(currentSpeed);
                 flyToPlayer = true;
-                Vector2 flatPos = new Vector2(transform.position.x, transform.position.z);
-                Vector2 flatPlayerPos = new Vector2(playerPosition.position.x, playerPosition.position.z);
-                startDistance = Vector2.Distance(flatPos, flatPlayerPos);
+                Vector3 flatPos = new Vector3(transform.position.x, 0, transform.position.z);
+                Vector3 flatPlayerPos = new Vector3(playerPosition.position.x, 0, playerPosition.position.z);
+                startDistance = (flatPlayerPos - flatPos).magnitude;
                 flightCurve.points = new Vector3[3];
                 flightCurve.points[0] = transform.position;
-                flightCurve.points[1] = transform.position + ((playerPosition.position - transform.position).normalized * (Vector3.Distance(playerPosition.position, transform.position) / 2));
-                flightCurve.points[1] = new Vector3(flightCurve.points[1].x, transform.position.y + 2, flightCurve.points[1].z);
             }
 
             if (flyToPlayer)
             {
                 flightCurve.points[1] = transform.position + ((playerPosition.position - transform.position).normalized * (startDistance / 3));
                 flightCurve.points[1] = new Vector3(flightCurve.points[1].x, transform.position.y + 2, flightCurve.points[1].z);
-                flightCurve.points[2] = playerPosition.position;
+                flightCurve.points[2] = new Vector3(playerPosition.position.x, playerPosition.position.y - 1, playerPosition.position.z);
 
-                if (Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(playerPosition.position.x, playerPosition.position.z)) >= currentDistance)
+                Vector3 direction;
+                if ((new Vector3(transform.position.x, 0, transform.position.z) - new Vector3(playerPosition.position.x, 0, playerPosition.position.z)).magnitude <= currentDistance)
                 {
-                    currentDistance = Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(playerPosition.position.x, playerPosition.position.z));
+                    currentDistance = (new Vector3(transform.position.x, 0, transform.position.z) - new Vector3(playerPosition.position.x, 0, playerPosition.position.z)).magnitude;
+                    direction = flightCurve.GetDirection(1 - (currentDistance / startDistance));
                 }
-                Vector3 direction = flightCurve.GetDirection(1 - (currentDistance / startDistance));
+                else
+                {
+                    direction = (new Vector3(playerPosition.position.x, playerPosition.position.y - 1, playerPosition.position.z) - transform.position).normalized;
+                }
 
                 mover.Setup(currentSpeed);
                 if (currentSpeed < speed)
@@ -121,6 +124,7 @@ namespace TeamBobFPS
         public void Create()
         {
             flyToPlayer = false;
+            canBeCollected = false;
             rb.useGravity = true;
             rb.constraints = RigidbodyConstraints.None;
             StartCoroutine(CanBeCollectedTimer(canBeCollectedTimer));

@@ -10,6 +10,7 @@ namespace TeamBobFPS
         [System.Serializable]
         public class CameraMovement
         {
+            public bool flatGoToTarget = false;
             public Vector3 TargetPosition;
             public Transform LookAtTarget;
             public AnimationCurve AnimationCurve;
@@ -82,7 +83,14 @@ namespace TeamBobFPS
                         timer = 0;
                     }
                 }
-                cutsceneCamera.transform.position = Vector3.Lerp(cutsceneCamera.transform.position, currentMovement.TargetPosition, timer * currentMovement.Speed * currentMovement.AnimationCurve.Evaluate(timer / currentMovement.Time));
+                if (!currentMovement.flatGoToTarget)
+                {
+                    cutsceneCamera.transform.position = Vector3.Lerp(cutsceneCamera.transform.position, currentMovement.TargetPosition, Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale * currentMovement.Speed * currentMovement.AnimationCurve.Evaluate(timer / currentMovement.Time));
+                }
+                else
+                {
+                    cutsceneCamera.transform.position = Vector3.Lerp(cutsceneCamera.transform.position, currentMovement.TargetPosition, Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale * currentMovement.Speed);
+                }
 
                 timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
                 yield return null;
@@ -97,8 +105,8 @@ namespace TeamBobFPS
 
             while (timer < returnTime)
             {
-                cutsceneCamera.transform.position = Vector3.Lerp(cutsceneCamera.transform.position, initialPosition, timer * currentMovement.Speed);
-                cutsceneCamera.transform.rotation = Quaternion.Lerp(cutsceneCamera.transform.rotation, initialRotation, timer * currentMovement.Speed);
+                cutsceneCamera.transform.position = Vector3.Lerp(cutsceneCamera.transform.position, initialPosition, Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale * returnSpeed);
+                cutsceneCamera.transform.rotation = Quaternion.Lerp(cutsceneCamera.transform.rotation, initialRotation, Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale * returnSpeed);
 
                 timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
                 yield return null;
