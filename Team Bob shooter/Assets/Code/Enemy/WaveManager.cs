@@ -32,14 +32,18 @@ namespace TeamBobFPS
 
         private EnemySpawning enemySpawning;
 
-        public static event Action<int> OnWaveCleared;
+        private CutsceneManager cutsceneManager;
+
+        public static event Action<int, int> OnWaveCleared;
 
         public static event Action<int> OnLevelCleared;
 
         private void Start()
         {
             enemySpawning = GetComponent<EnemySpawning>();
+            cutsceneManager = FindObjectOfType<CutsceneManager>();
             currentWave = waves[waveIndex];
+            OnWaveCleared?.Invoke(waveIndex - 1, levelIndex);
             StartCoroutine(StartFirstWave());
         }
 
@@ -54,6 +58,10 @@ namespace TeamBobFPS
             RangeEnemy.OnDefeated -= EnemyDefeated;
         }
 
+        /// <summary>
+        /// Starts a new wave, updating dictionaries and beginning spawning
+        /// </summary>
+        /// <param name="wave">Wave object with all wave details</param>
         public void StartWave(WaveData wave)
         {
             currentWaveEnemies.Clear();
@@ -79,12 +87,18 @@ namespace TeamBobFPS
                 reinforcementInfo.Add(enemy, enemy.ReinforcementThreshold);
                 totalAmountInfo.Add(enemy, enemy.TotalAmount);
             }
+            enemySpawning.SpawnRate = wave.SpawnRate;
             enemySpawning.SpawnAll();
 
 
             //Notify of wave start
         }
 
+        /// <summary>
+        /// Updates dictionaries, checks if more enemies shall be spawned / if wave has been cleared
+        /// </summary>
+        /// <param name="enemyType">Type of enemy defeated</param>
+        /// <param name="item">The enemy</param>
         public void EnemyDefeated(WaveData.EnemyType enemyType, Transform item)
         {
             StartCoroutine(enemySpawning.ReturnToPool(enemyType, item));
@@ -140,7 +154,8 @@ namespace TeamBobFPS
             {
                 if (count > 0) return;
             }
-            OnWaveCleared?.Invoke(waveIndex);
+            OnWaveCleared?.Invoke(waveIndex, levelIndex);
+            cutsceneManager.PlayCutscene(waveIndex);
             waveIndex++;
             if (waveIndex >= waves.Length)
             {
@@ -158,6 +173,9 @@ namespace TeamBobFPS
             StartWave(currentWave);
         }
 
+        /// <summary>
+        /// Activates level exit, invokes event for other things to react
+        /// </summary>
         private void AllWavesCleared()
         {
             levelExit.gameObject.SetActive(true);

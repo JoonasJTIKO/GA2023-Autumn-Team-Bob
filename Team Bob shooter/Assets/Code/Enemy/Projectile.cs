@@ -46,6 +46,7 @@ namespace TeamBobFPS
             if (other.gameObject.layer == 3)
             {
                 other.GetComponent<UnitHealth>().RemoveHealth(damage);
+                DI_system.CreateIndicator(transform);
             }
             DestroyProjectile();
         }

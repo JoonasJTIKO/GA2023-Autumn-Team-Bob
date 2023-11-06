@@ -9,9 +9,6 @@ namespace TeamBobFPS
         [SerializeField]
         private Transform[] points;
 
-        [SerializeField]
-        private float spawnRate = 0.25f;
-
         private List<WaveData.WaveEnemy> spawnQueue = new List<WaveData.WaveEnemy>();
 
         private EnemySpawning enemySpawning;
@@ -28,12 +25,12 @@ namespace TeamBobFPS
             spawnQueue.Add(enemy);
         }
 
-        public void SpawnQueuedEnemies()
+        public void SpawnQueuedEnemies(float spawnRate)
         {
-            spawnRoutine = StartCoroutine(Spawn());
+            spawnRoutine = StartCoroutine(Spawn(spawnRate));
         }
 
-        private IEnumerator Spawn()
+        private IEnumerator Spawn(float spawnRate)
         {
             int index = 0;
             while (spawnQueue.Count > 0)
@@ -43,7 +40,12 @@ namespace TeamBobFPS
                 index++;
                 if (index == points.Length) index = 0;
 
-                yield return new WaitForSeconds(spawnRate);
+                float timer = 0;
+                while (timer < spawnRate)
+                {
+                    timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                    yield return null;
+                }
             }
         }
     }

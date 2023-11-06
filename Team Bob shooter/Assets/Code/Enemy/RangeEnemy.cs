@@ -83,6 +83,8 @@ namespace TeamBobFPS
 
         private bool damageLockout = false;
 
+        private EnemySpawnEffect spawnEffect;
+
         private enum ActionState
         {
             idle = 0,
@@ -109,6 +111,7 @@ namespace TeamBobFPS
             base.Awake();
 
             enemyGibbingPool = new ComponentPool<EnemyGibbing>(gibPrefab, 2);
+            spawnEffect = GetComponentInChildren<EnemySpawnEffect>();
         }
 
         protected override void OnDisable()
@@ -120,6 +123,11 @@ namespace TeamBobFPS
                 unitHealth.OnDied -= OnDie;
                 unitHealth.OnTakeDamage -= OnTakeDamage;
             }
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
 
             if (activeGibbing != null)
             {
@@ -130,6 +138,12 @@ namespace TeamBobFPS
 
         public void Initialize()
         {
+            canSee = false;
+            noticed = false;
+            firing = false;
+            posChange = false;
+            roam = false;
+
             player = FindObjectOfType<PlayerUnit>().transform;
 
             unitHealth = GetComponent<UnitHealth>();
@@ -137,10 +151,12 @@ namespace TeamBobFPS
             unitHealth.OnDied += OnDie;
             unitHealth.OnTakeDamage += OnTakeDamage;
 
+            firing = false;
             damageLockout = false;
+            spawnEffect.PlayEffect();
         }
 
-        private void OnDie(EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
+        private void OnDie(float explosionStrength, Vector3 explosionPoint, EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
         {
             dropSpawner.SpawnThings();
             Vector3 pos = new Vector3(transform.position.x, transform.position.y - 0.9f, transform.position.z);
@@ -155,7 +171,7 @@ namespace TeamBobFPS
             activeGibbing.Completed += ReturnGibToPool;
             activeGibbing.transform.position = pos;
             activeGibbing.transform.rotation = rot;
-            activeGibbing.Activate(deathType);
+            activeGibbing.Activate(explosionPoint, explosionStrength, deathType);
         }
 
         private void ReturnGibToPool(EnemyGibbing item)
@@ -220,15 +236,19 @@ namespace TeamBobFPS
             if (currentDistance < radius && noticed && mapAreaManager.PlayerInArea(CurrentMapArea))
             {
                 currentState = ActionState.chase;
-
-                if (currentDistance < fireRange && canSee || posChange || firing)
-                {
-                    currentState = ActionState.fire;
-                }
             }
             else
             {
                 currentState = ActionState.idle;
+            }
+
+            if (currentDistance < fireRange && canSee || posChange || firing)
+            {
+                currentState = ActionState.fire;
+            }
+
+            if (currentState == ActionState.idle)
+            {
                 canSee = false;
             }
 
@@ -320,7 +340,7 @@ namespace TeamBobFPS
                 //point += transform.position;
                 //seeker.StartPath(rb.position, point, OnPathComplete);
                 roam = true;
-                idleWalkTimer = 4f;
+                idleWalkTimer = 2.5f;
             }
             else if (roam)
             {

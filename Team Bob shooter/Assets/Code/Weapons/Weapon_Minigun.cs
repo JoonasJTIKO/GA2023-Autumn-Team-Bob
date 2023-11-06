@@ -18,6 +18,9 @@ namespace TeamBobFPS
         [SerializeField]
         private LayerMask enemyLayers;
 
+        [SerializeField]
+        private ParticleSystem muzzleFlash;
+
         private PlayerUnit playerUnit;
 
         private Rigidbody rb;
@@ -25,6 +28,8 @@ namespace TeamBobFPS
         private Transform[] activeHitEffects = new Transform[8];
 
         private int index = 0;
+
+        private bool shootAudioPlaying = false;
 
         public override int CurrentReserveAmmo
         {
@@ -36,12 +41,19 @@ namespace TeamBobFPS
             get { return magSize; }
         }
 
+        private ScreenShake screenShake;
+
         protected override void Awake()
         {
             base.Awake();
 
             playerUnit = GetComponent<PlayerUnit>();
             rb = GetComponent<Rigidbody>();
+        }
+
+        private void Start()
+        {
+            screenShake = playerUnit.PlayerCam.GetComponent<ScreenShake>();
         }
 
         public override void AbortReload()
@@ -55,6 +67,9 @@ namespace TeamBobFPS
 
         protected override void Fire()
         {
+            screenShake.Shake(1);
+            muzzleFlash.Play();
+
             RaycastHit hit;
             Vector3 angle = playerUnit.PlayerCam.transform.TransformDirection(Vector3.forward);
             angle = new(angle.x + Random.Range(-spreadAngle, spreadAngle),
@@ -142,9 +157,30 @@ namespace TeamBobFPS
             }
         }
 
+        public override void Activate(bool state)
+        {
+            base.Activate(state);
+            viewmodelAnimator.SetTrigger("Equip");
+
+            if (!state)
+            {
+                FireButtonHeld(false);
+            }
+        }
+
         public override void FireButtonHeld(bool state)
         {
             viewmodelAnimator.SetBool("Firing", state);
+            if (state && !shootAudioPlaying)
+            {
+                GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_MINIGUN_SHOOT, transform.position, volume: 0.5f, loop: true, make2D: true);
+                shootAudioPlaying = true;
+            }
+            else if (!state && shootAudioPlaying)
+            {
+                GameInstance.Instance.GetAudioManager().StopLoopingAudio(EGameSFX._SFX_MINIGUN_SHOOT);
+                shootAudioPlaying = false;
+            }
         }
     }
 }

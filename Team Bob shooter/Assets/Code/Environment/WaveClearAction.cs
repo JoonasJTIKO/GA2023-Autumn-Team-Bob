@@ -21,12 +21,12 @@ namespace TeamBobFPS
             WaveManager.OnWaveCleared -= Activate;
         }
 
-        private void Activate(int waveIndex)
+        private void Activate(int waveIndex, int levelIndex)
         {
-            DoAction(waveIndex);
+            DoAction(waveIndex, levelIndex);
         }
 
-        protected virtual bool DoAction(int waveIndex)
+        protected virtual bool DoAction(int waveIndex, int levelIndex)
         {
             if (waveIndex != this.waveIndex || activated) return false;
 

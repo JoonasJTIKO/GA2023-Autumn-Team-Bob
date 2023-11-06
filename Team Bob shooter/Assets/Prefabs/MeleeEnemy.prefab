@@ -257,7 +257,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 320
   attackRange: 10
-  radius: 20
+  radius: 40
   angle: 360
   canSee: 0
   currentDistance: 0
@@ -363,6 +363,7 @@ MonoBehaviour:
   angle: 40
   heightCap: 2
   cooldown: 2
+  postAttackLockout: 0.5
   damageBox: {fileID: 262285262174492868}
 --- !u!1001 &4623697436334952944
 PrefabInstance:

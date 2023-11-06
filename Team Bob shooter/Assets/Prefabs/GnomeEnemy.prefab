@@ -588,6 +588,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 6357907339095630087}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1661447385163193545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1499723456802508198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5f8badcfc5a66f41a76676e027d78a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1996769996262947463
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -785,7 +797,7 @@ MonoBehaviour:
   wallMask:
     serializedVersion: 2
     m_Bits: 320
-  radius: 20
+  radius: 40
   angle: 360
   canSee: 0
   shootTimer: 2

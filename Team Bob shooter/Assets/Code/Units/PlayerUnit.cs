@@ -68,6 +68,8 @@ namespace TeamBobFPS
             get { return mover.IsGrounded; }
         }
 
+        public float GravityScale = 1f;
+
         public bool LockMovement = false;
 
         private bool jumping = false;
@@ -81,6 +83,8 @@ namespace TeamBobFPS
         private bool canDoubleJump = true;
 
         private bool lockInputs = false;
+
+        private bool forceLockedInputs = false;
 
         public event Action OnPlayerDied;
 
@@ -99,6 +103,11 @@ namespace TeamBobFPS
             playerInputs = new PlayerInputs();
             moveAction = playerInputs.Movement.Move;
             jumpAction = playerInputs.Movement.Jump;
+        }
+
+        private void Start()
+        {
+            StartCoroutine(StartLockout());
         }
 
         protected override void OnEnable()
@@ -157,7 +166,7 @@ namespace TeamBobFPS
 
             if (!mover.OnSlope() && !IsGrounded && rb.useGravity)
             {
-                rb.AddForce(Physics.gravity * rb.mass * fallSpeedModifier, ForceMode.Force);
+                rb.AddForce(Physics.gravity * GravityScale * rb.mass * fallSpeedModifier, ForceMode.Force);
             }
 
             if (lockInputs)
@@ -246,7 +255,7 @@ namespace TeamBobFPS
             rb.AddForce(direction * strength, ForceMode.Impulse);
         }
 
-        private void OnDie(EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
+        private void OnDie(float explosionStrength, Vector3 explosionPoint, EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
         {
             OnPlayerDied?.Invoke();
 
@@ -272,9 +281,44 @@ namespace TeamBobFPS
 
         public void LockControls(bool lockMovement = false, bool lockWeapons = false, bool lockLook = false)
         {
+            if (lockMovement || lockWeapons || lockLook)
+            {
+                forceLockedInputs = true;
+            }
+            else
+            {
+                forceLockedInputs = false;
+            }
             lockInputs = lockMovement;
             weaponSwap.LockInputs(lockWeapons);
             firstPersonCamera.LockInputs(lockLook);
+        }
+
+        private IEnumerator StartLockout()
+        {
+            lockInputs = true;
+            weaponSwap.LockInputs(true);
+            firstPersonCamera.LockInputs(true);
+
+            float timer = 0;
+            bool fadeOutStarted = false;
+            while (timer < 2f)
+            {
+                timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                if (timer <= 0.5f && !fadeOutStarted)
+                {
+                    fadeOutStarted = true;
+                    GameInstance.Instance.GetFadeCanvas().FadeFrom(1f);
+                }
+                yield return null;
+            }
+
+            lockInputs = false;
+            if (!forceLockedInputs)
+            {
+                weaponSwap.LockInputs(false);
+                firstPersonCamera.LockInputs(false);
+            }
         }
     }
 }

@@ -107,15 +107,20 @@ namespace TeamBobFPS
                 unitHealth.OnDied -= OnDie;
             }
 
+            if (enemyLungeAttack != null)
+            {
+                enemyLungeAttack.AttackEnd -= OnAttackEnd;
+            }
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
             if (activeGibbing != null)
             {
                 activeGibbing.Completed -= ReturnGibToPool;
                 activeGibbing = null;
-            }
-
-            if (enemyLungeAttack != null)
-            {
-                enemyLungeAttack.AttackEnd -= OnAttackEnd;
             }
         }
 
@@ -126,9 +131,16 @@ namespace TeamBobFPS
             unitHealth = GetComponent<UnitHealth>();
             unitHealth.AddHealth(unitHealth.MaxHealth);
             unitHealth.OnDied += OnDie;
+
+            if (noticed)
+            {
+                radius = radius / 5;
+                noticed = false;
+                angle = 90;
+            }
         }
 
-        private void OnDie(EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
+        private void OnDie(float explosionStrength, Vector3 explosionPoint, EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
         {
             dropSpawner.SpawnThings();
             Vector3 pos = transform.position;
@@ -141,7 +153,7 @@ namespace TeamBobFPS
             activeGibbing.Completed += ReturnGibToPool;
             activeGibbing.transform.position = pos;
             activeGibbing.transform.rotation = rot;
-            activeGibbing.Activate(deathType);
+            activeGibbing.Activate(explosionPoint, explosionStrength, deathType);
         }
 
         private void ReturnGibToPool(EnemyGibbing item)

@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 370114f937ecc2e40a1ea72f75c9ff44
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Eternal Ancient
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 9165afe1ea6696649b49ffbc9b3a75ee, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

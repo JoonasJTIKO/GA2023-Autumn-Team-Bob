@@ -172,6 +172,8 @@ namespace TeamBobFPS
         // game over screen quickly...
         private bool canFadeMusic = false;
 
+        private Coroutine stopLoopRoutine = null;
+
         // Don't play audio before SetDefaults
         // relates to playerprefs
         // private bool m_bIsSetup = false;
@@ -250,14 +252,40 @@ namespace TeamBobFPS
         /// If the specified audio is currently playing, sets its looping state to false and stops the audio
         /// </summary>
         /// <param name="intSFX">SFX given as EGameSFX enum</param>
-        public void StopLoopingAudio(EGameSFX intSFX)
+        public void StopLoopingAudio(EGameSFX intSFX, bool fadeOut = true)
         {
-            if (loopingAudioList.ContainsKey(intSFX))
+            if (!loopingAudioList.ContainsKey(intSFX)) return;
+
+            if (!fadeOut)
             {
                 loopingAudioList[intSFX].loop = false;
                 loopingAudioList[intSFX].Stop();
                 loopingAudioList.Remove(intSFX);
             }
+            else
+            {
+                if (stopLoopRoutine != null)
+                {
+                    StopCoroutine(stopLoopRoutine);
+                }
+                stopLoopRoutine = StartCoroutine(LoopingAudioFadeOut(intSFX));
+            }
+        }
+
+        private IEnumerator LoopingAudioFadeOut(EGameSFX intSFX)
+        {
+            while (loopingAudioList[intSFX].volume > 0)
+            {
+                loopingAudioList[(intSFX)].volume -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale * 3;
+                if (loopingAudioList[(intSFX)].volume < 0)
+                {
+                    loopingAudioList[(intSFX)].volume = 0;
+                }
+                yield return null;
+            }
+            loopingAudioList[intSFX].loop = false;
+            loopingAudioList[intSFX].Stop();
+            loopingAudioList.Remove(intSFX);
         }
 
         /// <summary>
@@ -329,6 +357,16 @@ namespace TeamBobFPS
 
             if (loop)
             {
+                if (loopingAudioList.ContainsKey(intSFX))
+                {
+                    if (stopLoopRoutine != null)
+                    {
+                        StopCoroutine(stopLoopRoutine);
+                    }
+                    loopingAudioList[intSFX].loop = false;
+                    loopingAudioList[intSFX].Stop();
+                    loopingAudioList.Remove(intSFX);
+                }
                 loopingAudioList.Add(intSFX, audioSourceSFX);
             }
 

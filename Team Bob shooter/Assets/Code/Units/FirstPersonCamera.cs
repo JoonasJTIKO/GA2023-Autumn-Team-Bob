@@ -32,6 +32,8 @@ namespace TeamBobFPS
 
         private bool lockCamera = false;
 
+        private bool firstInitialize = true;
+
         private void Start()
         {
             playerUnit = GetComponent<PlayerUnit>();
@@ -41,12 +43,40 @@ namespace TeamBobFPS
 
             cameraX.performed += context => input.x = context.ReadValue<float>();
             cameraY.performed += context => input.y = context.ReadValue<float>();
+            firstInitialize = false;
 
             orientation = transform.localRotation.eulerAngles;
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             playerUnit.OnPlayerDied += OnPlayerDied;
+
+            if (GameInstance.Instance != null)
+            {
+                if (GameInstance.Instance.UsingController)
+                {
+                    xSensitivity *= 3;
+                    ySensitivity *= 3;
+                }
+            }
+        }
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+
+            if (!firstInitialize)
+            {
+                cameraX.performed += context => input.x = context.ReadValue<float>();
+                cameraY.performed += context => input.y = context.ReadValue<float>();
+                firstInitialize = false;
+
+                orientation = transform.localRotation.eulerAngles;
+
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+                playerUnit.OnPlayerDied += OnPlayerDied;
+            }
         }
 
         protected override void OnDisable()
@@ -55,6 +85,9 @@ namespace TeamBobFPS
 
             if (playerUnit == null) return;
             playerUnit.OnPlayerDied -= OnPlayerDied;
+
+            cameraX.performed -= context => input.x = context.ReadValue<float>();
+            cameraY.performed -= context => input.y = context.ReadValue<float>();
         }
 
         public override void OnFixedUpdate(float fixedDeltaTime)

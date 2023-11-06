@@ -15,7 +15,7 @@ namespace TeamBobFPS
         private float pickUpRange = 3;
 
         [SerializeField]
-        private float speed = 1;
+        private float speed = 4;
 
         [SerializeField]
         private float acceleration = 1.1f;
@@ -42,6 +42,14 @@ namespace TeamBobFPS
 
         public event Action<AmmoPickup> Expired;
 
+        private float startDistance;
+
+        private Bezier flightCurve;
+
+        private float currentSpeed = 1f;
+
+        private float currentDistance = 100f;
+
         protected override void Awake()
         {
             base.Awake();
@@ -49,6 +57,7 @@ namespace TeamBobFPS
             playerPosition = FindObjectOfType<PlayerUnit>().gameObject.transform;
             weaponSwap = playerPosition.gameObject.GetComponent<WeaponSwap>();
             rb = GetComponent<Rigidbody>();
+            flightCurve = GetComponent<Bezier>();
         }
 
         public override void OnFixedUpdate(float fixedDeltaTime)
@@ -56,16 +65,38 @@ namespace TeamBobFPS
             if (canBeCollected && !flyToPlayer && !weaponSwap.CurrentReserveAmmoFull && (playerPosition.position - transform.position).magnitude <= pickUpRange)
             {
                 rb.constraints = RigidbodyConstraints.None;
-                mover.Setup(speed);
+                mover.Setup(currentSpeed);
                 flyToPlayer = true;
+                Vector3 flatPos = new Vector3(transform.position.x, 0, transform.position.z);
+                Vector3 flatPlayerPos = new Vector3(playerPosition.position.x, 0, playerPosition.position.z);
+                startDistance = (flatPlayerPos - flatPos).magnitude;
+                flightCurve.points = new Vector3[3];
+                flightCurve.points[0] = transform.position;
             }
 
             if (flyToPlayer)
             {
-                Vector3 moveDirection = (playerPosition.position - transform.position).normalized;
-                mover.Setup(speed);
-                speed *= acceleration;
-                mover.Move(moveDirection);
+                flightCurve.points[1] = transform.position + ((playerPosition.position - transform.position).normalized * (startDistance / 3));
+                flightCurve.points[1] = new Vector3(flightCurve.points[1].x, transform.position.y + 2, flightCurve.points[1].z);
+                flightCurve.points[2] = new Vector3(playerPosition.position.x, playerPosition.position.y - 1, playerPosition.position.z);
+
+                Vector3 direction;
+                if ((new Vector3(transform.position.x, 0, transform.position.z) - new Vector3(playerPosition.position.x, 0, playerPosition.position.z)).magnitude <= currentDistance)
+                {
+                    currentDistance = (new Vector3(transform.position.x, 0, transform.position.z) - new Vector3(playerPosition.position.x, 0, playerPosition.position.z)).magnitude;
+                    direction = flightCurve.GetDirection(1 - (currentDistance / startDistance));
+                }
+                else
+                {
+                    direction = (new Vector3(playerPosition.position.x, playerPosition.position.y - 1, playerPosition.position.z) - transform.position).normalized;
+                }
+
+                mover.Setup(currentSpeed);
+                if (currentSpeed < speed)
+                {
+                    currentSpeed *= acceleration;
+                }
+                mover.Move(direction);
             }
         }
 
@@ -82,7 +113,7 @@ namespace TeamBobFPS
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.layer == 6)
+            if (other.gameObject.layer == 6 && !flyToPlayer)
             {
                 rb.velocity = Vector3.zero;
                 rb.useGravity = false;
@@ -93,6 +124,7 @@ namespace TeamBobFPS
         public void Create()
         {
             flyToPlayer = false;
+            canBeCollected = false;
             rb.useGravity = true;
             rb.constraints = RigidbodyConstraints.None;
             StartCoroutine(CanBeCollectedTimer(canBeCollectedTimer));
