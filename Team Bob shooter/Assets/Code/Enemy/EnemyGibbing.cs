@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
 namespace TeamBobFPS
@@ -34,6 +35,9 @@ namespace TeamBobFPS
         [SerializeField]
         private LayerMask layerMask;
 
+        [SerializeField]
+        private GameObject explosionBlood;
+
         private RagdollBehavior ragdollBehavior;
 
         private DecalPaint decalPaint;
@@ -64,10 +68,11 @@ namespace TeamBobFPS
             }
         }
 
-        public void Activate(DeathType deathType = DeathType.Normal)
+        public void Activate(Vector3 explosionPoint, float explosionStrengthMultiplier = 1f, DeathType deathType = DeathType.Normal)
         {
             ragdollBehavior.EnableRagdoll();
             ragdollBehavior.PushRagdoll(transform.forward * 10);
+            explosionBlood.SetActive(false);
 
             switch (deathType)
             {
@@ -107,6 +112,8 @@ namespace TeamBobFPS
                     bodyPieces[4].gameObject.SetActive(true);
                     break;
                 case DeathType.Explode:
+                    explosionBlood.SetActive(true);
+
                     foreach (var piece in ragdollPieces)
                     {
                         piece.SetActive(false);
@@ -125,11 +132,19 @@ namespace TeamBobFPS
 
                 Rigidbody rigidbody = bodyPart.gameObject.GetComponent<Rigidbody>();
                 rigidbody.useGravity = true;
-                Vector3 angle = Vector3.up;
-                angle = (new Vector3(angle.x + UnityEngine.Random.Range(-0.5f, 0.5f), 
-                    angle.y + UnityEngine.Random.Range(-0.5f, 0.5f), 
+                Vector3 angle;
+                if (explosionPoint != Vector3.zero)
+                {
+                    angle = (transform.position - explosionPoint);
+                }
+                else
+                {
+                    angle = Vector3.up;
+                }
+                angle = (new Vector3(angle.x + UnityEngine.Random.Range(-0.5f, 0.5f),
+                    angle.y + UnityEngine.Random.Range(-0.5f, 0.5f),
                     angle.z + UnityEngine.Random.Range(-0.5f, 0.5f))).normalized;
-                rigidbody.AddForce(angle * gibStrength, ForceMode.Impulse);
+                rigidbody.AddForce(angle * gibStrength * explosionStrengthMultiplier, ForceMode.Impulse);
                 rigidbody.AddTorque(angle * 0.1f, ForceMode.Impulse);
             }
 

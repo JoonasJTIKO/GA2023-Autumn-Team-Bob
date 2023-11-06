@@ -113,13 +113,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2268ed5f3e40d14eaae04754db8199e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flightSpeed: 15
+  flightSpeed: 25
   playerKnockback: 15
   explosionRadius: 5
   explosionPrefab: {fileID: 0}
   mask:
     serializedVersion: 2
-    m_Bits: 1032
+    m_Bits: 1160
+  environmentMask:
+    serializedVersion: 2
+    m_Bits: 320
 --- !u!114 &6230285528371846573
 MonoBehaviour:
   m_ObjectHideFlags: 0

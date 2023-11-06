@@ -84,6 +84,8 @@ namespace TeamBobFPS
 
         private bool lockInputs = false;
 
+        private bool forceLockedInputs = false;
+
         public event Action OnPlayerDied;
 
         protected override void Awake()
@@ -253,7 +255,7 @@ namespace TeamBobFPS
             rb.AddForce(direction * strength, ForceMode.Impulse);
         }
 
-        private void OnDie(EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
+        private void OnDie(float explosionStrength, Vector3 explosionPoint, EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
         {
             OnPlayerDied?.Invoke();
 
@@ -279,6 +281,14 @@ namespace TeamBobFPS
 
         public void LockControls(bool lockMovement = false, bool lockWeapons = false, bool lockLook = false)
         {
+            if (lockMovement || lockWeapons || lockLook)
+            {
+                forceLockedInputs = true;
+            }
+            else
+            {
+                forceLockedInputs = false;
+            }
             lockInputs = lockMovement;
             weaponSwap.LockInputs(lockWeapons);
             firstPersonCamera.LockInputs(lockLook);
@@ -292,20 +302,23 @@ namespace TeamBobFPS
 
             float timer = 0;
             bool fadeOutStarted = false;
-            while (timer < 1f)
+            while (timer < 2f)
             {
                 timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
                 if (timer <= 0.5f && !fadeOutStarted)
                 {
                     fadeOutStarted = true;
-                    GameInstance.Instance.GetFadeCanvas().FadeFrom(0.5f);
+                    GameInstance.Instance.GetFadeCanvas().FadeFrom(1f);
                 }
                 yield return null;
             }
 
             lockInputs = false;
-            weaponSwap.LockInputs(false);
-            firstPersonCamera.LockInputs(false);
+            if (!forceLockedInputs)
+            {
+                weaponSwap.LockInputs(false);
+                firstPersonCamera.LockInputs(false);
+            }
         }
     }
 }

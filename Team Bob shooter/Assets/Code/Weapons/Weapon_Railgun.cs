@@ -21,6 +21,9 @@ namespace TeamBobFPS
         [SerializeField]
         private float chargeTime = 0.75f;
 
+        [SerializeField]
+        private float shotSize = 0.5f;
+
         private PlayerUnit playerUnit;
 
         private Transform[] activeHitEffects = new Transform[8];
@@ -133,8 +136,8 @@ namespace TeamBobFPS
                 bullet.Launch(angle);
             }
 
-            RaycastHit[] hits = Physics.RaycastAll(playerUnit.PlayerCam.transform.position,
-                angle, Mathf.Infinity, enemyLayers);
+            RaycastHit[] hits = Physics.SphereCastAll(playerUnit.PlayerCam.transform.position,
+                shotSize, angle, Mathf.Infinity, enemyLayers);
 
             if (hits.Length > 0)
             {
@@ -183,18 +186,18 @@ namespace TeamBobFPS
                     if (index >= activeHitEffects.Length) index = 0;
                 }
             }
-            else if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
-                angle, out rHit, Mathf.Infinity, environmentLayers))
-            {
-                if (activeHitEffects[index] != null)
-                {
-                    hitEffectPool.Return(activeHitEffects[index]);
-                }
-                activeHitEffects[index] = hitEffectPool.Get();
-                activeHitEffects[index].position = rHit.point;
-                index++;
-                if (index >= activeHitEffects.Length) index = 0;
-            }
+            //else if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
+            //    angle, out rHit, Mathf.Infinity, environmentLayers))
+            //{
+            //    if (activeHitEffects[index] != null)
+            //    {
+            //        hitEffectPool.Return(activeHitEffects[index]);
+            //    }
+            //    activeHitEffects[index] = hitEffectPool.Get();
+            //    activeHitEffects[index].position = rHit.point;
+            //    index++;
+            //    if (index >= activeHitEffects.Length) index = 0;
+            //}
         }
 
         protected override void Fire()

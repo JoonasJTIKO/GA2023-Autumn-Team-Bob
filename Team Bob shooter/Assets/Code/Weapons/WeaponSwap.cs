@@ -255,9 +255,9 @@ namespace TeamBobFPS
             }
 
             activeWeapon = equippedWeapons[index];
+            ActivateViewmodel(weaponType);
             activeWeapon.Activate(true);
             activeWeapon.UpdateHudAmmo();
-            ActivateViewmodel(weaponType);
             playerUnit.CurrentWeaponSlot = activeWeaponIndex;
         }
 

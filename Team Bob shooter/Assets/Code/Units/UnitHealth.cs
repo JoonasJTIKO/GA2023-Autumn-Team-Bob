@@ -34,11 +34,15 @@ namespace TeamBobFPS
             get { return Health == MaxHealth; }
         }
 
+        public Vector3 ExplosionPoint = Vector3.zero;
+
+        public float ExplosionStrength = 1f;
+
         public event Action<float> OnHealthUpdate;
 
         public event Action OnTakeDamage;
 
-        public event Action<EnemyGibbing.DeathType> OnDied;
+        public event Action<float, Vector3, EnemyGibbing.DeathType> OnDied;
 
         protected Rigidbody rb;
 
@@ -97,10 +101,11 @@ namespace TeamBobFPS
                 }
                 if (Health == 0)
                 {
-                    Die(potentialDeathType);
+                    Die(ExplosionPoint,potentialDeathType);
                     return true;
                 }
                 Invincible = true;
+                ExplosionPoint = Vector3.zero;
                 StartCoroutine(InvincibilityTimer());
                 OnHealthUpdate?.Invoke(-amount * damageMultiplier);
                 OnTakeDamage?.Invoke();
@@ -121,9 +126,10 @@ namespace TeamBobFPS
             rb.AddForce(knockbackDirection * knockbackAmount, ForceMode.Impulse);
         }
 
-        private void Die(EnemyGibbing.DeathType deathType)
+        private void Die(Vector3 explosionPoint, EnemyGibbing.DeathType deathType)
         {
-            OnDied?.Invoke(deathType);
+            OnDied?.Invoke(ExplosionStrength, explosionPoint, deathType);
+            ExplosionStrength = 1f;
         }
 
         private IEnumerator InvincibilityTimer()

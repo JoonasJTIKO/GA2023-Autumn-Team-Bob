@@ -18,6 +18,9 @@ namespace TeamBobFPS
         [SerializeField]
         private LayerMask enemyLayers;
 
+        [SerializeField]
+        private ParticleSystem muzzleFlash;
+
         private PlayerUnit playerUnit;
 
         private Rigidbody rb;
@@ -65,6 +68,7 @@ namespace TeamBobFPS
         protected override void Fire()
         {
             screenShake.Shake(1);
+            muzzleFlash.Play();
 
             RaycastHit hit;
             Vector3 angle = playerUnit.PlayerCam.transform.TransformDirection(Vector3.forward);
@@ -156,6 +160,7 @@ namespace TeamBobFPS
         public override void Activate(bool state)
         {
             base.Activate(state);
+            viewmodelAnimator.SetTrigger("Equip");
 
             if (!state)
             {

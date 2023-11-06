@@ -20,11 +20,21 @@ namespace TeamBobFPS
 
         private Coroutine reloadRoutine = null;
 
+        private PlayerUnit playerUnit;
+
+        private ScreenShake screenShake;
+
         protected override void Awake()
         {
             base.Awake();
 
+            playerUnit = GetComponent<PlayerUnit>();
             pool = new ComponentPool<RocketProjectile>(projectilePrefab, 5);
+        }
+
+        private void Start()
+        {
+            screenShake = playerUnit.PlayerCam.GetComponent<ScreenShake>();
         }
 
         public override void AbortReload()
@@ -53,11 +63,13 @@ namespace TeamBobFPS
 
         protected override void Fire()
         {
+            screenShake.Shake(0);
+
             RocketProjectile launched = pool.Get();
             launched.Expired += RocketExpired;
             launched.transform.position = launchPosition.position;
             launched.transform.rotation = launchPosition.rotation;
-            launched.Launch(bulletDamage);
+            launched.Launch(bulletDamage, screenShake);
         }
 
         private void RocketExpired(RocketProjectile rocket)

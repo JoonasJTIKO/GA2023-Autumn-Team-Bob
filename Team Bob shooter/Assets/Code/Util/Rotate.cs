@@ -6,15 +6,14 @@ namespace TeamBobFPS
 {
     public class Rotate : BaseUpdateListener
     {
-        [SerializeField]
-        private float speed = 1.0f;
+        public float Speed = 30.0f;
 
         public override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
 
             Vector3 rotation = transform.localRotation.eulerAngles;
-            rotation.y += speed * deltaTime;
+            rotation.y += Speed * deltaTime;
             transform.localEulerAngles = rotation;
         }
     }

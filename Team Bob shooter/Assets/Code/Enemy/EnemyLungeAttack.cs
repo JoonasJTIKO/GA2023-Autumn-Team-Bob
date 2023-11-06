@@ -89,7 +89,7 @@ namespace TeamBobFPS
                 (2f * (height - distance * Mathf.Tan(angle * Mathf.Deg2Rad))));
             float velocityY = Mathf.Tan(angle * Mathf.Deg2Rad) * velocityX;
 
-            transform.LookAt(targetPos);
+            transform.LookAt(new Vector3(targetPos.x, transform.position.y, targetPos.z));
 
             Vector3 newVelocity = transform.TransformDirection(new Vector3(0f, velocityY, velocityX));
             if (newVelocity.x == float.NaN ||  newVelocity.y == float.NaN || newVelocity.z == float.NaN)
