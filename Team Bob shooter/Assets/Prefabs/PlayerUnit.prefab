@@ -1330,7 +1330,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletDamage: 100
-  fireRate: 0.75
+  fireRate: 1
   maxReserveAmmo: 20
   startingReserveAmmo: 20
   magSize: 1
@@ -1351,6 +1351,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 3200
   reloadTime: 0.5
+  chargeTime: 0.75
 --- !u!114 &7262986049881602520
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -551,6 +551,7 @@ MonoBehaviour:
   - Clear the market district
   - Clear the temple garden
   - Clear the temple lobby
+  - Approach the Great Door
 --- !u!1 &287948149
 GameObject:
   m_ObjectHideFlags: 0
@@ -782,7 +783,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingLoadout:
-  - WeaponType: 4
+  - WeaponType: 3
   - WeaponType: 1
 --- !u!114 &458228141
 MonoBehaviour:

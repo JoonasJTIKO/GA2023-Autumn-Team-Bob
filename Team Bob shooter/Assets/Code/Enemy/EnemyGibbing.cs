@@ -34,8 +34,6 @@ namespace TeamBobFPS
         [SerializeField]
         private LayerMask layerMask;
 
-        private Vector3[] bodyPieceDefaultPositions;
-
         private RagdollBehavior ragdollBehavior;
 
         private DecalPaint decalPaint;
@@ -48,24 +46,13 @@ namespace TeamBobFPS
             decalPaint = GetComponent<DecalPaint>();
         }
 
-        private void SaveInitialPositions()
-        {
-            bodyPieceDefaultPositions = new Vector3[bodyPieces.Length];
-            int index = 0;
-            foreach (Transform piece in bodyPieces)
-            {
-                bodyPieceDefaultPositions[index] = piece.localPosition;
-                index++;
-            }
-        }
-
         private void ResetPositions()
         {
-            if (bodyPieceDefaultPositions == null) return;
 
-            for (int i = 0; i < bodyPieceDefaultPositions.Length; i++)
+            for (int i = 0; i < bodyPieces.Length; i++)
             {
-                bodyPieces[i].localPosition = bodyPieceDefaultPositions[i];
+                bodyPieces[i].localPosition = new Vector3(0, 0, 0);
+                bodyPieces[i].localRotation = new Quaternion(0, 0, 0, 0);
                 bodyPieces[i].gameObject.SetActive(false);
                 Rigidbody rigidbody = bodyPieces[i].gameObject.GetComponent<Rigidbody>();
                 rigidbody.useGravity = false;
@@ -79,8 +66,6 @@ namespace TeamBobFPS
 
         public void Activate(DeathType deathType = DeathType.Normal)
         {
-            SaveInitialPositions();
-
             ragdollBehavior.EnableRagdoll();
             ragdollBehavior.PushRagdoll(transform.forward * 10);
 

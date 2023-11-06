@@ -30,10 +30,7 @@ namespace TeamBobFPS
         private Quaternion initialRotation;
 
         [SerializeField]
-        private float returnTime = 1f;
-
-        [SerializeField]
-        private float returnSpeed = 1f;
+        private float returnTime;
 
         [SerializeField]
         private Camera cutsceneCamera;
@@ -66,6 +63,7 @@ namespace TeamBobFPS
             float timer = 0;
             int index = 0;
             currentMovement = cameraMovements[index];
+            Vector3 startPos = cutsceneCamera.transform.position;
 
             while (index < cameraMovements.Length)
             {
@@ -80,6 +78,7 @@ namespace TeamBobFPS
                     if (!(index >= cameraMovements.Length))
                     {
                         currentMovement = cameraMovements[index];
+                        startPos = cutsceneCamera.transform.position;
                         timer = 0;
                     }
                 }
@@ -89,7 +88,7 @@ namespace TeamBobFPS
                 }
                 else
                 {
-                    cutsceneCamera.transform.position = Vector3.Lerp(cutsceneCamera.transform.position, currentMovement.TargetPosition, Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale * currentMovement.Speed);
+                    cutsceneCamera.transform.position = Vector3.Lerp(startPos, currentMovement.TargetPosition, timer / currentMovement.Time);
                 }
 
                 timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
@@ -102,11 +101,13 @@ namespace TeamBobFPS
         private IEnumerator ReturnToInitial()
         {
             float timer = 0;
+            Vector3 startPos = cutsceneCamera.transform.position;
+            Quaternion startRot = cutsceneCamera.transform.rotation;
 
             while (timer < returnTime)
             {
-                cutsceneCamera.transform.position = Vector3.Lerp(cutsceneCamera.transform.position, initialPosition, Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale * returnSpeed);
-                cutsceneCamera.transform.rotation = Quaternion.Lerp(cutsceneCamera.transform.rotation, initialRotation, Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale * returnSpeed);
+                cutsceneCamera.transform.position = Vector3.Lerp(startPos, initialPosition, timer / returnTime);
+                cutsceneCamera.transform.rotation = Quaternion.Lerp(startRot, initialRotation, timer / returnTime);
 
                 timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
                 yield return null;
