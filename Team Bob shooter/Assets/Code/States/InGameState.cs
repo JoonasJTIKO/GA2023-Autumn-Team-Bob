@@ -9,7 +9,7 @@ namespace TeamBobFPS
     {
         public override string SceneName { get { return "lvl2"; } }
 
-        public override StateType Type { get { return StateType.Arena1; } }
+        public override StateType Type { get { return StateType.Arena2; } }
 
         public override void Activate(bool loadScene = true)
         {

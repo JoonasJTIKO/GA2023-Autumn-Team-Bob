@@ -122,7 +122,6 @@ namespace TeamBobFPS
             screenShake.Shake(0);
             GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_RAILGUN_SHOOT, transform.position, volume: 0.5f, make2D: true);
 
-            RaycastHit rHit;
             Vector3 angle = playerUnit.PlayerCam.transform.TransformDirection(Vector3.forward);
             angle = new(angle.x + Random.Range(-spreadAngle, spreadAngle),
                 angle.y + Random.Range(-spreadAngle, spreadAngle),
@@ -141,6 +140,13 @@ namespace TeamBobFPS
 
             if (hits.Length > 0)
             {
+                RaycastHit rHit;
+                if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
+                angle, out rHit, hits[0].distance, environmentLayers))
+                {
+                    return;
+                }
+
                 foreach (RaycastHit hit in hits)
                 {
                     if (hit.collider.gameObject.tag == "EnemyRagdoll") return;

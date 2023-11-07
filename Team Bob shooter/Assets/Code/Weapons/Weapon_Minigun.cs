@@ -84,6 +84,13 @@ namespace TeamBobFPS
             if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
                 angle, out hit, Mathf.Infinity, enemyLayers))
             {
+                RaycastHit rHit;
+                if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
+                angle, out rHit, hit.distance, environmentLayers))
+                {
+                    return;
+                }
+
                 if (hit.collider.gameObject.tag == "EnemyRagdoll") return;
 
                 float damage = bulletDamage;
