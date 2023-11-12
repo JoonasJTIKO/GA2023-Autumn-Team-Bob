@@ -18,6 +18,12 @@ namespace TeamBobFPS
         [SerializeField]
         private float reloadTime = 0.5f;
 
+        [SerializeField]
+        private float chargeTime = 0.75f;
+
+        [SerializeField]
+        private float shotSize = 0.5f;
+
         private PlayerUnit playerUnit;
 
         private Transform[] activeHitEffects = new Transform[8];
@@ -26,11 +32,46 @@ namespace TeamBobFPS
 
         private Coroutine reloadRoutine = null;
 
+        private ScreenShake screenShake;
+
+        private bool buttonHeld = false;
+
+        private float chargeTimer = 0f;
+
         protected override void Awake()
         {
             base.Awake();
 
             playerUnit = GetComponent<PlayerUnit>();
+        }
+
+        private void Start()
+        {
+            screenShake = playerUnit.PlayerCam.GetComponent<ScreenShake>();
+        }
+
+        public override void OnUpdate(float deltaTime)
+        {
+            base.OnUpdate(deltaTime);
+
+            if (buttonHeld)
+            {
+                chargeTimer += deltaTime;
+
+                if (chargeTimer >= chargeTime)
+                {
+                    ChargeCompleted();
+                }
+            }
+            else
+            {
+                chargeTimer = 0;
+            }
+        }
+
+        public override void Shoot()
+        {
+            
         }
 
         public override void AbortReload()
@@ -64,77 +105,120 @@ namespace TeamBobFPS
             ReloadCompleted();
         }
 
-        protected override void Fire()
+        private void ChargeCompleted()
         {
+            currentMagAmmoCount -= shotAmmoCost;
+            UpdateHudAmmo();
+
+            readyToFire = false;
+            if (fireRate != 0) timer = 1 / fireRate;
+            else timer = 0;
+
+            if (viewmodelAnimator != null)
+            {
+                viewmodelAnimator.SetTrigger("Fire");
+            }
+
+            screenShake.Shake(0);
             GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_RAILGUN_SHOOT, transform.position, volume: 0.5f, make2D: true);
 
-            RaycastHit hit;
             Vector3 angle = playerUnit.PlayerCam.transform.TransformDirection(Vector3.forward);
             angle = new(angle.x + Random.Range(-spreadAngle, spreadAngle),
                 angle.y + Random.Range(-spreadAngle, spreadAngle),
                 angle.z + Random.Range(-spreadAngle, spreadAngle));
 
             BulletTracer bullet = bulletTrailPool.Get();
-            bullet.Expired += RecycleTracer;
-            bullet.transform.position = bulletOrigin.transform.position;
-            bullet.Launch(angle);
-
-            if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
-                angle, out hit, Mathf.Infinity, enemyLayers))
+            if (bullet != null)
             {
-                if (hit.collider.gameObject.tag == "EnemyRagdoll") return;
-
-                float damage = bulletDamage;
-                if (hit.collider.gameObject.tag == "EnemyHead")
-                {
-                    damage *= 1.5f;
-                }
-
-                EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal;
-                switch (hit.collider.gameObject.tag)
-                {
-                    case "EnemyBody":
-                        deathType = EnemyGibbing.DeathType.Normal;
-                        break;
-                    case "EnemyHead":
-                        deathType = EnemyGibbing.DeathType.Head;
-                        break;
-                    case "EnemyArmR":
-                        deathType = EnemyGibbing.DeathType.RightArm;
-                        break;
-                    case "EnemyArmL":
-                        deathType = EnemyGibbing.DeathType.LeftArm;
-                        break;
-                    case "EnemyLegR":
-                        deathType = EnemyGibbing.DeathType.RightLeg;
-                        break;
-                    case "EnemyLegL":
-                        deathType = EnemyGibbing.DeathType.LeftLeg;
-                        break;
-                }
-
-                hit.collider.gameObject.GetComponentInParent<UnitHealth>().RemoveHealth(damage, deathType);
-
-                if (activeHitEffects[index] != null)
-                {
-                    hitEffectPool.Return(activeHitEffects[index]);
-                }
-                activeHitEffects[index] = hitEffectPool.Get();
-                activeHitEffects[index].position = hit.point;
-                index++;
-                if (index >= activeHitEffects.Length) index = 0;
+                bullet.Expired += RecycleTracer;
+                bullet.transform.position = bulletOrigin.transform.position;
+                bullet.Launch(angle);
             }
-            else if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
-                angle, out hit, Mathf.Infinity, environmentLayers))
+
+            RaycastHit[] hits = Physics.SphereCastAll(playerUnit.PlayerCam.transform.position,
+                shotSize, angle, Mathf.Infinity, enemyLayers);
+
+            if (hits.Length > 0)
             {
-                if (activeHitEffects[index] != null)
+                RaycastHit rHit;
+                if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
+                angle, out rHit, hits[0].distance, environmentLayers))
                 {
-                    hitEffectPool.Return(activeHitEffects[index]);
+                    return;
                 }
-                activeHitEffects[index] = hitEffectPool.Get();
-                activeHitEffects[index].position = hit.point;
-                index++;
-                if (index >= activeHitEffects.Length) index = 0;
+
+                foreach (RaycastHit hit in hits)
+                {
+                    if (hit.collider.gameObject.tag == "EnemyRagdoll") return;
+
+                    float damage = bulletDamage;
+                    if (hit.collider.gameObject.tag == "EnemyHead")
+                    {
+                        damage *= 1.5f;
+                    }
+
+                    EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Explode;
+                    //switch (hit.collider.gameObject.tag)
+                    //{
+                    //    case "EnemyBody":
+                    //        deathType = EnemyGibbing.DeathType.Normal;
+                    //        break;
+                    //    case "EnemyHead":
+                    //        deathType = EnemyGibbing.DeathType.Head;
+                    //        break;
+                    //    case "EnemyArmR":
+                    //        deathType = EnemyGibbing.DeathType.RightArm;
+                    //        break;
+                    //    case "EnemyArmL":
+                    //        deathType = EnemyGibbing.DeathType.LeftArm;
+                    //        break;
+                    //    case "EnemyLegR":
+                    //        deathType = EnemyGibbing.DeathType.RightLeg;
+                    //        break;
+                    //    case "EnemyLegL":
+                    //        deathType = EnemyGibbing.DeathType.LeftLeg;
+                    //        break;
+                    //}
+
+                    hit.collider.gameObject.GetComponentInParent<UnitHealth>().RemoveHealth(damage, deathType);
+
+                    if (activeHitEffects[index] != null)
+                    {
+                        hitEffectPool.Return(activeHitEffects[index]);
+                    }
+                    activeHitEffects[index] = hitEffectPool.Get();
+                    activeHitEffects[index].position = hit.point;
+                    index++;
+                    if (index >= activeHitEffects.Length) index = 0;
+                }
+            }
+            //else if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
+            //    angle, out rHit, Mathf.Infinity, environmentLayers))
+            //{
+            //    if (activeHitEffects[index] != null)
+            //    {
+            //        hitEffectPool.Return(activeHitEffects[index]);
+            //    }
+            //    activeHitEffects[index] = hitEffectPool.Get();
+            //    activeHitEffects[index].position = rHit.point;
+            //    index++;
+            //    if (index >= activeHitEffects.Length) index = 0;
+            //}
+        }
+
+        protected override void Fire()
+        {
+        }
+
+        public override void FireButtonHeld(bool state)
+        {
+            if (currentMagAmmoCount == 0 || !readyToFire || reloading || !active)
+            {
+                buttonHeld = false;
+            }
+            else
+            {
+                buttonHeld = state;
             }
         }
     }

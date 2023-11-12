@@ -42,6 +42,9 @@ namespace TeamBobFPS
             WeaponLoadout.WeaponUnequipped -= CheckOnUnequip;
         }
 
+        /// <summary>
+        /// Deactivates this station if the weapon is equipped by the player or not unlocked
+        /// </summary>
         private void StartCheck()
         {
             if (GameInstance.Instance == null) return;
@@ -54,6 +57,11 @@ namespace TeamBobFPS
             }
         }
 
+        /// <summary>
+        /// Equips this stations weapon to the players active slot
+        /// </summary>
+        /// <param name="currentWeapon"></param>
+        /// <returns></returns>
         public bool OnInteract(int currentWeapon)
         {
             GameInstance.Instance.GetWeaponLoadout().EquipWeapon(weapon, currentWeapon);
@@ -63,6 +71,10 @@ namespace TeamBobFPS
             return true;
         }
 
+        /// <summary>
+        /// Called when the player equips another weapon unequipping their current weapon. Enables this station if this weapon was unequipped
+        /// </summary>
+        /// <param name="weapon"></param>
         private void CheckOnUnequip(EquippableWeapon weapon)
         {
             if (weapon.WeaponType == this.weapon.WeaponType)

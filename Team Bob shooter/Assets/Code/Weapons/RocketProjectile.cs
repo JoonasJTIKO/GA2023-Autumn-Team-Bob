@@ -22,9 +22,14 @@ namespace TeamBobFPS
         [SerializeField]
         private LayerMask mask;
 
+        [SerializeField]
+        private LayerMask environmentMask;
+
         private Mover mover;
 
         private float damage;
+
+        private ScreenShake screenShake;
 
         bool launched = false;
 
@@ -56,8 +61,12 @@ namespace TeamBobFPS
                 if (hit.collider.gameObject.layer == 7)
                 {
                     if (hit.collider.gameObject.tag == "EnemyRagdoll") continue;
+                    if (Physics.Raycast(transform.position, (hit.transform.position - transform.position).normalized, (hit.transform.position - transform.position).magnitude, environmentMask)) continue;
 
-                    hit.collider.GetComponentInParent<UnitHealth>().RemoveHealth(damage, EnemyGibbing.DeathType.Explode);
+                    UnitHealth unitHealth = hit.collider.GetComponentInParent<UnitHealth>();
+                    unitHealth.ExplosionPoint = impactPoint;
+                    unitHealth.ExplosionStrength = 2f;
+                    unitHealth.RemoveHealth(damage, EnemyGibbing.DeathType.Explode);
                 }
                 else if (hit.collider.gameObject.layer == 3)
                 {
@@ -65,13 +74,18 @@ namespace TeamBobFPS
                 }
             }
 
+            float distance = (impactPoint - screenShake.gameObject.transform.position).magnitude;
+            float strength = Mathf.Clamp01((20 - distance) / 20);
+            screenShake.Shake(0, strength);
+
             launched = false;
             Expired?.Invoke(this);
         }
 
-        public void Launch(float damage)
+        public void Launch(float damage, ScreenShake screenShake)
         {
             this.damage = damage;
+            this.screenShake = screenShake;
             mover = GetComponent<Mover>();
             mover.Setup(flightSpeed);
             launched = true;

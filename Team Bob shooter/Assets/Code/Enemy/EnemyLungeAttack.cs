@@ -22,6 +22,9 @@ namespace TeamBobFPS
         private float cooldown = 2f;
 
         [SerializeField]
+        private float postAttackLockout = 0.5f;
+
+        [SerializeField]
         private DamageBox damageBox;
 
         private Vector3 targetPos;
@@ -67,7 +70,8 @@ namespace TeamBobFPS
         {
             rb.velocity = Vector3.zero;
             damageBox.gameObject.SetActive(false);
-            AttackEnd?.Invoke();
+
+            StartCoroutine(PostAttackLockout());
         }
 
         public bool Lunge()
@@ -85,7 +89,7 @@ namespace TeamBobFPS
                 (2f * (height - distance * Mathf.Tan(angle * Mathf.Deg2Rad))));
             float velocityY = Mathf.Tan(angle * Mathf.Deg2Rad) * velocityX;
 
-            transform.LookAt(targetPos);
+            transform.LookAt(new Vector3(targetPos.x, transform.position.y, targetPos.z));
 
             Vector3 newVelocity = transform.TransformDirection(new Vector3(0f, velocityY, velocityX));
             if (newVelocity.x == float.NaN ||  newVelocity.y == float.NaN || newVelocity.z == float.NaN)
@@ -119,6 +123,20 @@ namespace TeamBobFPS
                 yield return null;
             }
             onCooldown = false;
+        }
+
+        private IEnumerator PostAttackLockout()
+        {
+            float timer = postAttackLockout;
+
+            while (timer > 0)
+            {
+                timer -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                yield return null;
+            }
+
+
+            AttackEnd?.Invoke();
         }
     }
 }

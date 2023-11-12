@@ -99,12 +99,24 @@ namespace TeamBobFPS
                 if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
                 angle, out hit, Mathf.Infinity, enemyLayers))
                 {
+                    RaycastHit rHit;
+                    if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
+                    angle, out rHit, hit.distance, environmentLayers))
+                    {
+                        return;
+                    }
+
                     if (hit.collider.gameObject.tag == "EnemyRagdoll") continue;
 
                     float damage = bulletDamage;
                     if (hit.collider.gameObject.tag == "EnemyHead")
                     {
                         damage *= 1.5f;
+                    }
+
+                    if (Vector3.Distance(transform.position, hit.point) > falloffDistance)
+                    {
+                        damage *= 0.5f;
                     }
 
                     UnitHealth component = hit.collider.GetComponentInParent<UnitHealth>();

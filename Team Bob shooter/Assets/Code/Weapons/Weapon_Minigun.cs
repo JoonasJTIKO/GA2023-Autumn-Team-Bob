@@ -18,6 +18,9 @@ namespace TeamBobFPS
         [SerializeField]
         private LayerMask enemyLayers;
 
+        [SerializeField]
+        private ParticleSystem muzzleFlash;
+
         private PlayerUnit playerUnit;
 
         private Rigidbody rb;
@@ -65,6 +68,7 @@ namespace TeamBobFPS
         protected override void Fire()
         {
             screenShake.Shake(1);
+            muzzleFlash.Play();
 
             RaycastHit hit;
             Vector3 angle = playerUnit.PlayerCam.transform.TransformDirection(Vector3.forward);
@@ -80,6 +84,13 @@ namespace TeamBobFPS
             if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
                 angle, out hit, Mathf.Infinity, enemyLayers))
             {
+                RaycastHit rHit;
+                if (Physics.Raycast(playerUnit.PlayerCam.transform.position,
+                angle, out rHit, hit.distance, environmentLayers))
+                {
+                    return;
+                }
+
                 if (hit.collider.gameObject.tag == "EnemyRagdoll") return;
 
                 float damage = bulletDamage;
@@ -156,6 +167,7 @@ namespace TeamBobFPS
         public override void Activate(bool state)
         {
             base.Activate(state);
+            viewmodelAnimator.SetTrigger("Equip");
 
             if (!state)
             {

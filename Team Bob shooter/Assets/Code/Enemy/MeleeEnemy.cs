@@ -140,7 +140,7 @@ namespace TeamBobFPS
             }
         }
 
-        private void OnDie(EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
+        private void OnDie(float explosionStrength, Vector3 explosionPoint, EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
         {
             dropSpawner.SpawnThings();
             Vector3 pos = transform.position;
@@ -153,7 +153,7 @@ namespace TeamBobFPS
             activeGibbing.Completed += ReturnGibToPool;
             activeGibbing.transform.position = pos;
             activeGibbing.transform.rotation = rot;
-            activeGibbing.Activate(deathType);
+            activeGibbing.Activate(explosionPoint, explosionStrength, deathType);
         }
 
         private void ReturnGibToPool(EnemyGibbing item)

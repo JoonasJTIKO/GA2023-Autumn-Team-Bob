@@ -9,17 +9,18 @@ namespace TeamBobFPS
         [System.Serializable]
         public class CameraTarget
         {
-            public Vector3 TargetDirection;
+            public Transform lookTarget;
 
             public AnimationCurve AnimationCurve;
 
             public float LookTime;
-
-            public float LookSpeed;
         }
 
         [SerializeField]
         private CameraTarget[] cameraTargets;
+
+        [SerializeField]
+        private float returnTime = 1f;
 
         private bool playCutscene = false;
 
@@ -28,6 +29,8 @@ namespace TeamBobFPS
         private CameraTarget currentTarget;
 
         private Coroutine cameraRoutine;
+
+        private Quaternion initialRotation;
 
         public override void StopCutscene()
         {
@@ -41,12 +44,14 @@ namespace TeamBobFPS
         {
             playerUnit.LockControls(true, true, true);
             playCutscene = true;
+            initialRotation = playerUnit.PlayerCam.transform.rotation;
             cameraRoutine = StartCoroutine(MoveCamera());
         }
 
         private IEnumerator MoveCamera()
         {
             currentTarget = cameraTargets[index];
+            Quaternion startRot = playerUnit.PlayerCam.transform.rotation;
             float timer = 0;
 
             while (playCutscene)
@@ -61,13 +66,29 @@ namespace TeamBobFPS
                     else
                     {
                         currentTarget = cameraTargets[index];
+                        startRot = playerUnit.PlayerCam.transform.rotation;
                         timer = 0;
                     }
                 }
 
-                float angle = currentTarget.AnimationCurve.Evaluate(timer) * currentTarget.LookSpeed * Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
-                Vector3 newDirection = Vector3.RotateTowards(playerUnit.PlayerCam.transform.forward, currentTarget.TargetDirection, angle, 0f);
-                playerUnit.PlayerCam.transform.rotation = Quaternion.Lerp(playerUnit.PlayerCam.transform.rotation, Quaternion.LookRotation(newDirection), timer * currentTarget.LookSpeed);
+                float angle = currentTarget.AnimationCurve.Evaluate(timer / currentTarget.LookTime);
+                Vector3 newDirection = Vector3.RotateTowards(playerUnit.PlayerCam.transform.forward, (currentTarget.lookTarget.position - playerUnit.PlayerCam.transform.position).normalized, angle, 0f);
+                playerUnit.PlayerCam.transform.rotation = Quaternion.Lerp(startRot, Quaternion.LookRotation(newDirection), timer / currentTarget.LookTime);
+
+                timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                yield return null;
+            }
+            cameraRoutine = StartCoroutine(ReturnToInitial());
+        }
+
+        private IEnumerator ReturnToInitial()
+        {
+            float timer = 0;
+            Quaternion startRot = playerUnit.PlayerCam.transform.rotation;
+
+            while (timer < returnTime)
+            {
+                playerUnit.PlayerCam.transform.rotation = Quaternion.Lerp(startRot, initialRotation, timer / returnTime);
 
                 timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
                 yield return null;

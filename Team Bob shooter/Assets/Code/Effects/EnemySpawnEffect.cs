@@ -22,7 +22,7 @@ namespace TeamBobFPS
         private IEnumerator SpawnEffect()
         {
             float progress = 0.5f;
-            while (progress > -1)
+            while (progress > -1.1f)
             {
                 foreach (var renderer in renderers)
                 {

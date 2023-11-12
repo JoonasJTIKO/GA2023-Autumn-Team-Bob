@@ -58,6 +58,10 @@ namespace TeamBobFPS
             RangeEnemy.OnDefeated -= EnemyDefeated;
         }
 
+        /// <summary>
+        /// Starts a new wave, updating dictionaries and beginning spawning
+        /// </summary>
+        /// <param name="wave">Wave object with all wave details</param>
         public void StartWave(WaveData wave)
         {
             currentWaveEnemies.Clear();
@@ -90,6 +94,11 @@ namespace TeamBobFPS
             //Notify of wave start
         }
 
+        /// <summary>
+        /// Updates dictionaries, checks if more enemies shall be spawned / if wave has been cleared
+        /// </summary>
+        /// <param name="enemyType">Type of enemy defeated</param>
+        /// <param name="item">The enemy</param>
         public void EnemyDefeated(WaveData.EnemyType enemyType, Transform item)
         {
             StartCoroutine(enemySpawning.ReturnToPool(enemyType, item));
@@ -164,6 +173,9 @@ namespace TeamBobFPS
             StartWave(currentWave);
         }
 
+        /// <summary>
+        /// Activates level exit, invokes event for other things to react
+        /// </summary>
         private void AllWavesCleared()
         {
             levelExit.gameObject.SetActive(true);

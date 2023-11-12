@@ -18,6 +18,9 @@ namespace TeamBobFPS
         private InGameHudCanvas inGameHudCanvas;
 
         [SerializeField]
+        private FadeCanvas fadeCanvas;
+
+        [SerializeField]
         private UpdateManager updateManager;
 
         [SerializeField]
@@ -90,6 +93,8 @@ namespace TeamBobFPS
         public PlayerDefeatedCanvas GetPlayerDefeatedCanvas() { return  playerDefeatedCanvas; }
 
         public InGameHudCanvas GetInGameHudCanvas() { return inGameHudCanvas; }
+
+        public FadeCanvas GetFadeCanvas() { return fadeCanvas; }
 
         public UpdateManager GetUpdateManager() { return updateManager; }
 

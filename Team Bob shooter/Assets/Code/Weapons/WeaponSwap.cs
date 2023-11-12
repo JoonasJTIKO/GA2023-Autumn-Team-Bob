@@ -138,6 +138,7 @@ namespace TeamBobFPS
         public void LockInputs(bool state)
         {
             lockInputs = state;
+            activeWeapon.FireButtonHeld(false);
         }
 
         public void AddAmmo(int amount)
@@ -240,7 +241,7 @@ namespace TeamBobFPS
                 case WeaponType.RocketLauncher:
                     break;
                 case WeaponType.Railgun:
-                    playerUnit.GravityScale = 0.3f;
+                    playerUnit.GravityScale = 0.1f;
                     break;
                 case WeaponType.Pistol:
                     if (playerUnit != null)
@@ -254,9 +255,9 @@ namespace TeamBobFPS
             }
 
             activeWeapon = equippedWeapons[index];
+            ActivateViewmodel(weaponType);
             activeWeapon.Activate(true);
             activeWeapon.UpdateHudAmmo();
-            ActivateViewmodel(weaponType);
             playerUnit.CurrentWeaponSlot = activeWeaponIndex;
         }
 

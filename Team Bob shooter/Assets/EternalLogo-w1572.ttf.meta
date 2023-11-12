@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 1db3e98b4d2d04d4ab877739b3192d12
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Eternal Logo
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 5994b66a105a2b143a47fb7c66d79218, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
