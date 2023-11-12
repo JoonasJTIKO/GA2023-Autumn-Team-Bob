@@ -71,7 +71,7 @@ namespace TeamBobFPS
             StartCoroutine(HealEffect());
         }
 
-        private void OnDie(EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
+        private void OnDie(float ExplosionStrength, Vector3 explosionPoint, EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
         {
             ca.colorFilter.Override(Color.red);
             ca.contrast.Override(-100f);
