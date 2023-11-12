@@ -38,6 +38,8 @@ namespace TeamBobFPS
 
         public event Action OnTakeDamage;
 
+        public event Action OnHeal;
+
         public event Action<EnemyGibbing.DeathType> OnDied;
 
         protected Rigidbody rb;
@@ -74,6 +76,7 @@ namespace TeamBobFPS
                     Health = MaxHealth;
                 }
                 OnHealthUpdate?.Invoke(Health - startingHealth);
+                OnHeal?.Invoke();
                 return true;
             }
             return false;

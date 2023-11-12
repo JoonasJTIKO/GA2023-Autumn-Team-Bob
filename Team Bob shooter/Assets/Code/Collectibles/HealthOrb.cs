@@ -43,6 +43,8 @@ namespace TeamBobFPS
 
         public event Action<HealthOrb> Expired;
 
+        public event Action AddHealth;
+
         private float startDistance;
 
         private Bezier flightCurve;
@@ -92,6 +94,7 @@ namespace TeamBobFPS
             {
                 //GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_COLLECT_HEALTH, transform.position, make2D: true);
                 playerHealth.AddHealth(healAmount);
+                AddHealth?.Invoke();
                 flyToPlayer = false;
                 Recycle();
             }

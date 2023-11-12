@@ -32,7 +32,7 @@ namespace TeamBobFPS
             get { return playerInputs; }
         }
 
-        private InputAction moveAction, jumpAction;
+        private InputAction moveAction, jumpAction, menu;
 
         private Mover mover;
 
@@ -84,6 +84,10 @@ namespace TeamBobFPS
 
         private bool lockInputs = false;
 
+        private bool isPaused = false;
+
+        private Animator animator;
+
         public event Action OnPlayerDied;
 
         protected override void Awake()
@@ -101,6 +105,10 @@ namespace TeamBobFPS
             playerInputs = new PlayerInputs();
             moveAction = playerInputs.Movement.Move;
             jumpAction = playerInputs.Movement.Jump;
+            animator = gameObject.GetComponentInChildren<Animator>();
+
+
+            isPaused = false;
         }
 
         protected override void OnEnable()
@@ -113,6 +121,12 @@ namespace TeamBobFPS
 
             unitHealth.OnDied += OnDie;
             RocketProjectile.PlayerHit += ReceiveKnockback;
+
+
+            menu = playerInputs.Menu.Pause;
+            menu.Enable();
+
+            menu.performed += Pause;
         }
 
         protected override void OnDisable()
@@ -125,6 +139,10 @@ namespace TeamBobFPS
 
             unitHealth.OnDied -= OnDie;
             RocketProjectile.PlayerHit -= ReceiveKnockback;
+
+
+            menu.Disable();
+            menu.performed -= Pause;
         }
 
         public override void OnFixedUpdate(float fixedDeltaTime)
@@ -251,7 +269,7 @@ namespace TeamBobFPS
         private void OnDie(EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
         {
             OnPlayerDied?.Invoke();
-
+            animator.enabled = false;
             LockMovement = true;
             jumpAction.performed -= QueueJump;
             GameInstance.Instance.GetPlayerDefeatedCanvas().Show();
@@ -277,6 +295,30 @@ namespace TeamBobFPS
             lockInputs = lockMovement;
             weaponSwap.LockInputs(lockWeapons);
             firstPersonCamera.LockInputs(lockLook);
+        }
+
+        public void Pause(InputAction.CallbackContext context)
+        {
+            isPaused = !isPaused;
+
+            if (isPaused)
+            {
+                GameInstance.Instance.GetUpdateManager().timeScale = 0;
+                GameInstance.Instance.GetUpdateManager().fixedTimeScale = 0;
+                GameInstance.Instance.GetPauseMenu().Show();
+                animator.enabled = false;
+                LockMovement = true;
+                isPaused = true;
+            }
+            else
+            {
+                GameInstance.Instance.GetUpdateManager().timeScale = 1;
+                GameInstance.Instance.GetUpdateManager().fixedTimeScale = 1;
+                GameInstance.Instance.GetPauseMenu().Hide();
+                animator.enabled = true;
+                LockMovement = false;
+                isPaused = false;
+            }
         }
     }
 }

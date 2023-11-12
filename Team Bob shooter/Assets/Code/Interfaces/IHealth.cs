@@ -6,6 +6,7 @@ namespace TeamBobFPS
 {
     public interface IHealth
     {
+
         float Health { get; }
 
         bool AddHealth(float amount);
