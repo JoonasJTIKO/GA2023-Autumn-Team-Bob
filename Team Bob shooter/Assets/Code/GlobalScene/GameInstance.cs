@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using TeamBobFPS;
 using TeamBobFPS.UI;
+using Unity.VisualScripting;
 
 namespace TeamBobFPS
 {
@@ -21,6 +22,9 @@ namespace TeamBobFPS
 
         [SerializeField]
         private UpdateManager updateManager;
+
+        [SerializeField]
+        private Menu getPauseMenu;
 
         private static GameInstance instance;
 
@@ -103,6 +107,9 @@ namespace TeamBobFPS
         public GameProgressionManager GetGameProgressionManager() {  return progressionManager; }
 
         public AudioManager GetAudioManager() { return audioManager; }
+
+        public Menu GetPauseMenu() { return getPauseMenu; }
+
     }
 }
 
