@@ -9,5 +9,7 @@ namespace TeamBobFPS
         string PromptText { get; }
 
         bool OnInteract(int currentWeapon);
+
+        void OnHover(bool state);
     }
 }

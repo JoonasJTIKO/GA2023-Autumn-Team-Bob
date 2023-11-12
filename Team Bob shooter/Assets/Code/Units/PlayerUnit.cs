@@ -47,6 +47,10 @@ namespace TeamBobFPS
 
         private WeaponSwap weaponSwap;
 
+        private FootstepPlayer footstepPlayer;
+
+        private float footStepTimer = 0f;
+
         public Camera PlayerCam
         {
             get { return playerCam; }
@@ -105,6 +109,7 @@ namespace TeamBobFPS
             rb = GetComponent<Rigidbody>();
             unitHealth = GetComponent<UnitHealth>();
             playerCam = GetComponentInChildren<Camera>();
+            footstepPlayer = GetComponent<FootstepPlayer>();
             playerInputs = new PlayerInputs();
             moveAction = playerInputs.Movement.Move;
             jumpAction = playerInputs.Movement.Jump;
@@ -153,6 +158,18 @@ namespace TeamBobFPS
         public override void OnFixedUpdate(float fixedDeltaTime)
         {
             base.OnFixedUpdate(fixedDeltaTime);
+
+            if (GameInstance.Instance.GetUpdateManager().fixedTimeScale == 0)
+            {
+                rb.useGravity = false;
+                rb.velocity = Vector3.zero;
+                mover.Move(Vector3.zero);
+                return;
+            }
+            else
+            {
+                rb.useGravity = true;
+            }
 
             if (IsGrounded && rb.velocity.y <= 0)
             {
@@ -224,6 +241,29 @@ namespace TeamBobFPS
             if (!LockMovement)
             {
                 mover.Move(move);
+            }
+
+            if (!LockMovement && !jumping && move != Vector3.zero)
+            {
+                ProgressFootstepTimer(fixedDeltaTime);
+            }
+            else
+            {
+                footStepTimer = 0f;
+            }
+        }
+
+        private void ProgressFootstepTimer(float deltaTime)
+        {
+            if (footStepTimer == 0f)
+            {
+                footstepPlayer.PlayFootstep();
+            }
+
+            footStepTimer += deltaTime;
+            if (footStepTimer >= 0.3f)
+            {
+                footStepTimer = 0f;
             }
         }
 

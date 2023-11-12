@@ -31,6 +31,7 @@ namespace TeamBobFPS
         {
             AddTargetState(StateType.MainMenu);
             AddTargetState(StateType.Arena1);
+            AddTargetState(StateType.Arena2);
         }
     }
 }

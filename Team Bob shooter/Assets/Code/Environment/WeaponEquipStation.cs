@@ -17,6 +17,8 @@ namespace TeamBobFPS
 
         private new Collider collider;
 
+        private Canvas canvas;
+
         public string PromptText
         {
             get { return promptText; }
@@ -25,6 +27,8 @@ namespace TeamBobFPS
         private void Awake()
         {
             collider = GetComponent<Collider>();
+            canvas = GetComponentInChildren<Canvas>();
+            canvas.gameObject.SetActive(false);
         }
 
         private void Start()
@@ -69,6 +73,11 @@ namespace TeamBobFPS
             model.gameObject.SetActive(false);
 
             return true;
+        }
+
+        public void OnHover(bool state)
+        {
+            canvas.gameObject.SetActive(state);
         }
 
         /// <summary>

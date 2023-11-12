@@ -78,6 +78,7 @@ namespace TeamBobFPS
                 if (currentTargeted != hit.collider.GetComponent<IInteractable>())
                 {
                     currentTargeted = hit.collider.GetComponent<IInteractable>();
+                    currentTargeted.OnHover(true);
                     GameInstance.Instance.GetInGameHudCanvas().SetInteractText(currentTargeted.PromptText);
                 }
             }
@@ -85,6 +86,7 @@ namespace TeamBobFPS
             {
                 if (currentTargeted != null)
                 {
+                    currentTargeted.OnHover(false);
                     currentTargeted = null;
                     GameInstance.Instance.GetInGameHudCanvas().SetInteractText("");
                 }

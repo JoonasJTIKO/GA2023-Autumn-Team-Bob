@@ -35,7 +35,7 @@ namespace TeamBobFPS
 
                 camera.transform.localEulerAngles = new Vector3(x, y, originalPos.z);
 
-                elapsed += Time.deltaTime;
+                elapsed += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
 
                 yield return null;
             }

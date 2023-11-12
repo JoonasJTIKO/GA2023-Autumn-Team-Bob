@@ -12,6 +12,9 @@ TagManager:
   - EnemyLegL
   - EnemyRagdoll
   - EnemyProjectile
+  - Grass
+  - Wood
+  - Stone
   layers:
   - Default
   - TransparentFX
@@ -23,7 +26,7 @@ TagManager:
   - Enemy
   - Environment
   - Viewmodel
-  - 
+  - WorldUI
   - 
   - Interactable
   - PlayerProjectile

@@ -1038,7 +1038,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingLoadout:
   - WeaponType: 4
-  - WeaponType: 3
+  - WeaponType: 1
 --- !u!114 &458228141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1073,13 +1073,13 @@ MonoBehaviour:
     unlocked: 1
   - weapon:
       WeaponType: 4
-    unlocked: 0
+    unlocked: 1
   - weapon:
       WeaponType: 2
-    unlocked: 0
+    unlocked: 1
   - weapon:
       WeaponType: 3
-    unlocked: 0
+    unlocked: 1
 --- !u!114 &458228143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1098,13 +1098,19 @@ MonoBehaviour:
   sfxVolumeName: 
   musicVolumeName: 
   masterVolumeName: 
-  playerRunGrass: {fileID: 0}
-  playerRunWood: {fileID: 0}
-  playerRunStone: {fileID: 0}
-  playerJump: {fileID: 0}
+  playerRunGrass: {fileID: 8300000, guid: 1d7e7e6569aab5a45a837f470eaddc8b, type: 3}
+  playerRunGrass2: {fileID: 8300000, guid: 7a5ff4a806216b14ab9dba35a4fb258c, type: 3}
+  playerRunGrass3: {fileID: 8300000, guid: 31be579b280d0bc459635877e8c45aee, type: 3}
+  playerRunWood: {fileID: 8300000, guid: 2802b1a72217c464ea0171ad67e835f7, type: 3}
+  playerRunWood2: {fileID: 8300000, guid: 88da42c7018c0fa41870ccf17d13da9c, type: 3}
+  playerRunWood3: {fileID: 8300000, guid: b30822d7e7d412d459397d0749be742a, type: 3}
+  playerRunStone: {fileID: 8300000, guid: ecd647025e0a3c04fbd5829fff509e09, type: 3}
+  playerRunStone2: {fileID: 8300000, guid: 7b4b6eb734482064c8c1e5fd45d4d76c, type: 3}
+  playerRunStone3: {fileID: 8300000, guid: 82354d1fee336984994fbdcc8154c89c, type: 3}
+  playerJump: {fileID: 8300000, guid: b04465ceef591864badb1aa5c65ee644, type: 3}
   playerDoubleJump: {fileID: 0}
   playerDash: {fileID: 0}
-  playerLand: {fileID: 0}
+  playerLand: {fileID: 8300000, guid: 6aeefb601c305f64487cebdfacae5b6c, type: 3}
   playerTakeDamage: {fileID: 0}
   playerTakeDamage2: {fileID: 0}
   playerDie: {fileID: 0}

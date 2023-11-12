@@ -14,6 +14,7 @@ namespace TeamBobFPS
     {
         [SerializeField] UnitHealth unitHealth = null;
         [SerializeField] private Transform player;
+        [SerializeField] private ScreenShake screenShake;
 
         private Volume volume = null;
         private Vignette vignette = null;
@@ -63,6 +64,7 @@ namespace TeamBobFPS
 
         private void RemoveHealth()
         {
+            screenShake.Shake(1);
             StartCoroutine(TakeDamageEffect());
         }
 
@@ -107,9 +109,21 @@ namespace TeamBobFPS
         private IEnumerator HealEffect()
         {
             vignette.color.Override(Color.green);
-            vignette.intensity.Override(0.2f);
+            float intensity = 0f;
+            while (intensity < 0.4f)
+            {
+                vignette.intensity.Override(intensity);
+                intensity += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                yield return null;
+            }
 
-            yield return new WaitForSeconds(0.5f);
+            while (intensity > 0f)
+            {
+                vignette.intensity.Override(intensity);
+                intensity -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                yield return null;
+            }
+
             vignette.color.Override(Color.white);
         }
     }

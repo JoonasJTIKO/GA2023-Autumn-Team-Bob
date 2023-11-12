@@ -10,8 +10,14 @@ public enum EGameSFX
 {
     // PLAYER SFX
     _SFX_PLAYER_RUN_GRASS,
+    _SFX_PLAYER_RUN_GRASS2,
+    _SFX_PLAYER_RUN_GRASS3,
     _SFX_PLAYER_RUN_WOOD,
+    _SFX_PLAYER_RUN_WOOD2,
+    _SFX_PLAYER_RUN_WOOD3,
     _SFX_PLAYER_RUN_STONE,
+    _SFX_PLAYER_RUN_STONE2,
+    _SFX_PLAYER_RUN_STONE3,
     _SFX_PLAYER_JUMP,
     _SFX_PLAYER_DOUBLE_JUMP,
     _SFX_PLAYER_DASH,
@@ -78,9 +84,21 @@ namespace TeamBobFPS
         [SerializeField]
         private AudioClip playerRunGrass;
         [SerializeField]
+        private AudioClip playerRunGrass2;
+        [SerializeField]
+        private AudioClip playerRunGrass3;
+        [SerializeField]
         private AudioClip playerRunWood;
         [SerializeField]
+        private AudioClip playerRunWood2;
+        [SerializeField]
+        private AudioClip playerRunWood3;
+        [SerializeField]
         private AudioClip playerRunStone;
+        [SerializeField]
+        private AudioClip playerRunStone2;
+        [SerializeField]
+        private AudioClip playerRunStone3;
         [SerializeField]
         private AudioClip playerJump;
         [SerializeField]
@@ -313,8 +331,14 @@ namespace TeamBobFPS
             {
                 #region SFX switch case using ENUM
                 case EGameSFX._SFX_PLAYER_RUN_GRASS: audioSourceSFX.clip = playerRunGrass; break;
+                case EGameSFX._SFX_PLAYER_RUN_GRASS2: audioSourceSFX.clip = playerRunGrass2; break;
+                case EGameSFX._SFX_PLAYER_RUN_GRASS3: audioSourceSFX.clip = playerRunGrass3; break;
                 case EGameSFX._SFX_PLAYER_RUN_WOOD: audioSourceSFX.clip = playerRunWood; break;
+                case EGameSFX._SFX_PLAYER_RUN_WOOD2: audioSourceSFX.clip = playerRunWood2; break;
+                case EGameSFX._SFX_PLAYER_RUN_WOOD3: audioSourceSFX.clip = playerRunWood3; break;
                 case EGameSFX._SFX_PLAYER_RUN_STONE: audioSourceSFX.clip = playerRunStone; break;
+                case EGameSFX._SFX_PLAYER_RUN_STONE2: audioSourceSFX.clip = playerRunStone2; break;
+                case EGameSFX._SFX_PLAYER_RUN_STONE3: audioSourceSFX.clip = playerRunStone3; break;
                 case EGameSFX._SFX_PLAYER_JUMP: audioSourceSFX.clip = playerJump; break;
                 case EGameSFX._SFX_PLAYER_DOUBLE_JUMP: audioSourceSFX.clip = playerDoubleJump; break;
                 case EGameSFX._SFX_PLAYER_DASH: audioSourceSFX.clip = playerDash; break;
