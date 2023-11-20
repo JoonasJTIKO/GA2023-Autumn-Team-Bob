@@ -94,7 +94,7 @@ namespace TeamBobFPS
                 return false;
             }
 
-            for (int i = 0; i <= items.Count; i++)
+            for (int i = 0; i < items.Count; i++)
             {
                 // Does the item originate from this pool?
                 T currentItem = items[i];

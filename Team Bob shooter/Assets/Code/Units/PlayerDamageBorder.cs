@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -109,18 +108,19 @@ namespace TeamBobFPS
         private IEnumerator HealEffect()
         {
             vignette.color.Override(Color.green);
-            float intensity = 0f;
-            while (intensity < 0.4f)
+            float timer = 0f;
+            while (timer < 0.2f)
             {
-                vignette.intensity.Override(intensity);
-                intensity += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                vignette.intensity.Override(Mathf.Lerp(0, 0.4f, timer / 0.2f));
+                timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
                 yield return null;
             }
 
-            while (intensity > 0f)
+            timer = 0f;
+            while (timer < 0.4f)
             {
-                vignette.intensity.Override(intensity);
-                intensity -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                vignette.intensity.Override(Mathf.Lerp(0.4f, 0, timer / 0.4f));
+                timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
                 yield return null;
             }
 

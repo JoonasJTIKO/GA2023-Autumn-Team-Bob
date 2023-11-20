@@ -18,13 +18,13 @@ namespace TeamBobFPS
                 SceneManager.LoadSceneAsync(SceneName, LoadSceneMode.Additive);
             }
 
-            GameInstance.Instance.GetInGameHudCanvas().Show();
+            GameInstance.Instance.GetLoadoutSelectCanvas().Show();
         }
 
         public override void Deactivate(bool unloadScene = true)
         {
             if (unloadScene) SceneManager.UnloadSceneAsync(SceneName);
-            GameInstance.Instance.GetInGameHudCanvas().Hide();
+            GameInstance.Instance.GetLoadoutSelectCanvas().Hide();
         }
 
         public HubState() : base()

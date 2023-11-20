@@ -23,8 +23,8 @@ namespace TeamBobFPS
 
         public void Awake()
         {
-            healthPool = new ComponentPool<HealthOrb>(healthOrb, 10);
-            ammoPool = new ComponentPool<AmmoPickup>(ammoPickup, 10);
+            healthPool = new ComponentPool<HealthOrb>(healthOrb, 5);
+            ammoPool = new ComponentPool<AmmoPickup>(ammoPickup, 5);
         }
 
         public void SpawnThings()

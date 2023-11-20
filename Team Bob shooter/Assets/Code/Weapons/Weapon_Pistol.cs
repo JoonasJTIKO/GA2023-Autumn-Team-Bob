@@ -73,7 +73,7 @@ namespace TeamBobFPS
         protected override void Fire()
         {
             screenShake.Shake(1);
-
+            recoil.DoRecoil(-2);
             GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_PISTOL_SHOOT, transform.position, volume: 0.5f, make2D: true);
 
             RaycastHit hit;

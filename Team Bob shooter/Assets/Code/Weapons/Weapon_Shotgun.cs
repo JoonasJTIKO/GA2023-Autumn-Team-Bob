@@ -79,6 +79,7 @@ namespace TeamBobFPS
         protected override void Fire()
         {
             screenShake.Shake(0);
+            recoil.DoRecoil(-4);
             GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_SHOTGUN_SHOOT, transform.position, volume: 0.5f, make2D: true);
 
             Dictionary<UnitHealth, float> damages = new Dictionary<UnitHealth, float>();

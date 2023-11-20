@@ -26,6 +26,9 @@ namespace TeamBobFPS
         [SerializeField]
         private Menu getPauseMenu;
 
+        [SerializeField]
+        private LoadoutSelectCanvas loadoutSelectCanvas;
+
         private static GameInstance instance;
 
         private GameStateManager gameStateManager;
@@ -109,6 +112,8 @@ namespace TeamBobFPS
         public AudioManager GetAudioManager() { return audioManager; }
 
         public Menu GetPauseMenu() { return getPauseMenu; }
+
+        public LoadoutSelectCanvas GetLoadoutSelectCanvas() {  return loadoutSelectCanvas; }
 
     }
 }

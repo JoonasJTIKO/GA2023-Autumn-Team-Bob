@@ -20,6 +20,8 @@ namespace TeamBobFPS
         [SerializeField]
         private bool endless = false;
 
+        private bool backwards = false;
+
         private int waveIndex = 0;
 
         private WaveData currentWave;
@@ -51,11 +53,13 @@ namespace TeamBobFPS
         {
             MeleeEnemy.OnDefeated += EnemyDefeated;
             RangeEnemy.OnDefeated += EnemyDefeated;
+            FlyingEnemy.OnDefeated += EnemyDefeated;
         }
         private void OnDisable()
         {
             MeleeEnemy.OnDefeated -= EnemyDefeated;
             RangeEnemy.OnDefeated -= EnemyDefeated;
+            FlyingEnemy.OnDefeated -= EnemyDefeated;
         }
 
         /// <summary>
@@ -112,6 +116,9 @@ namespace TeamBobFPS
                 case WaveData.EnemyType.RangedStandard:
                     enemy = currentWaveEnemies.ElementAt(1).Key;
                     break;
+                case WaveData.EnemyType.Flying:
+                    enemy = currentWaveEnemies.ElementAt(2).Key;
+                    break;
             }
 
             currentWaveEnemies[enemy]--;
@@ -156,19 +163,33 @@ namespace TeamBobFPS
             }
             OnWaveCleared?.Invoke(waveIndex, levelIndex);
             cutsceneManager.PlayCutscene(waveIndex);
-            waveIndex++;
-            if (waveIndex >= waves.Length)
+            if (backwards)
             {
-                if (endless)
+                waveIndex--;
+                if (waveIndex < 0)
                 {
-                    waveIndex--;
-                }
-                else
-                {
-                    AllWavesCleared();
-                    return;
+                    backwards = false;
+                    waveIndex++;
                 }
             }
+            else
+            {
+                waveIndex++;
+                if (waveIndex >= waves.Length)
+                {
+                    if (endless)
+                    {
+                        backwards = true;
+                        waveIndex--;
+                    }
+                    else
+                    {
+                        AllWavesCleared();
+                        return;
+                    }
+                }
+            }
+            
             currentWave = waves[waveIndex];
             StartWave(currentWave);
         }

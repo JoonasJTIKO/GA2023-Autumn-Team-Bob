@@ -478,6 +478,15 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TogglePage"",
+                    ""type"": ""Button"",
+                    ""id"": ""a3c817e6-1ce6-423a-80e4-e789ca4b8212"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -645,6 +654,39 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ba032ce0-b65c-4a26-9780-cace27a6f7d8"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MKB"",
+                    ""action"": ""TogglePage"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7ab933fd-b79e-4648-a643-d91b78896be7"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""TogglePage"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1027f011-968c-4c0a-90ed-073828b43ff6"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""TogglePage"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -681,6 +723,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_Menu_Move = m_Menu.FindAction("Move", throwIfNotFound: true);
         m_Menu_Select = m_Menu.FindAction("Select", throwIfNotFound: true);
         m_Menu_Pause = m_Menu.FindAction("Pause", throwIfNotFound: true);
+        m_Menu_TogglePage = m_Menu.FindAction("TogglePage", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -901,6 +944,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Menu_Move;
     private readonly InputAction m_Menu_Select;
     private readonly InputAction m_Menu_Pause;
+    private readonly InputAction m_Menu_TogglePage;
     public struct MenuActions
     {
         private @PlayerInputs m_Wrapper;
@@ -908,6 +952,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Menu_Move;
         public InputAction @Select => m_Wrapper.m_Menu_Select;
         public InputAction @Pause => m_Wrapper.m_Menu_Pause;
+        public InputAction @TogglePage => m_Wrapper.m_Menu_TogglePage;
         public InputActionMap Get() { return m_Wrapper.m_Menu; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -926,6 +971,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
+            @TogglePage.started += instance.OnTogglePage;
+            @TogglePage.performed += instance.OnTogglePage;
+            @TogglePage.canceled += instance.OnTogglePage;
         }
 
         private void UnregisterCallbacks(IMenuActions instance)
@@ -939,6 +987,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
+            @TogglePage.started -= instance.OnTogglePage;
+            @TogglePage.performed -= instance.OnTogglePage;
+            @TogglePage.canceled -= instance.OnTogglePage;
         }
 
         public void RemoveCallbacks(IMenuActions instance)
@@ -995,5 +1046,6 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+        void OnTogglePage(InputAction.CallbackContext context);
     }
 }

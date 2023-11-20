@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 5020352074282278788}
   - component: {fileID: 8055947359650502201}
   - component: {fileID: 5940794693293431690}
+  - component: {fileID: 6679909706942978408}
   m_Layer: 14
   m_Name: HealthOrb
   m_TagString: Untagged
@@ -203,3 +204,17 @@ MonoBehaviour:
   - {x: 2, y: 0, z: 0}
   - {x: 3, y: 0, z: 0}
   - {x: 4, y: 0, z: 0}
+--- !u!114 &6679909706942978408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6316648122733906023}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 231cf0cf8abaaa44cada9a5f90de9e40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1
+  distance: 0.2

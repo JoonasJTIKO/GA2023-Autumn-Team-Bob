@@ -5,17 +5,20 @@ using UnityEngine;
 
 namespace TeamBobFPS
 {
-    public class ArenaLoadZone : MonoBehaviour
+    public class ArenaLoadZone : MonoBehaviour, IInteractable
     {
         [SerializeField]
         private StateType targetState;
 
-        private void OnTriggerEnter(Collider other)
+        [SerializeField]
+        private string promptText;
+
+        public string PromptText
         {
-            FadeCanvas fadeCanvas = GameInstance.Instance.GetFadeCanvas();
-            fadeCanvas.FadeTo(0.5f);
-            fadeCanvas.OnFadeToComplete += LoadTarget;
+            get { return promptText; }
         }
+
+        private bool activated = false;
 
         private void LoadTarget()
         {
@@ -27,6 +30,21 @@ namespace TeamBobFPS
         public void SetTargetState(StateType targetState)
         {
             this.targetState = targetState;
+        }
+
+        public bool OnInteract(int currentWeapon)
+        {
+            if (activated) return false;
+
+            FadeCanvas fadeCanvas = GameInstance.Instance.GetFadeCanvas();
+            fadeCanvas.FadeTo(0.5f);
+            fadeCanvas.OnFadeToComplete += LoadTarget;
+            activated = true;
+            return true;
+        }
+
+        public void OnHover(bool state)
+        {
         }
     }
 }

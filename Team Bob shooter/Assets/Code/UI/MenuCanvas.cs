@@ -8,10 +8,10 @@ namespace TeamBobFPS.UI
     public class MenuCanvas : BaseUpdateListener
     {
         [SerializeField]
-        private EventSystem eventSystem;
+        protected EventSystem eventSystem;
 
         [SerializeField]
-        private GameObject initialSelectedObject;
+        protected GameObject initialSelectedObject;
 
         public override void OnUpdate(float deltaTime)
         {

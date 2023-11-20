@@ -15,11 +15,15 @@ namespace TeamBobFPS
 
         public void Shoot()
         {
+            if (rangeEnemy == null) return;
+
             rangeEnemy.Shoot();
         }
 
         public void AttemptPositionChange()
         {
+            if (rangeEnemy == null) return;
+
             rangeEnemy.AttemptPositionChange();
         }
     }

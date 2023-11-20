@@ -75,7 +75,7 @@ namespace TeamBobFPS
             if (doGroundCheck)
             {
                 IsGrounded = Physics.SphereCast(transform.position, collider.radius * 0.7f,
-                                -transform.up, out hit, 0.7f, groundLayer);
+                                -transform.up, out hit, collider.height * 0.4f, groundLayer);
             }
 
             if (rb != null && setupComplete)

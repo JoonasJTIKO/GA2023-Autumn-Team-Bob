@@ -25,11 +25,17 @@ namespace TeamBobFPS
             chars = targetText.ToCharArray();
         }
 
-        public void StartWrite()
+        public void StartWrite(string text = "")
         {
             if (textComponent == null || GameInstance.Instance == null) return;
 
             textComponent.text = "";
+            targetText = text;
+            chars = targetText.ToCharArray();
+            if (coroutine != null)
+            {
+                StopCoroutine(coroutine);
+            }
             coroutine = StartCoroutine(Write());
         }
 
