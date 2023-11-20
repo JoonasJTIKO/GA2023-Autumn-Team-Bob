@@ -437,9 +437,14 @@ namespace TeamBobFPS
 
         public void DashAfterAttack()
         {
-            changePosDirection = (transform.position - player.transform.position).normalized;
-            changePosDirection = new Vector3(changePosDirection.x, 0, changePosDirection.z);
-            changePosDirection = Quaternion.Euler(0, UnityEngine.Random.Range(-180f, 180f), 0) * changePosDirection;
+            changePosDirection = (player.position - transform.position).normalized;
+
+            if (Vector3.Distance(player.transform.position, transform.position) < fireRange * 0.66f)
+            {
+                changePosDirection = new Vector3(changePosDirection.x, 0, changePosDirection.z);
+                changePosDirection = Quaternion.Euler(0, UnityEngine.Random.Range(-180f, 180f), 0) * changePosDirection;
+            }
+            
             enemyDash.Dash(changePosDirection);
         }
 

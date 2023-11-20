@@ -68,6 +68,7 @@ namespace TeamBobFPS
         protected override void Fire()
         {
             screenShake.Shake(1);
+            recoil.DoRecoil(-0.3f);
             muzzleFlash.Play();
 
             RaycastHit hit;

@@ -46,6 +46,10 @@ namespace TeamBobFPS
             {
                 GameInstance.Instance.GetMapAreaManager().PlayerLocation = -1;
             }
+            else if (other.gameObject.layer == 7 && enemiesInArea.Contains(other.gameObject))
+            {
+                enemiesInArea.Remove(other.gameObject);
+            }
         }
     }
 }

@@ -20,6 +20,11 @@ namespace TeamBobFPS.UI
         private TMP_Text newWaveTestText;
 
         [SerializeField]
+        private TMP_Text waveNumber;
+
+        private int currentWaveNumber = 1;
+
+        [SerializeField]
         private string[] newWaveTexts;
 
         protected override void OnEnable()
@@ -51,12 +56,21 @@ namespace TeamBobFPS.UI
             interactText.text = text;
         }
 
+        public void ActivateWaveInfo(bool state)
+        {
+            waveNumber.transform.parent.gameObject.SetActive(state);
+            GetComponentInChildren<ObjectiveText>().gameObject.SetActive(!state);
+        }
+
         private void ActivateNewWaveTestText(int waveIndex, int levelIndex)
         {
             if (waveIndex < 0) return;
 
-            newWaveTestText.text = newWaveTexts[waveIndex];
-            StartCoroutine(TextFade());
+            currentWaveNumber++;
+            waveNumber.text = currentWaveNumber.ToString();
+
+            //newWaveTestText.text = newWaveTexts[waveIndex];
+            //StartCoroutine(TextFade());
         }
 
         private IEnumerator TextFade()

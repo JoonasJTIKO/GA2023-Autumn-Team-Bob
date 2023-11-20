@@ -9,7 +9,7 @@ namespace TeamBobFPS
     {
         public override string SceneName { get { return "lvl1"; } }
 
-        public override StateType Type { get { return StateType.Arena1; } }
+        public override StateType Type { get { return StateType.Arena2; } }
 
         public override void Activate(bool loadScene = true)
         {
@@ -18,6 +18,7 @@ namespace TeamBobFPS
                 SceneManager.LoadSceneAsync(SceneName, LoadSceneMode.Additive);
             }
 
+            GameInstance.Instance.GetLevelSelectCanvas().Hide();
             GameInstance.Instance.GetInGameHudCanvas().Show();
         }
 

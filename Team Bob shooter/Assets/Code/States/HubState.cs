@@ -19,6 +19,7 @@ namespace TeamBobFPS
             }
 
             GameInstance.Instance.GetLoadoutSelectCanvas().Show();
+            GameInstance.Instance.GetFadeCanvas().FadeFrom(0.5f);
         }
 
         public override void Deactivate(bool unloadScene = true)
@@ -32,6 +33,8 @@ namespace TeamBobFPS
             AddTargetState(StateType.MainMenu);
             AddTargetState(StateType.Arena1);
             AddTargetState(StateType.Arena2);
+            AddTargetState(StateType.Arena1Endless);
+            AddTargetState(StateType.Arena2Endless);
         }
     }
 }

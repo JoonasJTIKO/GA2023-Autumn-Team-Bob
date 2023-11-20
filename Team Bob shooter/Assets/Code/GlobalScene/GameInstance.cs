@@ -29,6 +29,9 @@ namespace TeamBobFPS
         [SerializeField]
         private LoadoutSelectCanvas loadoutSelectCanvas;
 
+        [SerializeField]
+        private LevelSelectCanvas levelSelectCanvas;
+
         private static GameInstance instance;
 
         private GameStateManager gameStateManager;
@@ -114,6 +117,8 @@ namespace TeamBobFPS
         public Menu GetPauseMenu() { return getPauseMenu; }
 
         public LoadoutSelectCanvas GetLoadoutSelectCanvas() {  return loadoutSelectCanvas; }
+
+        public LevelSelectCanvas GetLevelSelectCanvas() { return levelSelectCanvas; }
 
     }
 }

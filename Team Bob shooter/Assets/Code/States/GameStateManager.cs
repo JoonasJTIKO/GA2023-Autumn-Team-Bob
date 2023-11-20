@@ -53,10 +53,12 @@ namespace TeamBobFPS
         {
             ForestLevelState forestLevelState = new ForestLevelState();
             InGameState inGameState = new InGameState();
+            VillageEndlessState villageEndlessState = new VillageEndlessState();
             HubState hubState = new HubState();
 
             states.Add(forestLevelState);
             states.Add(inGameState);
+            states.Add(villageEndlessState);
             states.Add(hubState);
         }
 

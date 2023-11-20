@@ -5041,10 +5041,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e589fb6a189ec2940912d4af1fda86b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  decalData:
-  - sprite: {fileID: 21300000, guid: 9c02731cd3e9238449fd9b1f8dfdfd0c, type: 3}
-    size: {x: 1, y: 1, z: 1}
-  decalProjector: {fileID: 5395013789238911510, guid: 124de4327ea28df4295ef5f9fdb2b454,
+  materials:
+  - {fileID: 2100000, guid: 70062ce0abc87524aac73486097c6d74, type: 2}
+  - {fileID: 2100000, guid: c7b8c10c9034dc74c847efc0e726e4cf, type: 2}
+  - {fileID: 2100000, guid: a7b4df171e5fdd6408b5823b6106352a, type: 2}
+  - {fileID: 2100000, guid: 292e2c0caaabe0543b654be5f70d5eb1, type: 2}
+  - {fileID: 2100000, guid: 2fbd43daba913ec4d9683d53fee38fa4, type: 2}
+  - {fileID: 2100000, guid: 5a4f9a5bed438cf4fb17835af3933468, type: 2}
+  - {fileID: 2100000, guid: f1c8640aac8abf745b35b3f9981bbbe1, type: 2}
+  - {fileID: 2100000, guid: cd1bbe8da83efce4a8a8a7e40fe0c8da, type: 2}
+  decalProjector: {fileID: 5395013789238911510, guid: cc63ab19a8cf6644dbe6ac5d8b263f4c,
     type: 3}
 --- !u!1 &8699759554619004049
 GameObject:

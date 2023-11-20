@@ -9,20 +9,12 @@ namespace TeamBobFPS
 {
     public class DecalPaint : MonoBehaviour
     {
-        [Serializable]
-        public class DecalTextureData
-        {
-            public Sprite sprite;
-            public Vector3 size;
-        }
 
         [SerializeField]
-        private DecalTextureData[] decalData;
+        private Material[] materials;
 
         [SerializeField]
         private DecalProjector decalProjector;
-
-        private Material[] decalMaterials;
 
         private int decalIndex = 0;
 
@@ -36,18 +28,9 @@ namespace TeamBobFPS
 
         private void Awake()
         {
-            decalMaterials = new Material[decalData.Length];
 
             decalPool = new ComponentPool<DecalProjector>(decalProjector, poolSize);
             activeDecals = new DecalProjector[poolSize];
-        }
-
-        public void ChangeDecal(int index)
-        {
-            if (index >= 0 && index < decalData.Length)
-            {
-                decalIndex = index;
-            }
         }
 
         public void ApplyDecal(Vector3 point, Vector3 normal)
@@ -59,14 +42,11 @@ namespace TeamBobFPS
             activeDecals[index] = decalPool.Get();
             activeDecals[index].transform.position = point;
 
-            if (decalMaterials[decalIndex] == null)
-            {
-                decalMaterials[decalIndex] = new Material(activeDecals[index].material);
-            }
+            int materialIndex = UnityEngine.Random.Range(0, materials.Length - 1);
 
-            activeDecals[index].material = decalMaterials[decalIndex];
-            activeDecals[index].material.SetTexture("Base_Map", decalData[decalIndex].sprite.texture);
-            activeDecals[index].size = decalData[decalIndex].size;
+            activeDecals[index].material = materials[materialIndex];
+            float random = UnityEngine.Random.Range(1f, 2f);
+            activeDecals[index].size = new Vector3(random, random, random);
             activeDecals[index].transform.forward = -normal;
             index++;
             if (index >= activeDecals.Length) index = 0;

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3624069402989793996}
   - component: {fileID: 1242555200770590840}
+  - component: {fileID: 3543231304541925094}
   m_Layer: 6
   m_Name: market stall
   m_TagString: Untagged
@@ -44,8 +45,21 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 2, z: 2}
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Size: {x: 1, y: 0.8, z: 2}
+  m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!65 &3543231304541925094
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4107449191966558326}
+  m_Material: {fileID: 13400000, guid: 8e2437c515276d54c93c8f2b52f6a4c6, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.2, z: 2}
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!1 &4672364104186778487
 GameObject:
   m_ObjectHideFlags: 0

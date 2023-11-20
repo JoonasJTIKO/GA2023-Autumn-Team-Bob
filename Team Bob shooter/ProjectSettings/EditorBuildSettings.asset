@@ -18,8 +18,11 @@ EditorBuildSettings:
     path: Assets/Scenes/HubScene.unity
     guid: f13880e18507dae49b13fc24f86e3b09
   - enabled: 1
-    path: Assets/Scenes/lvl2.unity
+    path: Assets/Scenes/Village.unity
     guid: 4ecee979ab3b7374a989ac24560f7afc
+  - enabled: 1
+    path: Assets/Scenes/VillageEndless.unity
+    guid: b71f53767ef116e438159e285dff0abc
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 7310d8ec4743f7c46bbcf12c069e6f93,
       type: 2}

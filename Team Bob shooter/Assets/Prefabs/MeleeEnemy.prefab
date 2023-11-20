@@ -327,6 +327,8 @@ MonoBehaviour:
   health: 100
   damageMultiplier: 1
   invincibilityTime: 0
+  ExplosionPoint: {x: 0, y: 0, z: 0}
+  ExplosionStrength: 1
   knockbackAngle: 45
 --- !u!114 &-185357064360333613
 MonoBehaviour:
@@ -345,7 +347,7 @@ MonoBehaviour:
     m_Bits: 64
   environmentLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 1048832
   doGroundCheck: 1
 --- !u!114 &5341308935744060165
 MonoBehaviour:

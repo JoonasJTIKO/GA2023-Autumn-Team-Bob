@@ -22,6 +22,8 @@ namespace TeamBobFPS
 
         private bool backwards = false;
 
+        private int endlessLoop = 0;
+
         private int waveIndex = 0;
 
         private WaveData currentWave;
@@ -31,6 +33,7 @@ namespace TeamBobFPS
         private Dictionary<WaveData.WaveEnemy, int> reinforcementInfo = new Dictionary<WaveData.WaveEnemy, int>();
         private Dictionary<WaveData.WaveEnemy, int> defeatedCountInfo = new Dictionary<WaveData.WaveEnemy, int>();
         private Dictionary<WaveData.WaveEnemy, int> totalAmountInfo = new Dictionary<WaveData.WaveEnemy, int>();
+        private Dictionary<WaveData.WaveEnemy, bool> canSpawnReinforcements = new Dictionary<WaveData.WaveEnemy, bool>(); 
 
         private EnemySpawning enemySpawning;
 
@@ -73,6 +76,7 @@ namespace TeamBobFPS
             reinforcementInfo.Clear();
             defeatedCountInfo.Clear();
             totalAmountInfo.Clear();
+            canSpawnReinforcements.Clear();
 
             //Spawn initial enemies
             foreach (WaveData.WaveEnemy enemy in wave.Enemies)
@@ -89,7 +93,16 @@ namespace TeamBobFPS
                 currentWaveEnemies.Add(enemy, enemy.MaxConcurrent);
                 maxAmountInfo.Add(enemy, enemy.MaxConcurrent);
                 reinforcementInfo.Add(enemy, enemy.ReinforcementThreshold);
-                totalAmountInfo.Add(enemy, enemy.TotalAmount);
+                if (endlessLoop == 0)
+                {
+                    totalAmountInfo.Add(enemy, enemy.TotalAmount);
+                }
+                else
+                {
+                    float multiplier = Mathf.Clamp(1f + (0.5f * endlessLoop), 1.5f, 3f);
+                    totalAmountInfo.Add(enemy, (int)(enemy.TotalAmount * multiplier));
+                }
+                canSpawnReinforcements.Add(enemy, enemy.MaxConcurrent != totalAmountInfo[enemy]);
             }
             enemySpawning.SpawnRate = wave.SpawnRate;
             enemySpawning.SpawnAll();
@@ -132,9 +145,9 @@ namespace TeamBobFPS
             }
 
 
-            int maxSpawn = totalAmountInfo[enemy] - defeatedCountInfo[enemy];
+            int maxSpawn = totalAmountInfo[enemy] - defeatedCountInfo[enemy] - currentWaveEnemies[enemy];
 
-            if (currentWaveEnemies[enemy] <= reinforcementInfo[enemy])
+            if (currentWaveEnemies[enemy] <= reinforcementInfo[enemy] && canSpawnReinforcements[enemy])
             {
                 int amountToSpawn = maxAmountInfo[enemy] - reinforcementInfo[enemy];
                 if (amountToSpawn > maxSpawn)
@@ -180,7 +193,8 @@ namespace TeamBobFPS
                     if (endless)
                     {
                         backwards = true;
-                        waveIndex--;
+                        waveIndex -= 2;
+                        endlessLoop++;
                     }
                     else
                     {

@@ -8,5 +8,7 @@ namespace TeamBobFPS
         Hub = 2,
         Arena1 = 3,
         Arena2 = 4,
+        Arena1Endless = 5,
+        Arena2Endless = 6
     }
 }

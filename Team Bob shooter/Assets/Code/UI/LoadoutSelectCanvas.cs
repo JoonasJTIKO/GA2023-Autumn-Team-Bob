@@ -83,6 +83,12 @@ namespace TeamBobFPS.UI
             }
         }
 
+        public void EnterLevelSelect()
+        {
+            Hide();
+            GameInstance.Instance.GetLevelSelectCanvas().Show();
+        }
+
         private IEnumerator WaitForInputRelease()
         {
             while (selectAction.phase == InputActionPhase.Performed)
