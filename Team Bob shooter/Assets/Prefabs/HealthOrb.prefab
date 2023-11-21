@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healAmount: 10
-  pickUpRange: 6
+  pickUpRange: 8
   speed: 15
   acceleration: 1.1
   canBeCollectedTimer: 0.5

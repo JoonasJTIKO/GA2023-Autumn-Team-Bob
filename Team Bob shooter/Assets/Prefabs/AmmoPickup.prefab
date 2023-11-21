@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ammoRecoveryAmount: 10
-  pickUpRange: 6
+  pickUpRange: 8
   speed: 15
   acceleration: 1.1
   canBeCollectedTimer: 1
