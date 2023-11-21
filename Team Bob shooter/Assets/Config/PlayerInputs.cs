@@ -487,6 +487,15 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Back"",
+                    ""type"": ""Button"",
+                    ""id"": ""5be0a439-59a7-4f7b-b847-e59dabf92041"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -687,6 +696,28 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""action"": ""TogglePage"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3e485a79-4765-4dfa-939e-7b6a54e9902d"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MKB"",
+                    ""action"": ""Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2d12fb18-fd8f-4092-b8fc-9904ea642d6b"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -724,6 +755,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_Menu_Select = m_Menu.FindAction("Select", throwIfNotFound: true);
         m_Menu_Pause = m_Menu.FindAction("Pause", throwIfNotFound: true);
         m_Menu_TogglePage = m_Menu.FindAction("TogglePage", throwIfNotFound: true);
+        m_Menu_Back = m_Menu.FindAction("Back", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -945,6 +977,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Menu_Select;
     private readonly InputAction m_Menu_Pause;
     private readonly InputAction m_Menu_TogglePage;
+    private readonly InputAction m_Menu_Back;
     public struct MenuActions
     {
         private @PlayerInputs m_Wrapper;
@@ -953,6 +986,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         public InputAction @Select => m_Wrapper.m_Menu_Select;
         public InputAction @Pause => m_Wrapper.m_Menu_Pause;
         public InputAction @TogglePage => m_Wrapper.m_Menu_TogglePage;
+        public InputAction @Back => m_Wrapper.m_Menu_Back;
         public InputActionMap Get() { return m_Wrapper.m_Menu; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -974,6 +1008,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @TogglePage.started += instance.OnTogglePage;
             @TogglePage.performed += instance.OnTogglePage;
             @TogglePage.canceled += instance.OnTogglePage;
+            @Back.started += instance.OnBack;
+            @Back.performed += instance.OnBack;
+            @Back.canceled += instance.OnBack;
         }
 
         private void UnregisterCallbacks(IMenuActions instance)
@@ -990,6 +1027,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @TogglePage.started -= instance.OnTogglePage;
             @TogglePage.performed -= instance.OnTogglePage;
             @TogglePage.canceled -= instance.OnTogglePage;
+            @Back.started -= instance.OnBack;
+            @Back.performed -= instance.OnBack;
+            @Back.canceled -= instance.OnBack;
         }
 
         public void RemoveCallbacks(IMenuActions instance)
@@ -1047,5 +1087,6 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         void OnSelect(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnTogglePage(InputAction.CallbackContext context);
+        void OnBack(InputAction.CallbackContext context);
     }
 }

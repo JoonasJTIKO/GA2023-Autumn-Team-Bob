@@ -175,14 +175,15 @@ namespace TeamBobFPS
                 if (count > 0) return;
             }
             OnWaveCleared?.Invoke(waveIndex, levelIndex);
-            cutsceneManager.PlayCutscene(waveIndex);
+            cutsceneManager?.PlayCutscene(waveIndex);
             if (backwards)
             {
                 waveIndex--;
                 if (waveIndex < 0)
                 {
                     backwards = false;
-                    waveIndex++;
+                    waveIndex += 2;
+                    endlessLoop++;
                 }
             }
             else
@@ -205,6 +206,13 @@ namespace TeamBobFPS
             }
             
             currentWave = waves[waveIndex];
+            if (endless)
+            {
+                GameInstance.Instance.GetInGameHudCanvas().WaveCleared();
+                StartCoroutine(StartWaveAfterDelay());
+                return;
+            }
+
             StartWave(currentWave);
         }
 
@@ -226,6 +234,21 @@ namespace TeamBobFPS
                 timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
                 yield return null;
             }
+            StartWave(currentWave);
+        }
+
+        private IEnumerator StartWaveAfterDelay()
+        {
+            float timer = 0f;
+
+            while (timer < 3.5f)
+            {
+                timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                yield return null;
+            }
+
+            GameInstance.Instance.GetGameProgressionManager().UpdateEndlessHighscore(levelIndex);
+            GameInstance.Instance.GetInGameHudCanvas().UpdateWaveNumber();
             StartWave(currentWave);
         }
     }

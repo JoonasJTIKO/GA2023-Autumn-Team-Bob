@@ -251,7 +251,7 @@ PrefabInstance:
     - target: {fileID: 3517088280860780267, guid: 87627ce70b5972941876f6e56c328b74,
         type: 3}
       propertyPath: m_TagString
-      value: EnemyBody
+      value: RangeEnemy
       objectReference: {fileID: 0}
     - target: {fileID: 3517088280860780272, guid: 87627ce70b5972941876f6e56c328b74,
         type: 3}
@@ -814,7 +814,7 @@ MonoBehaviour:
   gibPrefab: {fileID: 871579249979481876, guid: b516540e880522c498d75a570696e061,
     type: 3}
   enemyType: 1
-  fireRange: 10
+  fireRange: 15
   roam: 0
   animator: {fileID: 5295084111466417510}
   damageLockoutTime: 0

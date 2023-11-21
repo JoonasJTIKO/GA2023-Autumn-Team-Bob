@@ -9,13 +9,11 @@ namespace TeamBobFPS.UI
         public void RetryStage()
         {
             GameInstance.Instance.GetGameStateManager().ReloadCurrentState();
-            Hide();
         }
 
         public void BackToHub()
         {
             GameInstance.Instance.GetGameStateManager().Go(StateType.Hub);
-            Hide();
         }
     }
 }

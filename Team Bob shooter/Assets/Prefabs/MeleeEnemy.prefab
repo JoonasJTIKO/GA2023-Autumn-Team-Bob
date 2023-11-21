@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 5341308935744060165}
   m_Layer: 7
   m_Name: MeleeEnemy
-  m_TagString: EnemyBody
+  m_TagString: MeleeEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -654,6 +654,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a2c126221bc23b04fa9dfeff50da05e8,
+        type: 3}
+      propertyPath: m_TagString
+      value: EnemyBody
+      objectReference: {fileID: 0}
     - target: {fileID: 2078293031932907172, guid: a2c126221bc23b04fa9dfeff50da05e8,
         type: 3}
       propertyPath: m_Layer
@@ -827,3 +832,23 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 4623697436334952944}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5542740936291527841 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a2c126221bc23b04fa9dfeff50da05e8,
+    type: 3}
+  m_PrefabInstance: {fileID: 4623697436334952944}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &9043400596465531258
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5542740936291527841}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.4
+  m_Height: 1.5
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.72, z: 0}

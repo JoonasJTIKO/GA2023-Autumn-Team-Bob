@@ -18,6 +18,7 @@ namespace TeamBobFPS
                 SceneManager.LoadSceneAsync(SceneName, LoadSceneMode.Additive);
             }
 
+            GameInstance.Instance.GetPlayerDefeatedCanvas().Hide();
             GameInstance.Instance.GetLoadoutSelectCanvas().Show();
             GameInstance.Instance.GetFadeCanvas().FadeFrom(0.5f);
         }

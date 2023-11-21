@@ -160,6 +160,8 @@ namespace TeamBobFPS
 
         private void OnDie(float explosionStrength, Vector3 explosionPoint, EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
         {
+            EnemyAggroState.aggro = true;
+
             dropSpawner.SpawnThings();
             Vector3 pos = new Vector3(transform.position.x, transform.position.y - 0.9f, transform.position.z);
             Vector3 vRot = transform.rotation.eulerAngles;
@@ -237,16 +239,18 @@ namespace TeamBobFPS
 
             currentDistance = Vector3.Distance(player.transform.position, transform.position);
 
-            if (currentDistance < radius && noticed && mapAreaManager.PlayerInArea(CurrentMapArea))
+            if (/*currentDistance < radius*/ EnemyAggroState.aggro && mapAreaManager.PlayerInArea(CurrentMapArea))
             {
                 currentState = ActionState.chase;
+                Noticed();
+                timer = 0;
             }
             else
             {
                 currentState = ActionState.idle;
             }
 
-            if (currentDistance < fireRange && canSee || posChange || firing)
+            if (currentDistance < fireRange && canSee && noticed || posChange || firing)
             {
                 currentState = ActionState.fire;
             }
@@ -435,8 +439,8 @@ namespace TeamBobFPS
             var lookPos = player.transform.position - transform.position;
             lookPos.y = 0;
 
-            Quaternion lookOnLook = Quaternion.LookRotation(lookPos);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookOnLook, Time.deltaTime * 5f);
+            //Quaternion lookOnLook = Quaternion.LookRotation(lookPos);
+            //transform.rotation = Quaternion.Slerp(transform.rotation, lookOnLook, Time.deltaTime * 5f);
 
             Vector3 directionToTarget = (player.transform.position - transform.position).normalized;
             float kulma = Mathf.Abs(Vector3.SignedAngle(transform.forward, directionToTarget, Vector3.up));
@@ -446,8 +450,8 @@ namespace TeamBobFPS
                 if (!Physics.Raycast(transform.position, directionToTarget, currentDistance, wallMask))
                 {
                     canSee = true;
-                    Noticed();
-                    timer = 0;
+                    //Noticed();
+                    //timer = 0;
 
                     //Shoot();
                 }
@@ -508,6 +512,7 @@ namespace TeamBobFPS
         {
             firing = false;
 
+            EnemyAggroState.aggro = true;
             animator.SetTrigger("Damage");
             StartCoroutine(DamageLockout());
         }

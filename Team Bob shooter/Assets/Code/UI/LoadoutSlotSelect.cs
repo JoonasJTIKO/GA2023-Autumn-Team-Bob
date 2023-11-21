@@ -27,6 +27,11 @@ namespace TeamBobFPS
             text = GetComponentInChildren<TMP_Text>();
         }
 
+        private void Start()
+        {
+            UpdateText(GameInstance.Instance.GetWeaponLoadout().EquippedWeapons[slotIndex].WeaponType);
+        }
+
         public void SetWeapon(EquippableWeapon weapon)
         {
             this.weapon = weapon;

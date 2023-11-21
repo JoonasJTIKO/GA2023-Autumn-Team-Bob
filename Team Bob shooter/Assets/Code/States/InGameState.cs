@@ -19,6 +19,7 @@ namespace TeamBobFPS
             }
 
             GameInstance.Instance.GetLevelSelectCanvas().Hide();
+            GameInstance.Instance.GetPlayerDefeatedCanvas().Hide();
             GameInstance.Instance.GetInGameHudCanvas().Show();
             GameInstance.Instance.GetInGameHudCanvas().ActivateWaveInfo(false);
         }

@@ -105,6 +105,7 @@ namespace TeamBobFPS
             if (unitHealth != null)
             {
                 unitHealth.OnDied -= OnDie;
+                unitHealth.OnTakeDamage -= OnTakeDamage;
             }
 
             if (enemyLungeAttack != null)
@@ -131,6 +132,7 @@ namespace TeamBobFPS
             unitHealth = GetComponent<UnitHealth>();
             unitHealth.AddHealth(unitHealth.MaxHealth);
             unitHealth.OnDied += OnDie;
+            unitHealth.OnTakeDamage += OnTakeDamage;
 
             if (noticed)
             {
@@ -142,6 +144,8 @@ namespace TeamBobFPS
 
         private void OnDie(float explosionStrength, Vector3 explosionPoint, EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
         {
+            EnemyAggroState.aggro = true;
+
             dropSpawner.SpawnThings();
             Vector3 pos = transform.position;
             Quaternion rot = transform.rotation;
@@ -215,7 +219,7 @@ namespace TeamBobFPS
             currentDistance = Vector3.Distance(player.transform.position, transform.position);
             //Debug.Log(currentDistance);  
 
-            if (currentDistance < radius && canSee)
+            if (/*currentDistance < radius && canSee*/ EnemyAggroState.aggro)
             {
                 Noticed();
             }
@@ -236,7 +240,7 @@ namespace TeamBobFPS
                 {
                     Attack();
                 }
-                if (!attacking)
+                if (!attacking && pathUpdating)
                 {
                     Move();
                 }
@@ -381,6 +385,11 @@ namespace TeamBobFPS
         {
             mover.enabled = true;
             attacking = false;
+        }
+
+        private void OnTakeDamage()
+        {
+            EnemyAggroState.aggro = true;
         }
 
         private void Search()

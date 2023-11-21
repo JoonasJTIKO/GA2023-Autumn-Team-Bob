@@ -15,6 +15,9 @@ TagManager:
   - Grass
   - Wood
   - Stone
+  - RangeEnemy
+  - MeleeEnemy
+  - FlyingEnemy
   layers:
   - Default
   - TransparentFX

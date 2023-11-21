@@ -30,9 +30,21 @@ namespace TeamBobFPS
             private set;
         }
 
+        public Dictionary<string, int> VillageEndlessModeHighScores
+        {
+            get;
+            private set;
+        }
+
         private void Awake()
         {
             CurrentGameProgress = 0;
+
+            VillageEndlessModeHighScores = new Dictionary<string, int>();
+            VillageEndlessModeHighScores.Add("Pistol", 0);
+            VillageEndlessModeHighScores.Add("Shotgun", 0);
+            VillageEndlessModeHighScores.Add("Minigun", 0);
+            VillageEndlessModeHighScores.Add("Railgun", 0);
         }
 
         public void UpdateGameProgress(int levelIndex)
@@ -53,6 +65,20 @@ namespace TeamBobFPS
             }
             Debug.LogError("Weapon not added to progression manager!");
             return false;
+        }
+
+        public void UpdateEndlessHighscore(int levelIndex)
+        {
+            string weapon1 = GameInstance.Instance.GetWeaponLoadout().EquippedWeapons[0].WeaponType.ToString();
+            string weapon2 = GameInstance.Instance.GetWeaponLoadout().EquippedWeapons[1].WeaponType.ToString();
+
+            switch (levelIndex)
+            {
+                case 2:
+                    VillageEndlessModeHighScores[weapon1]++;
+                    VillageEndlessModeHighScores[weapon2]++;
+                    break;
+            }
         }
     }
 }

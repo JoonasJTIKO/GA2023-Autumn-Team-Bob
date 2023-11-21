@@ -27,19 +27,8 @@ namespace TeamBobFPS.UI
         [SerializeField]
         private string[] newWaveTexts;
 
-        protected override void OnEnable()
-        {
-            base.OnEnable();
-
-            WaveManager.OnWaveCleared += ActivateNewWaveTestText;
-        }
-
-        protected override void OnDisable()
-        {
-            base.OnDisable();
-
-            WaveManager.OnWaveCleared -= ActivateNewWaveTestText;
-        }
+        [SerializeField]
+        private Animator WaveClearAnimator;
 
         public void UpdateMagCount(int amount)
         {
@@ -59,18 +48,32 @@ namespace TeamBobFPS.UI
         public void ActivateWaveInfo(bool state)
         {
             waveNumber.transform.parent.gameObject.SetActive(state);
-            GetComponentInChildren<ObjectiveText>().gameObject.SetActive(!state);
+            GetComponentInChildren<ObjectiveText>(true).gameObject.SetActive(!state);
         }
 
-        private void ActivateNewWaveTestText(int waveIndex, int levelIndex)
+        public void WaveCleared()
         {
-            if (waveIndex < 0) return;
+            WaveClearAnimator.SetTrigger("PlayWipe");
+        }
 
+        public void UpdateWaveNumber()
+        {
             currentWaveNumber++;
+
             waveNumber.text = currentWaveNumber.ToString();
 
             //newWaveTestText.text = newWaveTexts[waveIndex];
             //StartCoroutine(TextFade());
+        }
+
+        public override void Show()
+        {
+            base.Show();
+
+            if (interactText != null)
+            {
+                interactText.text = "";
+            }
         }
 
         private IEnumerator TextFade()

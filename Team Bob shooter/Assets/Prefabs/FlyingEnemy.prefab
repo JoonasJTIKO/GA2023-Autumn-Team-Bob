@@ -115,6 +115,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: FlyingEnemy
       objectReference: {fileID: 0}
+    - target: {fileID: 7562922708867057644, guid: 888b50bee9f1d7541bc4928e589521a1,
+        type: 3}
+      propertyPath: m_TagString
+      value: FlyingEnemy
+      objectReference: {fileID: 0}
     - target: {fileID: 7562922708867057653, guid: 888b50bee9f1d7541bc4928e589521a1,
         type: 3}
       propertyPath: m_UseGravity
@@ -283,7 +288,7 @@ MonoBehaviour:
   gibPrefab: {fileID: 871579249979481876, guid: b516540e880522c498d75a570696e061,
     type: 3}
   enemyType: 2
-  fireRange: 30
+  fireRange: 20
   roam: 0
   animator: {fileID: 187006249935165169}
   damageLockoutTime: 0.5

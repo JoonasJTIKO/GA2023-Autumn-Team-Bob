@@ -154,6 +154,8 @@ namespace TeamBobFPS
 
         private void OnDie(float explosionStrength, Vector3 explosionPoint, EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
         {
+            EnemyAggroState.aggro = true;
+
             dropSpawner.SpawnThings();
             Vector3 pos = new Vector3(transform.position.x, transform.position.y - 0.9f, transform.position.z);
             Vector3 vRot = transform.rotation.eulerAngles;
@@ -459,6 +461,7 @@ namespace TeamBobFPS
 
         private void OnTakeDamage()
         {
+            EnemyAggroState.aggro = true;
             animator.SetTrigger("Damage");
             StartCoroutine(DamageLockout());
         }

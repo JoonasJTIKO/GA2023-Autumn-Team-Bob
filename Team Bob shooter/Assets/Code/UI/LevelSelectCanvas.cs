@@ -17,13 +17,18 @@ namespace TeamBobFPS.UI
         [SerializeField]
         private GameObject[] endlessButtons;
 
-        private InputAction togglePage;
+        [SerializeField]
+        private HighscoreUI highscoreUI;
+
+        private InputAction togglePageAction, backAction;
 
         private PlayerInputs playerInputs;
 
         private bool endlessPageActive = false;
 
         private bool pressed = false;
+
+        private int selectedLevelIndex = 2;
 
         protected override void Awake()
         {
@@ -32,31 +37,20 @@ namespace TeamBobFPS.UI
             playerInputs = new PlayerInputs();
         }
 
-        protected override void OnEnable()
+        public override void OnUpdate(float deltaTime)
         {
-            base.OnEnable();
+            base.OnUpdate(deltaTime);
 
-            pressed = false;
-
-            if (playerInputs != null )
+            if (eventSystem.currentSelectedGameObject == endlessButtons[0] && selectedLevelIndex != 2)
             {
-                playerInputs.Menu.Enable();
-                togglePage = playerInputs.Menu.TogglePage;
-                togglePage.Enable();
-                togglePage.performed += TogglePage;
+                selectedLevelIndex = 2;
+                highscoreUI.Activate(selectedLevelIndex);
+
             }
-        }
-
-        protected override void OnDisable()
-        {
-            base.OnDisable();
-
-
-            if (playerInputs != null)
+            else if (eventSystem.currentSelectedGameObject == endlessButtons[1] && selectedLevelIndex != 3)
             {
-                playerInputs.Menu.Disable();
-                togglePage.Disable();
-                togglePage.performed -= TogglePage;
+                selectedLevelIndex = 3;
+                highscoreUI.Activate(selectedLevelIndex);
             }
         }
 
@@ -64,7 +58,53 @@ namespace TeamBobFPS.UI
         {
             base.Show();
 
+            pressed = false;
+
+            if (playerInputs != null)
+            {
+                playerInputs.Menu.Enable();
+                togglePageAction = playerInputs.Menu.TogglePage;
+                togglePageAction.Enable();
+                togglePageAction.performed += TogglePage;
+                backAction = playerInputs.Menu.Back;
+                backAction.Enable();
+                backAction.performed += GoBack;
+            }
+
             StartCoroutine(Activate());
+        }
+
+        public override void Hide()
+        {
+            if (playerInputs != null)
+            {
+                playerInputs.Menu.Disable();
+                togglePageAction.Disable();
+                togglePageAction.performed -= TogglePage;
+                backAction.Disable();
+                backAction.performed -= GoBack;
+            }
+
+            foreach (var button in normalButtons)
+            {
+                button.SetActive(false);
+            }
+
+            foreach (var button in endlessButtons)
+            {
+                button.SetActive(false);
+            }
+
+            endlessPageActive = false;
+            highscoreUI.gameObject.SetActive(false);
+
+            base.Hide();
+        }
+
+        private void GoBack(InputAction.CallbackContext context)
+        {
+            Hide();
+            GameInstance.Instance.GetLoadoutSelectCanvas().Show();
         }
 
         private void TogglePage(InputAction.CallbackContext context)
@@ -73,6 +113,7 @@ namespace TeamBobFPS.UI
             {
                 endlessPageActive = true;
                 pageModeText.text = "Endless";
+                highscoreUI.gameObject.SetActive(true);
                 for (int i = 0; i < normalButtons.Length; i++)
                 {
                     normalButtons[i].SetActive(false);
@@ -84,6 +125,7 @@ namespace TeamBobFPS.UI
             {
                 endlessPageActive = false;
                 pageModeText.text = "Standard";
+                highscoreUI.gameObject.SetActive(false);
                 for (int i = 0; i < normalButtons.Length; i++)
                 {
                     normalButtons[i].SetActive(true);
@@ -93,17 +135,9 @@ namespace TeamBobFPS.UI
             }
         }
 
-        private IEnumerator Activate() 
+        private IEnumerator Activate()
         {
-            //int counter = 0;
-            //while (counter < 5)
-            //{
-            //    yield return null;
-            //    counter++;
-            //}
-
             yield return new WaitForFixedUpdate();
-
             foreach (var button in normalButtons)
             {
                 button.SetActive(true);

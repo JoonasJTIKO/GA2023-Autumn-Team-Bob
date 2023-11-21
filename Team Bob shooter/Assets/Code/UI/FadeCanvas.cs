@@ -36,6 +36,8 @@ namespace TeamBobFPS.UI
 
         public void FadeFrom(float fadeTime)
         {
+            if (image == null) return;
+
             this.fadeTime = fadeTime;
 
             if (activeRoutine != null)
