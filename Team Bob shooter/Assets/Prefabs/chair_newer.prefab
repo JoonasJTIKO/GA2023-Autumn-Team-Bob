@@ -11,7 +11,9 @@ GameObject:
   - component: {fileID: 2349466052928302855}
   - component: {fileID: 1672279636432543906}
   - component: {fileID: 3517828294000940136}
-  m_Layer: 0
+  - component: {fileID: 6263209590814826872}
+  - component: {fileID: 156809740946470003}
+  m_Layer: 6
   m_Name: chair_newer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,3 +85,29 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6263209590814826872
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3157351275680576957}
+  m_Material: {fileID: 13400000, guid: 8e2437c515276d54c93c8f2b52f6a4c6, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.0000002, y: 24.9, z: 1.9}
+  m_Center: {x: 0, y: -10.8, z: 0}
+--- !u!65 &156809740946470003
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3157351275680576957}
+  m_Material: {fileID: 13400000, guid: 8e2437c515276d54c93c8f2b52f6a4c6, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.0000002, y: 30, z: 0.3}
+  m_Center: {x: 0, y: 10.87, z: 1.06}

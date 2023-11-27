@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +20,8 @@ namespace TeamBobFPS
 
         private Coroutine dashRoutine;
 
+        public event Action OnDashCompleted;
+
         private void Awake()
         {
             mover = GetComponent<Mover>();
@@ -35,12 +38,15 @@ namespace TeamBobFPS
 
             while (timer < dashDuration)
             {
+                transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, direction, Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale * 10, 0));
+
                 mover.Setup(maxSpeed * speedCurve.Evaluate(timer / dashDuration));
                 mover.Move(direction);
 
                 timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
                 yield return null;
             }
+            OnDashCompleted?.Invoke();
         }
     }
 }

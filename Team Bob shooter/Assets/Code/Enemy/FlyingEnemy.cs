@@ -83,6 +83,10 @@ namespace TeamBobFPS
 
         private FlyingEnemyDash enemyDash;
 
+        private bool dashing = false;
+
+        private bool firing = false;
+
         private enum ActionState
         {
             idle = 0,
@@ -149,7 +153,7 @@ namespace TeamBobFPS
             unitHealth.OnTakeDamage += OnTakeDamage;
 
             damageLockout = false;
-            spawnEffect.PlayEffect();
+            if (spawnEffect != null) spawnEffect.PlayEffect();
         }
 
         private void OnDie(float explosionStrength, Vector3 explosionPoint, EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
@@ -157,7 +161,6 @@ namespace TeamBobFPS
             EnemyAggroState.aggro = true;
 
             dropSpawner.SpawnThings();
-            Vector3 pos = new Vector3(transform.position.x, transform.position.y - 0.9f, transform.position.z);
             Vector3 vRot = transform.rotation.eulerAngles;
 
             Quaternion rot = Quaternion.Euler(new Vector3(vRot.x, vRot.y + 180f, vRot.z));
@@ -167,7 +170,7 @@ namespace TeamBobFPS
             activeGibbing = enemyGibbingPool.Get();
             if (activeGibbing == null) return;
             activeGibbing.Completed += ReturnGibToPool;
-            activeGibbing.transform.position = pos;
+            activeGibbing.transform.position = transform.position;
             activeGibbing.transform.rotation = rot;
             activeGibbing.Activate(explosionPoint, explosionStrength, deathType);
         }
@@ -260,7 +263,7 @@ namespace TeamBobFPS
                 case ActionState.idle:
                     break;
                 case ActionState.fire:
-                    TurnTowardsPlayer(fixedDeltaTime);
+                    if (!dashing) TurnTowardsPlayer(fixedDeltaTime);
                     if (StartAttack())
                     {
                         mover.Move(Vector3.zero);
@@ -374,8 +377,8 @@ namespace TeamBobFPS
             var lookPos = player.transform.position - transform.position;
             lookPos.y = 0;
 
-            Quaternion lookOnLook = Quaternion.LookRotation(lookPos);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookOnLook, Time.deltaTime * 5f);
+            //Quaternion lookOnLook = Quaternion.LookRotation(lookPos);
+            //transform.rotation = Quaternion.Slerp(transform.rotation, lookOnLook, Time.deltaTime * 5f);
 
             Vector3 directionToTarget = (player.transform.position - transform.position).normalized;
             float kulma = Mathf.Abs(Vector3.SignedAngle(transform.forward, directionToTarget, Vector3.up));
@@ -405,11 +408,10 @@ namespace TeamBobFPS
 
         private bool StartAttack()
         {
-            if (canSee && noticed && shootComponent.Ready && !posChange)
+            if (canSee && noticed && shootComponent.Ready && !dashing && !firing)
             {
+                firing = true;
                 animator.SetTrigger("Attack");
-                Shoot();
-                StartCoroutine(TempWait());
                 return true;
             }
             return false;
@@ -418,6 +420,7 @@ namespace TeamBobFPS
         public void Shoot()
         {
             shootComponent.Fire(player);
+            StartCoroutine(TempWait());
 
             //Wait();
             //GameObject bullet = ObjectPool.SharedInstance.GetPooledObject();
@@ -433,7 +436,7 @@ namespace TeamBobFPS
 
         private IEnumerator TempWait()
         {
-            yield return new WaitForSeconds(0.7f);
+            yield return new WaitForSeconds(0.2f);
             DashAfterAttack();
         }
 
@@ -446,8 +449,18 @@ namespace TeamBobFPS
                 changePosDirection = new Vector3(changePosDirection.x, 0, changePosDirection.z);
                 changePosDirection = Quaternion.Euler(0, UnityEngine.Random.Range(-180f, 180f), 0) * changePosDirection;
             }
-            
+
+            animator.SetTrigger("Dash");
             enemyDash.Dash(changePosDirection);
+            enemyDash.OnDashCompleted += OnDashCompleted;
+            dashing = true;
+            firing = false;
+        }
+
+        private void OnDashCompleted()
+        {
+            enemyDash.OnDashCompleted -= OnDashCompleted;
+            dashing = false;
         }
 
         private void MaintainGroundDistance()

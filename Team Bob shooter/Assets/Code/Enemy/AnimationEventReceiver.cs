@@ -8,16 +8,24 @@ namespace TeamBobFPS
     {
         private RangeEnemy rangeEnemy;
 
+        private FlyingEnemy flyingEnemy;
+
         private void Awake()
         {
             rangeEnemy = GetComponentInParent<RangeEnemy>();
+            flyingEnemy = GetComponentInParent<FlyingEnemy>();
         }
 
         public void Shoot()
         {
-            if (rangeEnemy == null) return;
-
-            rangeEnemy.Shoot();
+            if (rangeEnemy != null)
+            {
+                rangeEnemy.Shoot();
+            }
+            else if (flyingEnemy != null)
+            {
+                flyingEnemy.Shoot();
+            }
         }
 
         public void AttemptPositionChange()

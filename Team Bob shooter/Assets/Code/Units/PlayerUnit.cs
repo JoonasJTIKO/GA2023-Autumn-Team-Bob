@@ -51,6 +51,8 @@ namespace TeamBobFPS
 
         private float footStepTimer = 0f;
 
+        private Vector3 pauseVelocity;
+
         public Camera PlayerCam
         {
             get { return playerCam; }
@@ -388,6 +390,9 @@ namespace TeamBobFPS
                 animator.enabled = false;
                 LockMovement = true;
                 isPaused = true;
+                pauseVelocity = rb.velocity;
+                rb.velocity = Vector3.zero;
+                rb.useGravity = false;
             }
             else
             {
@@ -397,6 +402,8 @@ namespace TeamBobFPS
                 animator.enabled = true;
                 LockMovement = false;
                 isPaused = false;
+                rb.velocity = pauseVelocity;
+                rb.useGravity = true;
             }
         }
     }

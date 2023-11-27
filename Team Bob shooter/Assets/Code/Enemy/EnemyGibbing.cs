@@ -38,6 +38,9 @@ namespace TeamBobFPS
         [SerializeField]
         private GameObject explosionBlood;
 
+        [SerializeField]
+        private bool allowPartialGore = true;
+
         private RagdollBehavior ragdollBehavior;
 
         private DecalPaint decalPaint;
@@ -74,78 +77,81 @@ namespace TeamBobFPS
             ragdollBehavior.PushRagdoll(transform.forward * 10);
             explosionBlood.SetActive(false);
 
-            switch (deathType)
+            if (!(!allowPartialGore && deathType != DeathType.Explode))
             {
-                case DeathType.Normal:
-                    break;
-                case DeathType.Head:
-                    ragdollPieces[0].SetActive(false);
-                    ragdollPieces[1].SetActive(false);
-                    ragdollPieces[2].SetActive(false);
-                    ragdollPieces[3].SetActive(false);
-
-                    bodyPieces[0].gameObject.SetActive(true);
-                    break;
-                case DeathType.LeftArm:
-                    ragdollPieces[4].SetActive(false);
-                    ragdollPieces[5].SetActive(false);
-                    ragdollPieces[6].SetActive(false);
-
-                    bodyPieces[1].gameObject.SetActive(true);
-                    break;
-                case DeathType.RightArm:
-                    ragdollPieces[7].SetActive(false);
-                    ragdollPieces[8].SetActive(false);
-
-                    bodyPieces[2].gameObject.SetActive(true);
-                    break;
-                case DeathType.LeftLeg:
-                    ragdollPieces[9].SetActive(false);
-                    ragdollPieces[10].SetActive(false);
-
-                    bodyPieces[3].gameObject.SetActive(true);
-                    break;
-                case DeathType.RightLeg:
-                    ragdollPieces[11].SetActive(false);
-                    ragdollPieces[12].SetActive(false);
-
-                    bodyPieces[4].gameObject.SetActive(true);
-                    break;
-                case DeathType.Explode:
-                    explosionBlood.SetActive(true);
-
-                    foreach (var piece in ragdollPieces)
-                    {
-                        piece.SetActive(false);
-                    }
-
-                    foreach (var piece in bodyPieces)
-                    {
-                        piece.gameObject.SetActive(true);
-                    }
-                    break;
-            }
-
-            foreach (var bodyPart in bodyPieces)
-            {
-                if (!bodyPart.gameObject.activeInHierarchy) continue;
-
-                Rigidbody rigidbody = bodyPart.gameObject.GetComponent<Rigidbody>();
-                rigidbody.useGravity = true;
-                Vector3 angle;
-                if (explosionPoint != Vector3.zero)
+                switch (deathType)
                 {
-                    angle = (transform.position - explosionPoint);
+                    case DeathType.Normal:
+                        break;
+                    case DeathType.Head:
+                        ragdollPieces[0].SetActive(false);
+                        ragdollPieces[1].SetActive(false);
+                        ragdollPieces[2].SetActive(false);
+                        ragdollPieces[3].SetActive(false);
+
+                        bodyPieces[0].gameObject.SetActive(true);
+                        break;
+                    case DeathType.LeftArm:
+                        ragdollPieces[4].SetActive(false);
+                        ragdollPieces[5].SetActive(false);
+                        ragdollPieces[6].SetActive(false);
+
+                        bodyPieces[1].gameObject.SetActive(true);
+                        break;
+                    case DeathType.RightArm:
+                        ragdollPieces[7].SetActive(false);
+                        ragdollPieces[8].SetActive(false);
+
+                        bodyPieces[2].gameObject.SetActive(true);
+                        break;
+                    case DeathType.LeftLeg:
+                        ragdollPieces[9].SetActive(false);
+                        ragdollPieces[10].SetActive(false);
+
+                        bodyPieces[3].gameObject.SetActive(true);
+                        break;
+                    case DeathType.RightLeg:
+                        ragdollPieces[11].SetActive(false);
+                        ragdollPieces[12].SetActive(false);
+
+                        bodyPieces[4].gameObject.SetActive(true);
+                        break;
+                    case DeathType.Explode:
+                        explosionBlood.SetActive(true);
+
+                        foreach (var piece in ragdollPieces)
+                        {
+                            piece.SetActive(false);
+                        }
+
+                        foreach (var piece in bodyPieces)
+                        {
+                            piece.gameObject.SetActive(true);
+                        }
+                        break;
                 }
-                else
+
+                foreach (var bodyPart in bodyPieces)
                 {
-                    angle = Vector3.up;
+                    if (!bodyPart.gameObject.activeInHierarchy) continue;
+
+                    Rigidbody rigidbody = bodyPart.gameObject.GetComponent<Rigidbody>();
+                    rigidbody.useGravity = true;
+                    Vector3 angle;
+                    if (explosionPoint != Vector3.zero)
+                    {
+                        angle = (transform.position - explosionPoint);
+                    }
+                    else
+                    {
+                        angle = Vector3.up;
+                    }
+                    angle = (new Vector3(angle.x + UnityEngine.Random.Range(-0.5f, 0.5f),
+                        angle.y + UnityEngine.Random.Range(-0.5f, 0.5f),
+                        angle.z + UnityEngine.Random.Range(-0.5f, 0.5f))).normalized;
+                    rigidbody.AddForce(angle * gibStrength * explosionStrengthMultiplier, ForceMode.Impulse);
+                    rigidbody.AddTorque(angle * 0.1f, ForceMode.Impulse);
                 }
-                angle = (new Vector3(angle.x + UnityEngine.Random.Range(-0.5f, 0.5f),
-                    angle.y + UnityEngine.Random.Range(-0.5f, 0.5f),
-                    angle.z + UnityEngine.Random.Range(-0.5f, 0.5f))).normalized;
-                rigidbody.AddForce(angle * gibStrength * explosionStrengthMultiplier, ForceMode.Impulse);
-                rigidbody.AddTorque(angle * 0.1f, ForceMode.Impulse);
             }
 
             StartCoroutine(SplatterRoutine());

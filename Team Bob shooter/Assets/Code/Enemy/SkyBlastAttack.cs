@@ -63,15 +63,9 @@ namespace TeamBobFPS
             }
 
             RaycastHit hit;
-            Debug.Log(transform.position);
             if (Physics.SphereCast(new Vector3(transform.position.x, transform.position.y + 20, transform.position.z), range, Vector3.down, out hit, 20f, playerLayer))
             {
-                Debug.Log("hit");
                 hit.collider.gameObject.GetComponent<UnitHealth>().RemoveHealth(damage);
-            }
-            else
-            {
-                Debug.Log("no hit");
             }
 
             cooldownRoutine = StartCoroutine(Cooldown());
