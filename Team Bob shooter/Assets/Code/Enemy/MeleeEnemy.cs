@@ -387,7 +387,7 @@ namespace TeamBobFPS
             attacking = false;
         }
 
-        private void OnTakeDamage()
+        private void OnTakeDamage(float amount)
         {
             EnemyAggroState.aggro = true;
         }

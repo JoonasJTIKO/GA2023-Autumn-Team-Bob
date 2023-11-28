@@ -1,18 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
-using TeamBobFPS.UI;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace TeamBobFPS
+namespace TeamBobFPS.UI
 {
-    public class LoadoutSelect : MonoBehaviour
+    public class LoadoutSelect : MonoBehaviour, ISelectHandler
     {
         [SerializeField]
         private EquippableWeapon weapon;
 
         [SerializeField]
-        private string weaponDetails;
+        private string weaponName;
+
+        [SerializeField]
+        private string weaponDesc;
+
+        [SerializeField]
+        private string weaponMovement;
+
+        [SerializeField]
+        private int modelIndex;
 
         private Button button;
 
@@ -66,10 +75,17 @@ namespace TeamBobFPS
             }
         }
 
-        public void OnSelect()
+        public void OnSelect(BaseEventData eventData)
+        {
+            loadoutSelectCanvas.SetModel(modelIndex);
+            loadoutSelectCanvas.WriteName(weaponName);
+            loadoutSelectCanvas.WriteDesc(weaponDesc);
+            loadoutSelectCanvas.WriteMovement(weaponMovement);
+        }
+
+        public void OnPress()
         {
             loadoutSelectCanvas.EnableSlotSelect(weapon);
-            loadoutSelectCanvas.WriteDetails(weaponDetails);
             button.interactable = false;
         }
 

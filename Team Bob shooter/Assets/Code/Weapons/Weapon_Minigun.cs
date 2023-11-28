@@ -169,6 +169,7 @@ namespace TeamBobFPS
         {
             base.Activate(state);
             viewmodelAnimator.SetTrigger("Equip");
+            bulletOrigin.transform.position = muzzleFlash.transform.position;
 
             if (!state)
             {

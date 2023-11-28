@@ -508,7 +508,7 @@ namespace TeamBobFPS
             }
         }
 
-        private void OnTakeDamage()
+        private void OnTakeDamage(float amount)
         {
             firing = false;
 

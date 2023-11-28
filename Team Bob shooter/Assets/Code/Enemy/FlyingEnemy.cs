@@ -87,6 +87,8 @@ namespace TeamBobFPS
 
         private bool firing = false;
 
+        private bool orbiting = true;
+
         private enum ActionState
         {
             idle = 0,
@@ -154,6 +156,8 @@ namespace TeamBobFPS
 
             damageLockout = false;
             if (spawnEffect != null) spawnEffect.PlayEffect();
+
+            GetComponent<FlyingEnemyOrbit>().Setup();
         }
 
         private void OnDie(float explosionStrength, Vector3 explosionPoint, EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
@@ -236,9 +240,14 @@ namespace TeamBobFPS
 
             currentState = ActionState.idle;
 
-            if (currentDistance < fireRange && canSee && noticed|| posChange)
+            if (currentDistance < fireRange && canSee && noticed || posChange)
             {
                 currentState = ActionState.fire;
+                if (orbiting)
+                {
+                    GetComponent<FlyingEnemyOrbit>().enabled = false;
+                    orbiting = false;
+                }
             }
 
             if (currentState == ActionState.idle)
@@ -472,7 +481,7 @@ namespace TeamBobFPS
             }
         }
 
-        private void OnTakeDamage()
+        private void OnTakeDamage(float amount)
         {
             EnemyAggroState.aggro = true;
             animator.SetTrigger("Damage");

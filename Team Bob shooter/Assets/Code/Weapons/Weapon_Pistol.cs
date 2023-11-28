@@ -18,6 +18,9 @@ namespace TeamBobFPS
         [SerializeField]
         private float reloadTime = 0.5f;
 
+        [SerializeField]
+        private ParticleSystem muzzleFlash;
+
         private PlayerUnit playerUnit;
 
         private Transform[] activeHitEffects = new Transform[8];
@@ -74,6 +77,7 @@ namespace TeamBobFPS
         {
             screenShake.Shake(1);
             recoil.DoRecoil(-2);
+            muzzleFlash.Play();
             GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_PISTOL_SHOOT, transform.position, volume: 0.5f, make2D: true);
 
             RaycastHit hit;
@@ -151,6 +155,14 @@ namespace TeamBobFPS
             //    index++;
             //    if (index >= activeHitEffects.Length) index = 0;
             //}
+        }
+
+        public override void Activate(bool state)
+        {
+            base.Activate(state);
+
+            viewmodelAnimator.SetTrigger("Equip");
+            bulletOrigin.transform.position = muzzleFlash.transform.position;
         }
     }
 }
