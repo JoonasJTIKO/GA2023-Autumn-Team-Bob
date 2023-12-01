@@ -6687,9 +6687,9 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: d7ea305cc505eeb4582359cd1df4a309, type: 2}
-  - {fileID: 7211448773848044386, guid: 4cff4bb1ea74c384d86886eb73749c33, type: 3}
+  - {fileID: 2100000, guid: 2a53ec04564aea344ba8bfba656dbc15, type: 2}
   - {fileID: 2100000, guid: 1904514ebba79604cbbde069205dbd46, type: 2}
-  - {fileID: 2100000, guid: b21052f8747cb47438abf02e4e7f08ce, type: 2}
+  - {fileID: 2100000, guid: 2a53ec04564aea344ba8bfba656dbc15, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -18490,6 +18490,16 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 4936df938f572f9409dc11c2828536e7, type: 2}
+    - target: {fileID: -495036451290998152, guid: 4cff4bb1ea74c384d86886eb73749c33,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2a53ec04564aea344ba8bfba656dbc15, type: 2}
+    - target: {fileID: -495036451290998152, guid: 4cff4bb1ea74c384d86886eb73749c33,
+        type: 3}
+      propertyPath: m_Materials.Array.data[3]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2a53ec04564aea344ba8bfba656dbc15, type: 2}
     - target: {fileID: -38302137290608837, guid: 4cff4bb1ea74c384d86886eb73749c33,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18514,7 +18524,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: 909b1fd179ae6ba4da02d9e15ea4a9cf, type: 2}
+      objectReference: {fileID: 2100000, guid: cc3a91545eecd6a40bd0dec15794d1ef, type: 2}
+    - target: {fileID: 589928367305001432, guid: 4cff4bb1ea74c384d86886eb73749c33,
+        type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5f5bca2afa6c89c4f9b8db22f18d73ad, type: 2}
     - target: {fileID: 919132149155446097, guid: 4cff4bb1ea74c384d86886eb73749c33,
         type: 3}
       propertyPath: m_Name
@@ -18544,8 +18559,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: -5354028657143720620, guid: 4cff4bb1ea74c384d86886eb73749c33,
-        type: 3}
+      objectReference: {fileID: 2100000, guid: 12a7add7894708143ab30ed89bfc9ea8, type: 2}
     - target: {fileID: 2722829116301454158, guid: 4cff4bb1ea74c384d86886eb73749c33,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -18556,6 +18570,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: 5f5bca2afa6c89c4f9b8db22f18d73ad, type: 2}
+    - target: {fileID: 2722829116301454158, guid: 4cff4bb1ea74c384d86886eb73749c33,
+        type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: cc3a91545eecd6a40bd0dec15794d1ef, type: 2}
     - target: {fileID: 2835137245681365171, guid: 4cff4bb1ea74c384d86886eb73749c33,
         type: 3}
       propertyPath: m_Layer
@@ -18595,7 +18614,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: b21052f8747cb47438abf02e4e7f08ce, type: 2}
+      objectReference: {fileID: 2100000, guid: 2a53ec04564aea344ba8bfba656dbc15, type: 2}
     - target: {fileID: 3855073655484056057, guid: 4cff4bb1ea74c384d86886eb73749c33,
         type: 3}
       propertyPath: m_Materials.Array.data[1]
@@ -18628,6 +18647,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7111808456031604564, guid: 4cff4bb1ea74c384d86886eb73749c33,
         type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7111808456031604564, guid: 4cff4bb1ea74c384d86886eb73749c33,
+        type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 2a53ec04564aea344ba8bfba656dbc15, type: 2}
@@ -18635,7 +18659,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: 4936df938f572f9409dc11c2828536e7, type: 2}
+      objectReference: {fileID: 2100000, guid: b21052f8747cb47438abf02e4e7f08ce, type: 2}
     - target: {fileID: 7111808456031604564, guid: 4cff4bb1ea74c384d86886eb73749c33,
         type: 3}
       propertyPath: m_Materials.Array.data[2]
@@ -18650,7 +18674,17 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[4]
       value: 
-      objectReference: {fileID: 2100000, guid: 2a53ec04564aea344ba8bfba656dbc15, type: 2}
+      objectReference: {fileID: 2100000, guid: cc3a91545eecd6a40bd0dec15794d1ef, type: 2}
+    - target: {fileID: 7111808456031604564, guid: 4cff4bb1ea74c384d86886eb73749c33,
+        type: 3}
+      propertyPath: m_Materials.Array.data[5]
+      value: 
+      objectReference: {fileID: 2100000, guid: ec2b16b56694cad48be7dbac25f30a4d, type: 2}
+    - target: {fileID: 7111808456031604564, guid: 4cff4bb1ea74c384d86886eb73749c33,
+        type: 3}
+      propertyPath: m_Materials.Array.data[6]
+      value: 
+      objectReference: {fileID: 2100000, guid: ec2b16b56694cad48be7dbac25f30a4d, type: 2}
     - target: {fileID: 7488997415946156513, guid: 4cff4bb1ea74c384d86886eb73749c33,
         type: 3}
       propertyPath: m_IsActive
@@ -38718,7 +38752,7 @@ GameObject:
   - component: {fileID: 1311515092}
   - component: {fileID: 1311515091}
   m_Layer: 0
-  m_Name: Area Light
+  m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38756,7 +38790,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 800
+  m_Intensity: 400
   m_Range: 64.7
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -42763,7 +42797,7 @@ GameObject:
   - component: {fileID: 1454327555}
   - component: {fileID: 1454327554}
   m_Layer: 0
-  m_Name: Area Light (1)
+  m_Name: Point Light (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42801,7 +42835,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 600
+  m_Intensity: 100
   m_Range: 120
   m_SpotAngle: 162.89203
   m_InnerSpotAngle: 125.16278
@@ -53621,9 +53655,9 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: d7ea305cc505eeb4582359cd1df4a309, type: 2}
-  - {fileID: 7211448773848044386, guid: 4cff4bb1ea74c384d86886eb73749c33, type: 3}
+  - {fileID: 2100000, guid: 2a53ec04564aea344ba8bfba656dbc15, type: 2}
   - {fileID: 2100000, guid: 1904514ebba79604cbbde069205dbd46, type: 2}
-  - {fileID: 2100000, guid: b21052f8747cb47438abf02e4e7f08ce, type: 2}
+  - {fileID: 2100000, guid: 2a53ec04564aea344ba8bfba656dbc15, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
