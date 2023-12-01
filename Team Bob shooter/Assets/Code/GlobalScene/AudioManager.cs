@@ -38,10 +38,24 @@ public enum EGameSFX
     _SFX_RAILGUN_RELOAD,
 
     // ENEMY SFX
-    _SFX_GNOME_WALK,
+    _SFX_GNOME_WALK_GRASS,
+    _SFX_GNOME_WALK_WOOD,
+    _SFX_GNOME_WALK_STONE,
     _SFX_GNOME_ATTACK,
     _SFX_GNOME_TAKE_DAMAGE,
     _SFX_GNOME_DIE,
+
+    _SFX_DRAGON_FLY,
+    _SFX_DRAGON_ATTACK,
+    _SFX_DRAGON_TAKE_DAMAGE,
+    _SFX_DRAGON_DIE,
+
+    _SFX_LILGUY_WALK_GRASS,
+    _SFX_LILGUY_WALK_WOOD,
+    _SFX_LILGUY_WALK_STONE,
+    _SFX_LILGUY_ATTACK,
+    _SFX_LILGUY_TAKE_DAMAGE,
+    _SFX_LILGUY_DIE,
 
     // COLLECTIBLE SFX
     _SFX_COLLECT_AMMO,
@@ -56,7 +70,9 @@ public enum EGameSFX
 }
 public enum EGameMusic
 {
-    _BOBCAT_INGAME,
+    _MENU_MUSIC,
+    _VILLAGE_MUSIC,
+    _TEMPLE_MUSIC
 }
 #endregion
 
@@ -136,13 +152,37 @@ namespace TeamBobFPS
 
         [Header("Enemy SFX")]
         [SerializeField]
-        private AudioClip gnomeWalk;
+        private AudioClip gnomeWalkGrass;
+        [SerializeField]
+        private AudioClip gnomeWalkWood;
+        [SerializeField]
+        private AudioClip gnomeWalkStone;
         [SerializeField]
         private AudioClip gnomeAttack;
         [SerializeField]
         private AudioClip gnomeTakeDamage;
         [SerializeField]
         private AudioClip gnomeDie;
+        [SerializeField]
+        private AudioClip dragonFly;
+        [SerializeField]
+        private AudioClip dragonAttack;
+        [SerializeField]
+        private AudioClip dragonTakeDamage;
+        [SerializeField]
+        private AudioClip dragonDie;
+        [SerializeField]
+        private AudioClip lilguyWalkGrass;
+        [SerializeField]
+        private AudioClip lilguyWalkWood;
+        [SerializeField]
+        private AudioClip lilguyWalkStone;
+        [SerializeField]
+        private AudioClip lilguyAttack;
+        [SerializeField]
+        private AudioClip lilguyTakeDamage;
+        [SerializeField]
+        private AudioClip lilguyDie;
 
         [Header("Collectible SFX")]
         [SerializeField]
@@ -157,7 +197,9 @@ namespace TeamBobFPS
         private AudioClip UISelect;
 
         [Header("Music Clips")]
-        [SerializeField] private AudioClip level1Music = null;
+        [SerializeField] private AudioClip menuMusic = null;
+        [SerializeField] private AudioClip villageMusic = null;
+        [SerializeField] private AudioClip templeMusic = null;
         #endregion
 
         public SaveObjectType SaveType
@@ -359,10 +401,22 @@ namespace TeamBobFPS
                 case EGameSFX._SFX_RAILGUN_RELOAD: audioSourceSFX.clip = railgunReload; break;
 
                 // ENEMY SFX
-                case EGameSFX._SFX_GNOME_WALK: audioSourceSFX.clip = gnomeWalk; break;
+                case EGameSFX._SFX_GNOME_WALK_GRASS: audioSourceSFX.clip = gnomeWalkGrass; break;
+                case EGameSFX._SFX_GNOME_WALK_WOOD: audioSourceSFX.clip = gnomeWalkWood; break;
+                case EGameSFX._SFX_GNOME_WALK_STONE: audioSourceSFX.clip = gnomeWalkStone; break;
                 case EGameSFX._SFX_GNOME_ATTACK: audioSourceSFX.clip = gnomeAttack; break;
                 case EGameSFX._SFX_GNOME_TAKE_DAMAGE: audioSourceSFX.clip = gnomeTakeDamage; break;
                 case EGameSFX._SFX_GNOME_DIE: audioSourceSFX.clip = gnomeDie; break;
+                case EGameSFX._SFX_DRAGON_FLY: audioSourceSFX.clip = dragonFly; break;
+                case EGameSFX._SFX_DRAGON_ATTACK: audioSourceSFX.clip = dragonAttack; break;
+                case EGameSFX._SFX_DRAGON_TAKE_DAMAGE: audioSourceSFX.clip = dragonTakeDamage; break;
+                case EGameSFX._SFX_DRAGON_DIE: audioSourceSFX.clip = dragonDie; break;
+                case EGameSFX._SFX_LILGUY_WALK_GRASS: audioSourceSFX.clip = lilguyWalkGrass; break;
+                case EGameSFX._SFX_LILGUY_WALK_WOOD: audioSourceSFX.clip = lilguyWalkWood; break;
+                case EGameSFX._SFX_LILGUY_WALK_STONE: audioSourceSFX.clip = lilguyWalkStone; break;
+                case EGameSFX._SFX_LILGUY_ATTACK: audioSourceSFX.clip = lilguyAttack; break;
+                case EGameSFX._SFX_LILGUY_TAKE_DAMAGE: audioSourceSFX.clip = lilguyTakeDamage; break;
+                case EGameSFX._SFX_LILGUY_DIE: audioSourceSFX.clip = lilguyDie; break;
 
                 // COLLECTIBLE SFX
                 case EGameSFX._SFX_COLLECT_AMMO: audioSourceSFX.clip = collectAmmo; break;
@@ -415,12 +469,14 @@ namespace TeamBobFPS
             PlayAudioAtLocation(intSFX, Camera.current.transform.position);
         }
 
-        public void PlayMusic(EGameMusic iTrackIndex, float volume = 0.2f)
+        public void PlayMusic(EGameMusic iTrackIndex, float volume = 0.1f)
         {
             if (null == activeMusicAudioSource) Debug.Log("Music Game Object is missing an audio source component");
             switch (iTrackIndex)
             {
-                case EGameMusic._BOBCAT_INGAME: activeMusicAudioSource.clip = level1Music; break;
+                case EGameMusic._MENU_MUSIC: activeMusicAudioSource.clip = menuMusic; break;
+                case EGameMusic._VILLAGE_MUSIC: activeMusicAudioSource.clip = villageMusic; break;
+                case EGameMusic._TEMPLE_MUSIC: activeMusicAudioSource.clip = templeMusic; break;
             }
             if (null == activeMusicAudioSource.clip) Debug.Log("Audio source missing for music");
             activeMusicAudioSource.volume = volume;

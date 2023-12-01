@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: blood3
-  m_Shader: {fileID: -6465566751694194690, guid: 9b4e681081e2b4c469111bb649e2f7ee,
+  m_Shader: {fileID: -6465566751694194690, guid: 501a330e92d70f142ad2c4ca3873ebf5,
     type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -48,6 +48,7 @@ Material:
     m_Ints: []
     m_Floats:
     - Normal_Blend: 0.5
+    - _DecalAngleFadeSupported: 1
     - _DecalMeshBiasType: 0
     - _DecalMeshDepthBias: 0
     - _DecalMeshViewBias: 0
