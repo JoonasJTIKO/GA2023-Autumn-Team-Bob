@@ -2143,24 +2143,38 @@ MonoBehaviour:
   playerTakeDamage: {fileID: 0}
   playerTakeDamage2: {fileID: 0}
   playerDie: {fileID: 0}
-  shotgunShoot: {fileID: 8300000, guid: 1df1429981f76644097c7fd47fc5f239, type: 3}
+  shotgunShoot: {fileID: 8300000, guid: 2da84e5e4440f354aba4761d4faf8568, type: 3}
   shotgunReload: {fileID: 8300000, guid: af63539a5e39c99489395bdea2471f60, type: 3}
-  pistolShoot: {fileID: 8300000, guid: be64544bade297e4d872dd74c66256d2, type: 3}
+  pistolShoot: {fileID: 8300000, guid: 4f96e91c6252f244b9c02ef10ec6c0e5, type: 3}
   pistolReload: {fileID: 8300000, guid: 406c929b7299afb469c82778f8d15d5b, type: 3}
   minigunShoot: {fileID: 8300000, guid: 48283adefda01514e851c40517a63d59, type: 3}
   rocketLauncherShoot: {fileID: 0}
   rocketLauncherReload: {fileID: 0}
   railgunShoot: {fileID: 8300000, guid: fecc3e7a0166a104cb810435f6fdf37b, type: 3}
   railgunReload: {fileID: 0}
-  gnomeWalk: {fileID: 0}
-  gnomeAttack: {fileID: 0}
-  gnomeTakeDamage: {fileID: 0}
-  gnomeDie: {fileID: 0}
+  gnomeWalkGrass: {fileID: 8300000, guid: d3ea0567dbe95714eb0ca07f43a37a96, type: 3}
+  gnomeWalkWood: {fileID: 8300000, guid: cee4ef3ef0fd155409f7b5a5162cece8, type: 3}
+  gnomeWalkStone: {fileID: 8300000, guid: e924ff5d774024542830602ee674d9a9, type: 3}
+  gnomeAttack: {fileID: 8300000, guid: 9ae32f8e1a94c486c9929faca77ff03b, type: 3}
+  gnomeTakeDamage: {fileID: 8300000, guid: 55cdb5baeb286e1449c91e297da99c0b, type: 3}
+  gnomeDie: {fileID: 8300000, guid: 4a57e83148c17c640827ac0eeef23c38, type: 3}
+  dragonFly: {fileID: 0}
+  dragonAttack: {fileID: 0}
+  dragonTakeDamage: {fileID: 0}
+  dragonDie: {fileID: 8300000, guid: 4e9a429b5c00f4f2e8234fe5835fef69, type: 3}
+  lilguyWalkGrass: {fileID: 8300000, guid: 161d5a427e88d594f9906708ccdc5663, type: 3}
+  lilguyWalkWood: {fileID: 8300000, guid: 7ffe843b3b9c8d14792d912d39646105, type: 3}
+  lilguyWalkStone: {fileID: 8300000, guid: 281c105661e5ee14b8e76523200338bd, type: 3}
+  lilguyAttack: {fileID: 0}
+  lilguyTakeDamage: {fileID: 8300000, guid: c118d1cdc5f634c28bfb87ef52703522, type: 3}
+  lilguyDie: {fileID: 8300000, guid: f32d44a6bdb854aa5b10a83f60a507ab, type: 3}
   collectAmmo: {fileID: 0}
   collectHealth: {fileID: 0}
   textType: {fileID: 0}
   UISelect: {fileID: 0}
-  level1Music: {fileID: 0}
+  menuMusic: {fileID: 0}
+  villageMusic: {fileID: 8300000, guid: b74a219e9c6aa6b0a92d5f620d0e519c, type: 3}
+  templeMusic: {fileID: 8300000, guid: d96fd457599ffae40bd20969b1629e38, type: 3}
 --- !u!1 &482790616
 GameObject:
   m_ObjectHideFlags: 0
