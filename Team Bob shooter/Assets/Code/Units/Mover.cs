@@ -43,6 +43,14 @@ namespace TeamBobFPS
 
         private bool setupComplete = false;
 
+        private void Update()
+        {
+            if (GameInstance.Instance.GetUpdateManager().timeScale == 0f && rb != null)
+            {
+                rb.velocity = Vector3.zero;
+            }
+        }
+
         public void Setup(float speed, float accelerationTime = 0f, float decelerationTime = 0f, bool noAcceleration = true)
         {
             collider = GetComponent<CapsuleCollider>();

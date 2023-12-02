@@ -61,14 +61,16 @@ namespace TeamBobFPS
             enabled = false;
         }
 
-        private void RemoveHealth()
+        private void RemoveHealth(float amount)
         {
             screenShake.Shake(1);
+            GameInstance.Instance.GetInGameHudCanvas().ReduceHealth(amount);
             StartCoroutine(TakeDamageEffect());
         }
 
-        private void GiveHealth()
+        private void GiveHealth(float amount)
         {
+            GameInstance.Instance.GetInGameHudCanvas().AddHealth(amount);
             StartCoroutine(HealEffect());
         }
 

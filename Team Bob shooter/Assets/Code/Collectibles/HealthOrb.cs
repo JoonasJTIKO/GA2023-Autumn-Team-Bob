@@ -120,7 +120,7 @@ namespace TeamBobFPS
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.layer == 6)
+            if (other.gameObject.layer == 6 && !flyToPlayer)
             {
                 rb.velocity = Vector3.zero;
                 rb.useGravity = false;

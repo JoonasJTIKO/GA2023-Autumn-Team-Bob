@@ -9,7 +9,13 @@ namespace TeamBobFPS.UI
     public class LoadoutSelectCanvas : MenuCanvas
     {
         [SerializeField]
-        private TextWriteOverTime textWrite;
+        private TextWriteOverTime nameWrite;
+
+        [SerializeField]
+        private TextWriteOverTime descWrite;
+
+        [SerializeField]
+        private TextWriteOverTime movementWrite;
 
         [SerializeField]
         private LoadoutSlotSelect slotSelect1;
@@ -19,6 +25,14 @@ namespace TeamBobFPS.UI
 
         [SerializeField]
         private Button[] LoadoutButtons;
+
+        [SerializeField]
+        private GameObject weaponModel;
+
+        [SerializeField]
+        private GameObject weaponModelCamera;
+
+        private LoadoutSelectWeaponModel LoadoutSelectWeaponModel;
 
         private PlayerInputs playerInputs;
 
@@ -30,6 +44,8 @@ namespace TeamBobFPS.UI
 
             playerInputs = new PlayerInputs();
             selectAction = playerInputs.Menu.Select;
+
+            LoadoutSelectWeaponModel = weaponModel.GetComponent<LoadoutSelectWeaponModel>();
         }
 
         protected override void OnEnable()
@@ -46,6 +62,22 @@ namespace TeamBobFPS.UI
             selectAction?.Disable();
         }
 
+        public override void Show()
+        {
+            base.Show();
+
+            weaponModel.SetActive(true);
+            weaponModelCamera.SetActive(true);
+        }
+
+        public override void Hide()
+        {
+            base.Hide();
+
+            weaponModel?.SetActive(false);
+            weaponModelCamera?.SetActive(false);
+        }
+
         public void SetSelectedObject(GameObject gameObject = null)
         {
 
@@ -58,9 +90,24 @@ namespace TeamBobFPS.UI
             eventSystem.SetSelectedGameObject(gameObject);
         }
 
-        public void WriteDetails(string text)
+        public void SetModel(int modelIndex)
         {
-            textWrite.StartWrite(text);
+            LoadoutSelectWeaponModel.EnableModel(modelIndex);
+        }
+
+        public void WriteName(string text)
+        {
+            nameWrite.StartWrite(text);
+        }
+
+        public void WriteDesc(string text)
+        {
+            descWrite.StartWrite(text);
+        }
+
+        public void WriteMovement(string text)
+        {
+            movementWrite.StartWrite(text);
         }
 
         public void EnableSlotSelect(EquippableWeapon weapon)

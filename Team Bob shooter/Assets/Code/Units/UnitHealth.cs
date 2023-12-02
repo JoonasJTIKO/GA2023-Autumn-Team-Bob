@@ -40,9 +40,9 @@ namespace TeamBobFPS
 
         public event Action<float> OnHealthUpdate;
 
-        public event Action OnTakeDamage;
+        public event Action<float> OnTakeDamage;
 
-        public event Action OnHeal;
+        public event Action<float> OnHeal;
 
         public event Action<float, Vector3, EnemyGibbing.DeathType> OnDied;
 
@@ -80,7 +80,10 @@ namespace TeamBobFPS
                     Health = MaxHealth;
                 }
                 OnHealthUpdate?.Invoke(Health - startingHealth);
-                OnHeal?.Invoke();
+                OnHeal?.Invoke(amount);
+
+                Debug.Log(Health);
+
                 return true;
             }
             return false;
@@ -111,7 +114,7 @@ namespace TeamBobFPS
                 ExplosionPoint = Vector3.zero;
                 StartCoroutine(InvincibilityTimer());
                 OnHealthUpdate?.Invoke(-amount * damageMultiplier);
-                OnTakeDamage?.Invoke();
+                OnTakeDamage?.Invoke(amount);
                 return true;
             }
             return false;

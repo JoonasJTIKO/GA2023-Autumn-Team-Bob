@@ -175,7 +175,7 @@ namespace TeamBobFPS
                 if (count > 0) return;
             }
             OnWaveCleared?.Invoke(waveIndex, levelIndex);
-            cutsceneManager?.PlayCutscene(waveIndex);
+            StartCoroutine(PlayWaveClearCutscene(waveIndex));
             if (backwards)
             {
                 waveIndex--;
@@ -235,6 +235,18 @@ namespace TeamBobFPS
                 yield return null;
             }
             StartWave(currentWave);
+        }
+
+        private IEnumerator PlayWaveClearCutscene(int waveIndex)
+        {
+            float timer = 0f;
+            while (timer < 1)
+            {
+                timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                yield return null;
+            }
+
+            cutsceneManager?.PlayCutscene(waveIndex);
         }
 
         private IEnumerator StartWaveAfterDelay()

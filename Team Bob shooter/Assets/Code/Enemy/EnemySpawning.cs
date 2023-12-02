@@ -84,19 +84,20 @@ namespace TeamBobFPS
             {
                 case WaveData.EnemyType.MeleeStandard:
                     spawned = enemyPools[0].Get().gameObject;
+                    spawned.transform.position = position;
                     spawned.GetComponent<MeleeEnemy>().Initialize();
                     break;
                 case WaveData.EnemyType.RangedStandard:
                     spawned = enemyPools[1].Get().gameObject;
+                    spawned.transform.position = position;
                     spawned.GetComponent<RangeEnemy>().Initialize();
                     break;
                 case WaveData.EnemyType.Flying:
                     spawned = enemyPools[2].Get().gameObject;
+                    spawned.transform.position = position;
                     spawned.GetComponent<FlyingEnemy>().Initialize();
                     break;
             }
-
-            spawned.transform.position = position;
         }
 
         public void SpawnAll()

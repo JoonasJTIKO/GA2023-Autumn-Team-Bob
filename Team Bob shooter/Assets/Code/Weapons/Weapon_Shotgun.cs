@@ -24,6 +24,9 @@ namespace TeamBobFPS
         [SerializeField]
         private float reloadTime = 0.5f;
 
+        [SerializeField]
+        private ParticleSystem muzzleFlash;
+
         private PlayerUnit playerUnit;
 
         private Transform[] activeHitEffects = new Transform[8];
@@ -80,6 +83,7 @@ namespace TeamBobFPS
         {
             screenShake.Shake(0);
             recoil.DoRecoil(-4);
+            muzzleFlash.Play();
             GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_SHOTGUN_SHOOT, transform.position, volume: 0.5f, make2D: true);
 
             Dictionary<UnitHealth, float> damages = new Dictionary<UnitHealth, float>();
@@ -157,6 +161,14 @@ namespace TeamBobFPS
             {
                 item.Key.RemoveHealth(item.Value, EnemyGibbing.DeathType.Explode);
             }
+        }
+
+        public override void Activate(bool state)
+        {
+            base.Activate(state);
+
+            viewmodelAnimator.SetTrigger("Equip");
+            bulletOrigin.transform.position = muzzleFlash.transform.position;
         }
     }
 }

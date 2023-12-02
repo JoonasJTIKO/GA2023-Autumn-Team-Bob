@@ -22,6 +22,8 @@ namespace TeamBobFPS
             GameInstance.Instance.GetPlayerDefeatedCanvas().Hide();
             GameInstance.Instance.GetInGameHudCanvas().Show();
             GameInstance.Instance.GetInGameHudCanvas().ActivateWaveInfo(false);
+
+            GameInstance.Instance.GetAudioManager().PlayMusic(EGameMusic._VILLAGE_MUSIC);
         }
 
         public override void Deactivate(bool unloadScene = true)

@@ -160,6 +160,8 @@ namespace TeamBobFPS
 
         private void OnDie(float explosionStrength, Vector3 explosionPoint, EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
         {
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_GNOME_DIE, transform.position, 0.5f);
+
             EnemyAggroState.aggro = true;
 
             dropSpawner.SpawnThings();
@@ -480,6 +482,8 @@ namespace TeamBobFPS
 
         public void Shoot()
         {
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_GNOME_ATTACK, transform.position, 0.5f);
+
             shootComponent.Fire(new Vector3(transform.forward.x,
                 (player.transform.position - transform.position).normalized.y, transform.forward.z));
 
@@ -508,8 +512,10 @@ namespace TeamBobFPS
             }
         }
 
-        private void OnTakeDamage()
+        private void OnTakeDamage(float amount)
         {
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_GNOME_TAKE_DAMAGE, transform.position, 0.5f);
+
             firing = false;
 
             EnemyAggroState.aggro = true;

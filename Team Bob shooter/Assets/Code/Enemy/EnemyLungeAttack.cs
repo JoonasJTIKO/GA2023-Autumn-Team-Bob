@@ -29,7 +29,7 @@ namespace TeamBobFPS
 
         private Vector3 targetPos;
 
-        private bool onCooldown = false;
+        public bool OnCooldown = false;
 
         private Rigidbody rb;
 
@@ -38,6 +38,8 @@ namespace TeamBobFPS
         public event Action AttackEnd;
 
         private Coroutine cooldownRoutine = null;
+
+        private bool lunging = false;
 
         protected override void Awake()
         {
@@ -56,7 +58,7 @@ namespace TeamBobFPS
             {
                 StopCoroutine(cooldownRoutine);
             }
-            onCooldown = false;
+            OnCooldown = false;
         }
 
         public override void OnFixedUpdate(float fixedDeltaTime)
@@ -68,15 +70,20 @@ namespace TeamBobFPS
 
         private void OnCollisionEnter(Collision collision)
         {
+            if (!lunging) return;
+
             rb.velocity = Vector3.zero;
             damageBox.gameObject.SetActive(false);
+            lunging = false;
 
             StartCoroutine(PostAttackLockout());
         }
 
         public bool Lunge()
         {
-            if (onCooldown) return false;
+            if (OnCooldown) return false;
+
+            lunging = true;
 
             targetPos = GetTargetPosition();
 
@@ -115,14 +122,14 @@ namespace TeamBobFPS
         private IEnumerator Cooldown()
         {
             float timer = cooldown;
-            onCooldown = true;
+            OnCooldown = true;
 
             while (timer > 0)
             {
                 timer -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
                 yield return null;
             }
-            onCooldown = false;
+            OnCooldown = false;
         }
 
         private IEnumerator PostAttackLockout()
