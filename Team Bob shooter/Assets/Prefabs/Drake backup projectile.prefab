@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3544882853123475069}
   - component: {fileID: 3544882853123475068}
   m_Layer: 17
-  m_Name: Projectile
+  m_Name: Drake backup projectile
   m_TagString: EnemyProjectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68,7 +68,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7b173d41fbb9c9146abad2ebbe4cf214, type: 2}
+  - {fileID: 2100000, guid: 60a0a3677af8f944294a2ac7941d12fc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4897,7 +4897,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b0a63e0bc5c20e945b52fe57a3f20990, type: 2}
+  - {fileID: 2100000, guid: 60a0a3677af8f944294a2ac7941d12fc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5117,7 +5117,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.2
+      scalar: -0.2
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -5696,7 +5696,7 @@ ParticleSystem:
     sphericalDirectionAmount: 1
     randomPositionAmount: 0
     radius:
-      value: 0.01
+      value: 0.15
       mode: 0
       spread: 0
       speed:
@@ -9767,7 +9767,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7b173d41fbb9c9146abad2ebbe4cf214, type: 2}
+  - {fileID: 2100000, guid: 60a0a3677af8f944294a2ac7941d12fc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14674,9 +14674,9 @@ Light:
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
-  m_Color: {r: 0.97517407, g: 1, b: 0.5990566, a: 1}
-  m_Intensity: 2
-  m_Range: 4
+  m_Color: {r: 1, g: 0.80978364, b: 0.6, a: 1}
+  m_Intensity: 5
+  m_Range: 5
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
