@@ -229,6 +229,15 @@ namespace TeamBobFPS
         {
             base.OnFixedUpdate(fixedDeltaTime);
 
+            if (PlayerUnit.isPaused)
+            {
+                animator.speed = 0f;
+            }
+            else
+            {
+                animator.speed = 1f;
+            }
+
             timer += fixedDeltaTime;
 
             currentDistance = Vector3.Distance(player.transform.position, transform.position);
@@ -315,6 +324,7 @@ namespace TeamBobFPS
             //}
 
             LookForPlayer();
+
         }
 
         private void TurnTowardsPlayer(float deltaTime)

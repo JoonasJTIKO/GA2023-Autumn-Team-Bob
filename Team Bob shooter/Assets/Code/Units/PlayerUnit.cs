@@ -91,7 +91,7 @@ namespace TeamBobFPS
 
         private bool forceLockedInputs = false;
 
-        private bool isPaused = false;
+        public static bool isPaused = false;
 
         private Animator animator;
 
@@ -151,8 +151,8 @@ namespace TeamBobFPS
             unitHealth.OnDied -= OnDie;
             RocketProjectile.PlayerHit -= ReceiveKnockback;
 
-            menu.Disable();
             menu.performed -= Pause;
+            menu.Disable();
         }
 
         public override void OnFixedUpdate(float fixedDeltaTime)
@@ -250,6 +250,19 @@ namespace TeamBobFPS
             else
             {
                 footStepTimer = 0f;
+            }
+
+            if (isPaused)
+            {
+                animator.enabled = false;
+                LockMovement = true;
+                lockInputs = true;
+            }
+            else
+            {
+                animator.enabled = true;
+                LockMovement = false;
+                lockInputs = false;
             }
         }
 
@@ -379,23 +392,26 @@ namespace TeamBobFPS
         public void Pause(InputAction.CallbackContext context)
         {
             isPaused = !isPaused;
+            PauseConstraints();
+        }
 
+        public void PauseConstraints()
+        {
             if (isPaused)
             {
-                GameInstance.Instance.GetUpdateManager().timeScale = 0;
-                GameInstance.Instance.GetUpdateManager().fixedTimeScale = 0;
+                GameInstance.Instance.GetUpdateManager().timeScale = 0f;
+                GameInstance.Instance.GetUpdateManager().fixedTimeScale = 0f;
                 GameInstance.Instance.GetPauseMenu().Show();
-                animator.enabled = false;
-                LockMovement = true;
+                rb.constraints = RigidbodyConstraints.FreezePosition;
                 isPaused = true;
             }
             else
             {
-                GameInstance.Instance.GetUpdateManager().timeScale = 1;
-                GameInstance.Instance.GetUpdateManager().fixedTimeScale = 1;
+                GameInstance.Instance.GetUpdateManager().timeScale = 1f;
+                GameInstance.Instance.GetUpdateManager().fixedTimeScale = 1f;
                 GameInstance.Instance.GetPauseMenu().Hide();
-                animator.enabled = true;
-                LockMovement = false;
+                rb.constraints = RigidbodyConstraints.None;
+                rb.constraints = RigidbodyConstraints.FreezeRotation;
                 isPaused = false;
             }
         }

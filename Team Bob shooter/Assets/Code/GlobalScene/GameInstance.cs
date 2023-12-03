@@ -24,7 +24,7 @@ namespace TeamBobFPS
         private UpdateManager updateManager;
 
         [SerializeField]
-        private Menu getPauseMenu;
+        private PauseMenuController getPauseMenu;
 
         private static GameInstance instance;
 
@@ -108,7 +108,7 @@ namespace TeamBobFPS
 
         public AudioManager GetAudioManager() { return audioManager; }
 
-        public Menu GetPauseMenu() { return getPauseMenu; }
+        public PauseMenuController GetPauseMenu() { return getPauseMenu; }
 
     }
 }
