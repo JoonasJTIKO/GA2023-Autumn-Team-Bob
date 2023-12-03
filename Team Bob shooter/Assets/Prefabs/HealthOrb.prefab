@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 724ce2dd0c035d1499d02eca7b5abac1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 5020352074282278788}
   - component: {fileID: 8055947359650502201}
   - component: {fileID: 5940794693293431690}
+  - component: {fileID: 6679909706942978408}
   m_Layer: 14
   m_Name: HealthOrb
   m_TagString: Untagged
@@ -133,10 +134,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healAmount: 10
-  pickUpRange: 6
+  pickUpRange: 8
   speed: 15
   acceleration: 1.1
-  canBeCollectedTimer: 1
+  canBeCollectedTimer: 0.5
   aliveTime: 5
 --- !u!135 &7811474559200059098
 SphereCollider:
@@ -149,7 +150,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.2
+  m_Radius: 0.4
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &5020352074282278788
 Rigidbody:
@@ -203,3 +204,17 @@ MonoBehaviour:
   - {x: 2, y: 0, z: 0}
   - {x: 3, y: 0, z: 0}
   - {x: 4, y: 0, z: 0}
+--- !u!114 &6679909706942978408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6316648122733906023}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 231cf0cf8abaaa44cada9a5f90de9e40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1
+  distance: 0.2

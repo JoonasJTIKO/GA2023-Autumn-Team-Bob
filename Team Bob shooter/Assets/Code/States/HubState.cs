@@ -18,13 +18,15 @@ namespace TeamBobFPS
                 SceneManager.LoadSceneAsync(SceneName, LoadSceneMode.Additive);
             }
 
-            GameInstance.Instance.GetInGameHudCanvas().Show();
+            GameInstance.Instance.GetPlayerDefeatedCanvas().Hide();
+            GameInstance.Instance.GetLoadoutSelectCanvas().Show();
+            GameInstance.Instance.GetFadeCanvas().FadeFrom(0.5f);
         }
 
         public override void Deactivate(bool unloadScene = true)
         {
             if (unloadScene) SceneManager.UnloadSceneAsync(SceneName);
-            GameInstance.Instance.GetInGameHudCanvas().Hide();
+            GameInstance.Instance.GetLoadoutSelectCanvas().Hide();
         }
 
         public HubState() : base()
@@ -32,6 +34,8 @@ namespace TeamBobFPS
             AddTargetState(StateType.MainMenu);
             AddTargetState(StateType.Arena1);
             AddTargetState(StateType.Arena2);
+            AddTargetState(StateType.Arena1Endless);
+            AddTargetState(StateType.Arena2Endless);
         }
     }
 }

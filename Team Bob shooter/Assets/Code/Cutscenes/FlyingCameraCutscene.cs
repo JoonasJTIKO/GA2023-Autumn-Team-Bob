@@ -64,12 +64,22 @@ namespace TeamBobFPS
             int index = 0;
             currentMovement = cameraMovements[index];
             Vector3 startPos = cutsceneCamera.transform.position;
+            Vector3 startLookDir = cutsceneCamera.transform.forward;
 
             while (index < cameraMovements.Length)
             {
                 if (currentMovement.LookAtTarget != null)
                 {
-                    cutsceneCamera.transform.LookAt(currentMovement.LookAtTarget);
+                    if (currentMovement.flatGoToTarget)
+                    {
+                        Vector3 lookDir = Vector3.Lerp(startLookDir, (currentMovement.LookAtTarget.position - currentMovement.TargetPosition).normalized, timer / currentMovement.Time);
+
+                        cutsceneCamera.transform.rotation = Quaternion.LookRotation(lookDir);
+                    }
+                    else
+                    {
+                        cutsceneCamera.transform.LookAt(currentMovement.LookAtTarget);
+                    }
                 }
 
                 if (timer >= currentMovement.Time || Vector3.Distance(cutsceneCamera.transform.position, currentMovement.TargetPosition) < 0.01f)

@@ -51,6 +51,8 @@ namespace TeamBobFPS
 
         private float footStepTimer = 0f;
 
+        private Vector3 pauseVelocity;
+
         public Camera PlayerCam
         {
             get { return playerCam; }
@@ -404,6 +406,9 @@ namespace TeamBobFPS
                 GameInstance.Instance.GetPauseMenu().Show();
                 rb.constraints = RigidbodyConstraints.FreezePosition;
                 isPaused = true;
+                pauseVelocity = rb.velocity;
+                rb.velocity = Vector3.zero;
+                rb.useGravity = false;
             }
             else
             {
@@ -413,6 +418,8 @@ namespace TeamBobFPS
                 rb.constraints = RigidbodyConstraints.None;
                 rb.constraints = RigidbodyConstraints.FreezeRotation;
                 isPaused = false;
+                rb.velocity = pauseVelocity;
+                rb.useGravity = true;
             }
         }
     }

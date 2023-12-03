@@ -36,6 +36,8 @@ namespace TeamBobFPS.UI
 
         public void FadeFrom(float fadeTime)
         {
+            if (image == null) return;
+
             this.fadeTime = fadeTime;
 
             if (activeRoutine != null)
@@ -49,14 +51,12 @@ namespace TeamBobFPS.UI
         {
             float currentAlpha = image.color.a;
             float timer = 0;
-            Debug.Log("start alpha: " + currentAlpha);
             while (currentAlpha < 1)
             {
                 currentAlpha = Mathf.Lerp(0, 1, timer / fadeTime);
                 Color newColor = image.color;
                 newColor.a = currentAlpha;
                 image.color = newColor;
-                Debug.Log(image.color.a);
 
                 timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
                 yield return null;

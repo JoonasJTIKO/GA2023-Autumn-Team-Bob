@@ -20,6 +20,11 @@ namespace TeamBobFPS
         {
             base.Awake();
 
+            Initialize();
+        }
+
+        public void Initialize()
+        {
             origin = transform.position;
         }
 

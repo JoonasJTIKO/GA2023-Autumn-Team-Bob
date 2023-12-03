@@ -85,6 +85,8 @@ namespace TeamBobFPS
 
         private EnemySpawnEffect spawnEffect;
 
+        private float animationSpeedMultiplier = 1f;
+
         private enum ActionState
         {
             idle = 0,
@@ -158,6 +160,10 @@ namespace TeamBobFPS
 
         private void OnDie(float explosionStrength, Vector3 explosionPoint, EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
         {
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_GNOME_DIE, transform.position, 0.5f);
+
+            EnemyAggroState.aggro = true;
+
             dropSpawner.SpawnThings();
             Vector3 pos = new Vector3(transform.position.x, transform.position.y - 0.9f, transform.position.z);
             Vector3 vRot = transform.rotation.eulerAngles;
@@ -227,7 +233,9 @@ namespace TeamBobFPS
 
         public override void OnFixedUpdate(float fixedDeltaTime)
         {
-            base.OnFixedUpdate(fixedDeltaTime);
+            base.OnFixedUpdate(fixedDeltaTime);
+
+            animator.speed = GameInstance.Instance.GetUpdateManager().fixedTimeScale;
 
             if (PlayerUnit.isPaused)
             {
@@ -242,18 +250,20 @@ namespace TeamBobFPS
 
             currentDistance = Vector3.Distance(player.transform.position, transform.position);
 
-            if (currentDistance < radius && noticed && mapAreaManager.PlayerInArea(CurrentMapArea))
+            if (/*currentDistance < radius*/ EnemyAggroState.aggro && mapAreaManager.PlayerInArea(CurrentMapArea))
             {
                 currentState = ActionState.chase;
+                Noticed();
+                timer = 0;
             }
             else
             {
                 currentState = ActionState.idle;
             }
 
-            if (currentDistance < fireRange && canSee || posChange || firing)
-            {
-                currentState = ActionState.fire;
+            if (currentDistance < fireRange && canSee && noticed || posChange || firing)
+            {
+                currentState = ActionState.fire;
             }
 
             if (currentState == ActionState.idle)
@@ -441,8 +451,8 @@ namespace TeamBobFPS
             var lookPos = player.transform.position - transform.position;
             lookPos.y = 0;
 
-            Quaternion lookOnLook = Quaternion.LookRotation(lookPos);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookOnLook, Time.deltaTime * 5f);
+            //Quaternion lookOnLook = Quaternion.LookRotation(lookPos);
+            //transform.rotation = Quaternion.Slerp(transform.rotation, lookOnLook, Time.deltaTime * 5f);
 
             Vector3 directionToTarget = (player.transform.position - transform.position).normalized;
             float kulma = Mathf.Abs(Vector3.SignedAngle(transform.forward, directionToTarget, Vector3.up));
@@ -452,8 +462,8 @@ namespace TeamBobFPS
                 if (!Physics.Raycast(transform.position, directionToTarget, currentDistance, wallMask))
                 {
                     canSee = true;
-                    Noticed();
-                    timer = 0;
+                    //Noticed();
+                    //timer = 0;
 
                     //Shoot();
                 }
@@ -482,7 +492,9 @@ namespace TeamBobFPS
 
         public void Shoot()
         {
-            shootComponent.Fire(new Vector3(transform.forward.x, 
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_GNOME_ATTACK, transform.position, 0.5f);
+
+            shootComponent.Fire(new Vector3(transform.forward.x,
                 (player.transform.position - transform.position).normalized.y, transform.forward.z));
 
             //Wait();
@@ -510,10 +522,13 @@ namespace TeamBobFPS
             }
         }
 
-        private void OnTakeDamage()
+        private void OnTakeDamage(float amount)
         {
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_GNOME_TAKE_DAMAGE, transform.position, 0.5f);
+
             firing = false;
 
+            EnemyAggroState.aggro = true;
             animator.SetTrigger("Damage");
             StartCoroutine(DamageLockout());
         }

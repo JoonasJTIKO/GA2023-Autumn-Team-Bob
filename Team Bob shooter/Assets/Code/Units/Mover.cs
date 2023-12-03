@@ -43,6 +43,14 @@ namespace TeamBobFPS
 
         private bool setupComplete = false;
 
+        private void Update()
+        {
+            if (GameInstance.Instance.GetUpdateManager().timeScale == 0f && rb != null)
+            {
+                rb.velocity = Vector3.zero;
+            }
+        }
+
         public void Setup(float speed, float accelerationTime = 0f, float decelerationTime = 0f, bool noAcceleration = true)
         {
             collider = GetComponent<CapsuleCollider>();
@@ -75,7 +83,7 @@ namespace TeamBobFPS
             if (doGroundCheck)
             {
                 IsGrounded = Physics.SphereCast(transform.position, collider.radius * 0.7f,
-                                -transform.up, out hit, 0.7f, groundLayer);
+                                -transform.up, out hit, collider.height * 0.4f, groundLayer);
             }
 
             if (rb != null && setupComplete)

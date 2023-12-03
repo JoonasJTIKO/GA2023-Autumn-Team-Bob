@@ -60,6 +60,8 @@ namespace TeamBobFPS
 
         protected ComponentPool<BulletTracer> bulletTrailPool;
 
+        protected CameraRecoil recoil;
+
         public virtual int CurrentReserveAmmo
         {
             get;
@@ -94,6 +96,8 @@ namespace TeamBobFPS
             currentMagAmmoCount = magSize;
             hitEffectPool = new ComponentPool<Transform>(hitEffect.transform, 10);
             bulletTrailPool = new ComponentPool<BulletTracer>(bulletTrail, 10);
+
+            recoil = GetComponentInChildren<CameraRecoil>();
         }
 
         public override void OnUpdate(float deltaTime)

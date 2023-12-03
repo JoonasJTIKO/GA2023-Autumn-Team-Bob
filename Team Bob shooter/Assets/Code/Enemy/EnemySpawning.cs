@@ -25,7 +25,7 @@ namespace TeamBobFPS
             int i = 0;
             foreach (Transform enemyPrefab in enemyPrefabs)
             {
-                enemyPools[i] = new ComponentPool<Transform>(enemyPrefab.transform, 40);
+                enemyPools[i] = new ComponentPool<Transform>(enemyPrefab.transform, 20);
                 i++;
             }
         }
@@ -84,15 +84,20 @@ namespace TeamBobFPS
             {
                 case WaveData.EnemyType.MeleeStandard:
                     spawned = enemyPools[0].Get().gameObject;
+                    spawned.transform.position = position;
                     spawned.GetComponent<MeleeEnemy>().Initialize();
                     break;
                 case WaveData.EnemyType.RangedStandard:
                     spawned = enemyPools[1].Get().gameObject;
+                    spawned.transform.position = position;
                     spawned.GetComponent<RangeEnemy>().Initialize();
                     break;
+                case WaveData.EnemyType.Flying:
+                    spawned = enemyPools[2].Get().gameObject;
+                    spawned.transform.position = position;
+                    spawned.GetComponent<FlyingEnemy>().Initialize();
+                    break;
             }
-
-            spawned.transform.position = position;
         }
 
         public void SpawnAll()
@@ -115,6 +120,9 @@ namespace TeamBobFPS
                     break;
                 case WaveData.EnemyType.RangedStandard:
                     index = 1;
+                    break;
+                case WaveData.EnemyType.Flying: 
+                    index = 2; 
                     break;
             }
 

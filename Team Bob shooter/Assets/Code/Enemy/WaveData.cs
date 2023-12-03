@@ -8,7 +8,8 @@ namespace TeamBobFPS
         public enum EnemyType
         {
             MeleeStandard,
-            RangedStandard
+            RangedStandard,
+            Flying
         }
 
         [System.Serializable]

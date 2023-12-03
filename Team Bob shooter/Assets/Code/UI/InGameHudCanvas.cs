@@ -20,21 +20,23 @@ namespace TeamBobFPS.UI
         private TMP_Text newWaveTestText;
 
         [SerializeField]
+        private TMP_Text waveNumber;
+
+        [SerializeField]
+        private TMP_Text healthText;
+
+        [SerializeField]
+        private AnimationCurve healthShakeCurve;
+
+        private float currentHealthValue = 100;
+
+        private int currentWaveNumber = 1;
+
+        [SerializeField]
         private string[] newWaveTexts;
 
-        protected override void OnEnable()
-        {
-            base.OnEnable();
-
-            WaveManager.OnWaveCleared += ActivateNewWaveTestText;
-        }
-
-        protected override void OnDisable()
-        {
-            base.OnDisable();
-
-            WaveManager.OnWaveCleared -= ActivateNewWaveTestText;
-        }
+        [SerializeField]
+        private Animator WaveClearAnimator;
 
         public void UpdateMagCount(int amount)
         {
@@ -51,12 +53,67 @@ namespace TeamBobFPS.UI
             interactText.text = text;
         }
 
-        private void ActivateNewWaveTestText(int waveIndex, int levelIndex)
+        public void ActivateWaveInfo(bool state)
         {
-            if (waveIndex < 0) return;
+            waveNumber.transform.parent.gameObject.SetActive(state);
+            GetComponentInChildren<ObjectiveText>(true).gameObject.SetActive(!state);
+        }
 
-            newWaveTestText.text = newWaveTexts[waveIndex];
-            StartCoroutine(TextFade());
+        public void WaveCleared()
+        {
+            WaveClearAnimator.SetTrigger("PlayWipe");
+        }
+
+        public void UpdateWaveNumber()
+        {
+            currentWaveNumber++;
+
+            waveNumber.text = currentWaveNumber.ToString();
+
+            //newWaveTestText.text = newWaveTexts[waveIndex];
+            //StartCoroutine(TextFade());
+        }
+
+        public void ReduceHealth(float amount)
+        {
+            currentHealthValue -= amount;
+            currentHealthValue = Mathf.Clamp(currentHealthValue, 0, 100);
+            healthText.text = currentHealthValue.ToString();
+            StartCoroutine(HealthTextShake());
+        }
+
+        public void AddHealth(float amount)
+        {
+            currentHealthValue += amount;
+            currentHealthValue = Mathf.Clamp(currentHealthValue, 0, 100);
+            healthText.text = currentHealthValue.ToString();
+        }
+
+        public override void Show()
+        {
+            base.Show();
+
+            if (interactText != null)
+            {
+                interactText.text = "";
+            }
+        }
+
+        private IEnumerator HealthTextShake()
+        {
+            RectTransform rectTransform = healthText.GetComponent<RectTransform>();
+            Vector3 startPos = rectTransform.localPosition;
+            float timer = 0f;
+
+            while (timer < 0.5f)
+            {
+                timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                float shakeStrength = healthShakeCurve.Evaluate(timer / 0.5f) * 0.1f;
+                rectTransform.localPosition = startPos + Random.insideUnitSphere * shakeStrength;
+                yield return null;
+            }
+
+            rectTransform.localPosition = startPos;
         }
 
         private IEnumerator TextFade()

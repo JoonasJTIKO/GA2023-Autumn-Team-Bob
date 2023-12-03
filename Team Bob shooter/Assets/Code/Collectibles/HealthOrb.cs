@@ -51,6 +51,8 @@ namespace TeamBobFPS
 
         private float currentDistance = 100f;
 
+        private SineWaveHover waveHover;
+
         protected override void Awake()
         {
             base.Awake();
@@ -59,6 +61,7 @@ namespace TeamBobFPS
             playerHealth = playerPosition.gameObject.GetComponent<UnitHealth>();
             rb = GetComponent<Rigidbody>();
             flightCurve = GetComponent<Bezier>();
+            waveHover = GetComponent<SineWaveHover>();
         }
 
         public override void OnFixedUpdate(float fixedDeltaTime)
@@ -75,6 +78,7 @@ namespace TeamBobFPS
                 flightCurve.points[0] = transform.position;
                 flightCurve.points[1] = transform.position + ((playerPosition.position - transform.position).normalized * (Vector3.Distance(playerPosition.position, transform.position) / 2));
                 flightCurve.points[1] = new Vector3(flightCurve.points[1].x, transform.position.y + 2, flightCurve.points[1].z);
+                waveHover.enabled = false;
             }
 
             if (flyToPlayer)
@@ -116,16 +120,19 @@ namespace TeamBobFPS
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.layer == 6)
+            if (other.gameObject.layer == 6 && !flyToPlayer)
             {
                 rb.velocity = Vector3.zero;
                 rb.useGravity = false;
                 rb.constraints = RigidbodyConstraints.FreezePosition;
+                waveHover.enabled = true;
+                waveHover.Initialize();
             }
         }
 
         public void Create()
         {
+            rb.velocity = Vector3.zero;
             flyToPlayer = false;
             canBeCollected = false;
             rb.useGravity = true;
@@ -166,6 +173,7 @@ namespace TeamBobFPS
                 yield return null;
             }
 
+            waveHover.enabled = false;
             Recycle();
         }
     }

@@ -50,6 +50,8 @@ namespace TeamBobFPS
 
         private float currentDistance = 100f;
 
+        private SineWaveHover waveHover;
+
         protected override void Awake()
         {
             base.Awake();
@@ -58,6 +60,7 @@ namespace TeamBobFPS
             weaponSwap = playerPosition.gameObject.GetComponent<WeaponSwap>();
             rb = GetComponent<Rigidbody>();
             flightCurve = GetComponent<Bezier>();
+            waveHover = GetComponent<SineWaveHover>();
         }
 
         public override void OnFixedUpdate(float fixedDeltaTime)
@@ -72,6 +75,7 @@ namespace TeamBobFPS
                 startDistance = (flatPlayerPos - flatPos).magnitude;
                 flightCurve.points = new Vector3[3];
                 flightCurve.points[0] = transform.position;
+                waveHover.enabled = false;
             }
 
             if (flyToPlayer)
@@ -118,11 +122,14 @@ namespace TeamBobFPS
                 rb.velocity = Vector3.zero;
                 rb.useGravity = false;
                 rb.constraints = RigidbodyConstraints.FreezePosition;
+                waveHover.enabled = true;
+                waveHover.Initialize();
             }
         }
 
         public void Create()
         {
+            rb.velocity = Vector3.zero;
             flyToPlayer = false;
             canBeCollected = false;
             rb.useGravity = true;
@@ -163,6 +170,7 @@ namespace TeamBobFPS
                 yield return null;
             }
 
+            waveHover.enabled = false;
             Recycle();
         }
     }

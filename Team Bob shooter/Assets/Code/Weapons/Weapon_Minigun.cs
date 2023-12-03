@@ -68,6 +68,7 @@ namespace TeamBobFPS
         protected override void Fire()
         {
             screenShake.Shake(1);
+            recoil.DoRecoil(-0.3f);
             muzzleFlash.Play();
 
             RaycastHit hit;
@@ -168,6 +169,7 @@ namespace TeamBobFPS
         {
             base.Activate(state);
             viewmodelAnimator.SetTrigger("Equip");
+            bulletOrigin.transform.position = muzzleFlash.transform.position;
 
             if (!state)
             {

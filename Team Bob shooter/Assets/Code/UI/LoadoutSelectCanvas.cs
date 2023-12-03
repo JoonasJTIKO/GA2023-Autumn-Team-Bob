@@ -1,0 +1,149 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
+
+namespace TeamBobFPS.UI
+{
+    public class LoadoutSelectCanvas : MenuCanvas
+    {
+        [SerializeField]
+        private TextWriteOverTime nameWrite;
+
+        [SerializeField]
+        private TextWriteOverTime descWrite;
+
+        [SerializeField]
+        private TextWriteOverTime movementWrite;
+
+        [SerializeField]
+        private LoadoutSlotSelect slotSelect1;
+
+        [SerializeField]
+        private LoadoutSlotSelect slotSelect2;
+
+        [SerializeField]
+        private Button[] LoadoutButtons;
+
+        [SerializeField]
+        private GameObject weaponModel;
+
+        [SerializeField]
+        private GameObject weaponModelCamera;
+
+        private LoadoutSelectWeaponModel LoadoutSelectWeaponModel;
+
+        private PlayerInputs playerInputs;
+
+        private InputAction selectAction;
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            playerInputs = new PlayerInputs();
+            selectAction = playerInputs.Menu.Select;
+
+            LoadoutSelectWeaponModel = weaponModel.GetComponent<LoadoutSelectWeaponModel>();
+        }
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+
+            selectAction.Enable();
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+
+            selectAction?.Disable();
+        }
+
+        public override void Show()
+        {
+            base.Show();
+
+            weaponModel.SetActive(true);
+            weaponModelCamera.SetActive(true);
+        }
+
+        public override void Hide()
+        {
+            base.Hide();
+
+            weaponModel?.SetActive(false);
+            weaponModelCamera?.SetActive(false);
+        }
+
+        public void SetSelectedObject(GameObject gameObject = null)
+        {
+
+            if (gameObject == null)
+            {
+                eventSystem.SetSelectedGameObject(initialSelectedObject);
+                return;
+            }
+
+            eventSystem.SetSelectedGameObject(gameObject);
+        }
+
+        public void SetModel(int modelIndex)
+        {
+            LoadoutSelectWeaponModel.EnableModel(modelIndex);
+        }
+
+        public void WriteName(string text)
+        {
+            nameWrite.StartWrite(text);
+        }
+
+        public void WriteDesc(string text)
+        {
+            descWrite.StartWrite(text);
+        }
+
+        public void WriteMovement(string text)
+        {
+            movementWrite.StartWrite(text);
+        }
+
+        public void EnableSlotSelect(EquippableWeapon weapon)
+        {
+            eventSystem.enabled = false;
+            StartCoroutine(WaitForInputRelease());
+            slotSelect1.SetWeapon(weapon);
+            slotSelect2.SetWeapon(weapon);
+        }
+
+        public void DisableSlotSelect()
+        {
+            eventSystem.enabled = false;
+            StartCoroutine(WaitForInputRelease());
+            slotSelect1.Disable();
+            slotSelect2.Disable();
+            foreach (var button in LoadoutButtons)
+            {
+                StartCoroutine(button.GetComponent<LoadoutSelect>().Enable());
+            }
+        }
+
+        public void EnterLevelSelect()
+        {
+            Hide();
+            GameInstance.Instance.GetLevelSelectCanvas().Show();
+        }
+
+        private IEnumerator WaitForInputRelease()
+        {
+            while (selectAction.phase == InputActionPhase.Performed)
+            {
+                yield return null;
+            }
+
+            eventSystem.enabled = true;
+        }
+    }
+}

@@ -14,7 +14,8 @@ namespace TeamBobFPS
             get { return areaIndex; }
         }
 
-        private List<GameObject> enemiesInArea = new List<GameObject>();
+        private Dictionary<GameObject, MeleeEnemy> meleeEnemiesInArea = new Dictionary<GameObject, MeleeEnemy>();
+        private Dictionary<GameObject, RangeEnemy> rangeEnemiesInArea = new Dictionary<GameObject, RangeEnemy>();
 
         private void OnTriggerStay(Collider other)
         {
@@ -22,20 +23,27 @@ namespace TeamBobFPS
             {
                 GameInstance.Instance.GetMapAreaManager().PlayerLocation = areaIndex;
             }
-            else if (other.gameObject.layer == 7 && !enemiesInArea.Contains(other.gameObject))
+            else if (other.gameObject.layer == 7)
             {
-                enemiesInArea.Add(other.gameObject);
-
-                MeleeEnemy meleeEnemy = other.gameObject.GetComponent<MeleeEnemy>();
-                if (meleeEnemy != null)
+                if (other.gameObject.tag == "MeleeEnemy" && !meleeEnemiesInArea.ContainsKey(other.gameObject))
                 {
-                    meleeEnemy.CurrentMapArea = areaIndex;
+                    meleeEnemiesInArea.Add(other.gameObject, other.gameObject.GetComponent<MeleeEnemy>());
+                }
+
+                if (other.gameObject.tag == "RangeEnemy" && !rangeEnemiesInArea.ContainsKey(other.gameObject))
+                {
+                    rangeEnemiesInArea.Add(other.gameObject, other.gameObject.GetComponent<RangeEnemy>());
+                }
+
+                if (meleeEnemiesInArea.ContainsKey(other.gameObject))
+                {
+                    meleeEnemiesInArea[other.gameObject].CurrentMapArea = areaIndex;
                     return;
                 }
-                RangeEnemy rangeEnemy = other.gameObject.GetComponent<RangeEnemy>();
-                if (rangeEnemy != null)
+
+                if (rangeEnemiesInArea.ContainsKey(other.gameObject))
                 {
-                    rangeEnemy.CurrentMapArea = areaIndex;
+                    rangeEnemiesInArea[other.gameObject].CurrentMapArea = areaIndex;
                 }
             }
         }
