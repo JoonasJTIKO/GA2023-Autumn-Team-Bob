@@ -50,6 +50,8 @@ namespace TeamBobFPS
 
         private IEnumerator MoveCamera()
         {
+            EnemyAggroState.aggro = false;
+
             currentTarget = cameraTargets[index];
             Quaternion startRot = playerUnit.PlayerCam.transform.rotation;
             float timer = 0;
@@ -95,6 +97,7 @@ namespace TeamBobFPS
             }
 
             playerUnit.LockControls(false, false, false);
+            EnemyAggroState.aggro = true;
         }
     }
 }

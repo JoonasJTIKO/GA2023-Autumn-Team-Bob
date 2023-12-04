@@ -160,6 +160,16 @@ namespace TeamBobFPS
 
         private void OnDie(float explosionStrength, Vector3 explosionPoint, EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
         {
+            float random = UnityEngine.Random.Range(0f, 1f);
+            if (random <= 0.05)
+            {
+                GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_GNOME_DIE, transform.position, 0.5f);
+            }
+            else
+            {
+                GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_GNOME_TAKE_DAMAGE, transform.position, 0.5f);
+            }
+
             EnemyAggroState.aggro = true;
 
             dropSpawner.SpawnThings();
@@ -231,9 +241,18 @@ namespace TeamBobFPS
 
         public override void OnFixedUpdate(float fixedDeltaTime)
         {
-            base.OnFixedUpdate(fixedDeltaTime);
-
+            base.OnFixedUpdate(fixedDeltaTime);
+
             animator.speed = GameInstance.Instance.GetUpdateManager().fixedTimeScale;
+
+            if (PlayerUnit.isPaused)
+            {
+                animator.speed = 0f;
+            }
+            else
+            {
+                animator.speed = 1f;
+            }
 
             timer += fixedDeltaTime;
 
@@ -242,17 +261,17 @@ namespace TeamBobFPS
             if (/*currentDistance < radius*/ EnemyAggroState.aggro && mapAreaManager.PlayerInArea(CurrentMapArea))
             {
                 currentState = ActionState.chase;
-                Noticed();
-                timer = 0;
+                Noticed();
+                timer = 0;
             }
             else
             {
                 currentState = ActionState.idle;
             }
 
-            if (currentDistance < fireRange && canSee && noticed || posChange || firing)
-            {
-                currentState = ActionState.fire;
+            if (currentDistance < fireRange && canSee && noticed || posChange || firing)
+            {
+                currentState = ActionState.fire;
             }
 
             if (currentState == ActionState.idle)
@@ -323,6 +342,7 @@ namespace TeamBobFPS
             //}
 
             LookForPlayer();
+
         }
 
         private void TurnTowardsPlayer(float deltaTime)
@@ -480,7 +500,9 @@ namespace TeamBobFPS
 
         public void Shoot()
         {
-            shootComponent.Fire(new Vector3(transform.forward.x,
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_GNOME_ATTACK, transform.position, 0.5f);
+
+            shootComponent.Fire(new Vector3(transform.forward.x,
                 (player.transform.position - transform.position).normalized.y, transform.forward.z));
 
             //Wait();
@@ -510,6 +532,11 @@ namespace TeamBobFPS
 
         private void OnTakeDamage(float amount)
         {
+            if (UnityEngine.Random.Range(0f, 1f) <= 0.33f)
+            {
+                GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_GNOME_TAKE_DAMAGE, transform.position, 0.5f);
+            }
+
             firing = false;
 
             EnemyAggroState.aggro = true;

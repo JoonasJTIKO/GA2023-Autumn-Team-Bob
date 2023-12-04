@@ -31,6 +31,8 @@ namespace TeamBobFPS
 
         private bool shootAudioPlaying = false;
 
+        private AudioSource shootAudio;
+
         public override int CurrentReserveAmmo
         {
             get { return currentMagAmmoCount; }
@@ -182,12 +184,12 @@ namespace TeamBobFPS
             viewmodelAnimator.SetBool("Firing", state);
             if (state && !shootAudioPlaying)
             {
-                GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_MINIGUN_SHOOT, transform.position, volume: 0.5f, loop: true, make2D: true);
+                shootAudio = GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_MINIGUN_SHOOT, transform.position, volume: 0.5f, loop: true, make2D: true);
                 shootAudioPlaying = true;
             }
             else if (!state && shootAudioPlaying)
             {
-                GameInstance.Instance.GetAudioManager().StopLoopingAudio(EGameSFX._SFX_MINIGUN_SHOOT);
+                GameInstance.Instance.GetAudioManager().StopLoopingAudio(shootAudio);
                 shootAudioPlaying = false;
             }
         }

@@ -20,7 +20,7 @@ namespace TeamBobFPS
         {
             RaycastHit hit;
             if (Physics.SphereCast(transform.position, collider.radius * 0.7f,
-                                -transform.up, out hit, 0.7f, groundLayer))
+                                -transform.up, out hit, collider.height * 0.4f, groundLayer))
             {
                 int random = Random.Range(0, 3);
                 EGameSFX gameSFX = EGameSFX._NULL;

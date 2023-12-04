@@ -162,6 +162,8 @@ namespace TeamBobFPS
 
         private void OnDie(float explosionStrength, Vector3 explosionPoint, EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
         {
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_DRAGON_DIE, transform.position, 0.5f);
+
             EnemyAggroState.aggro = true;
 
             dropSpawner.SpawnThings();

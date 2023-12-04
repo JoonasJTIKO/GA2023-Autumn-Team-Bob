@@ -38,10 +38,27 @@ public enum EGameSFX
     _SFX_RAILGUN_RELOAD,
 
     // ENEMY SFX
-    _SFX_GNOME_WALK,
+    _SFX_GNOME_WALK_GRASS,
+    _SFX_GNOME_WALK_WOOD,
+    _SFX_GNOME_WALK_STONE,
     _SFX_GNOME_ATTACK,
     _SFX_GNOME_TAKE_DAMAGE,
     _SFX_GNOME_DIE,
+
+    _SFX_DRAGON_FLY,
+    _SFX_DRAGON_ATTACK,
+    _SFX_DRAGON_BEAM,
+    _SFX_DRAGON_TAKE_DAMAGE,
+    _SFX_DRAGON_DIE,
+
+    _SFX_LILGUY_WALK_GRASS,
+    _SFX_LILGUY_WALK_WOOD,
+    _SFX_LILGUY_WALK_STONE,
+    _SFX_LILGUY_ATTACK,
+    _SFX_LILGUY_TAKE_DAMAGE,
+    _SFX_LILGUY_DIE,
+
+    _SFX_BLOODY_DEATH,
 
     // COLLECTIBLE SFX
     _SFX_COLLECT_AMMO,
@@ -56,7 +73,9 @@ public enum EGameSFX
 }
 public enum EGameMusic
 {
-    _BOBCAT_INGAME,
+    _MENU_MUSIC,
+    _VILLAGE_MUSIC,
+    _TEMPLE_MUSIC
 }
 #endregion
 
@@ -136,13 +155,45 @@ namespace TeamBobFPS
 
         [Header("Enemy SFX")]
         [SerializeField]
-        private AudioClip gnomeWalk;
+        private AudioClip gnomeWalkGrass;
+        [SerializeField]
+        private AudioClip gnomeWalkWood;
+        [SerializeField]
+        private AudioClip gnomeWalkStone;
         [SerializeField]
         private AudioClip gnomeAttack;
         [SerializeField]
         private AudioClip gnomeTakeDamage;
         [SerializeField]
         private AudioClip gnomeDie;
+        [SerializeField]
+        private AudioClip dragonFly;
+        [SerializeField]
+        private AudioClip dragonAttack;
+        [SerializeField]
+        private AudioClip dragonBeam;
+        [SerializeField]
+        private AudioClip dragonTakeDamage;
+        [SerializeField]
+        private AudioClip dragonDie;
+        [SerializeField]
+        private AudioClip lilguyWalkGrass;
+        [SerializeField]
+        private AudioClip lilguyWalkWood;
+        [SerializeField]
+        private AudioClip lilguyWalkStone;
+        [SerializeField]
+        private AudioClip lilguyAttack;
+        [SerializeField]
+        private AudioClip lilguyTakeDamage;
+        [SerializeField]
+        private AudioClip lilguyDie;
+        [SerializeField]
+        private AudioClip bloodyDeath1;
+        [SerializeField]
+        private AudioClip bloodyDeath2;
+        [SerializeField]
+        private AudioClip bloodyDeath3;
 
         [Header("Collectible SFX")]
         [SerializeField]
@@ -157,7 +208,9 @@ namespace TeamBobFPS
         private AudioClip UISelect;
 
         [Header("Music Clips")]
-        [SerializeField] private AudioClip level1Music = null;
+        [SerializeField] private AudioClip menuMusic = null;
+        [SerializeField] private AudioClip villageMusic = null;
+        [SerializeField] private AudioClip templeMusic = null;
         #endregion
 
         public SaveObjectType SaveType
@@ -178,7 +231,7 @@ namespace TeamBobFPS
         private List<EGameSFX> audioEffectList = new();
 
         // Dictionary of looping audio sources so they can be managed
-        private Dictionary<EGameSFX, AudioSource> loopingAudioList = new();
+        private List<AudioSource> loopingAudioList = new();
 
         // Music is attached to a GameObject, stored here. 
         private GameObject goMusic = null;
@@ -270,15 +323,15 @@ namespace TeamBobFPS
         /// If the specified audio is currently playing, sets its looping state to false and stops the audio
         /// </summary>
         /// <param name="intSFX">SFX given as EGameSFX enum</param>
-        public void StopLoopingAudio(EGameSFX intSFX, bool fadeOut = true)
+        public void StopLoopingAudio(AudioSource audioSource, bool fadeOut = true)
         {
-            if (!loopingAudioList.ContainsKey(intSFX)) return;
+            if (!loopingAudioList.Contains(audioSource)) return;
 
             if (!fadeOut)
             {
-                loopingAudioList[intSFX].loop = false;
-                loopingAudioList[intSFX].Stop();
-                loopingAudioList.Remove(intSFX);
+                audioSource.loop = false;
+                audioSource.Stop();
+                loopingAudioList.Remove(audioSource);
             }
             else
             {
@@ -286,24 +339,24 @@ namespace TeamBobFPS
                 {
                     StopCoroutine(stopLoopRoutine);
                 }
-                stopLoopRoutine = StartCoroutine(LoopingAudioFadeOut(intSFX));
+                stopLoopRoutine = StartCoroutine(LoopingAudioFadeOut(audioSource));
             }
         }
 
-        private IEnumerator LoopingAudioFadeOut(EGameSFX intSFX)
+        private IEnumerator LoopingAudioFadeOut(AudioSource audioSource)
         {
-            while (loopingAudioList[intSFX].volume > 0)
+            while (audioSource.volume > 0)
             {
-                loopingAudioList[(intSFX)].volume -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale * 3;
-                if (loopingAudioList[(intSFX)].volume < 0)
+                audioSource.volume -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale * 3;
+                if (audioSource.volume < 0)
                 {
-                    loopingAudioList[(intSFX)].volume = 0;
+                    audioSource.volume = 0;
                 }
                 yield return null;
             }
-            loopingAudioList[intSFX].loop = false;
-            loopingAudioList[intSFX].Stop();
-            loopingAudioList.Remove(intSFX);
+            audioSource.loop = false;
+            audioSource.Stop();
+            loopingAudioList.Remove(audioSource);
         }
 
         /// <summary>
@@ -311,14 +364,14 @@ namespace TeamBobFPS
         /// </summary>
         /// <param name="intSFX">SFX given as EGameSFX enum</param>
         /// <param name="pos">Vector3 where SFX should be played</param>
-        public void PlayAudioAtLocation(EGameSFX intSFX, Vector3 pos, float volume = 1f, bool loop = false, bool make2D = false, bool canStack = false)
+        public AudioSource PlayAudioAtLocation(EGameSFX intSFX, Vector3 pos, float volume = 1f, bool loop = false, bool make2D = false, bool canStack = false)
         {
             // TODO: check if player prefs setup is done
             // if (!m_bIsSetup) return;
 
             // check that this effect is not played duplicate in current frame
             // GameInstance clears audioEffectList every frame
-            if (audioEffectList.Contains(intSFX) && !canStack) return;
+            if (audioEffectList.Contains(intSFX) && !canStack) return null;
             else audioEffectList.Add(intSFX);
 
 
@@ -359,10 +412,38 @@ namespace TeamBobFPS
                 case EGameSFX._SFX_RAILGUN_RELOAD: audioSourceSFX.clip = railgunReload; break;
 
                 // ENEMY SFX
-                case EGameSFX._SFX_GNOME_WALK: audioSourceSFX.clip = gnomeWalk; break;
+                case EGameSFX._SFX_GNOME_WALK_GRASS: audioSourceSFX.clip = gnomeWalkGrass; break;
+                case EGameSFX._SFX_GNOME_WALK_WOOD: audioSourceSFX.clip = gnomeWalkWood; break;
+                case EGameSFX._SFX_GNOME_WALK_STONE: audioSourceSFX.clip = gnomeWalkStone; break;
                 case EGameSFX._SFX_GNOME_ATTACK: audioSourceSFX.clip = gnomeAttack; break;
                 case EGameSFX._SFX_GNOME_TAKE_DAMAGE: audioSourceSFX.clip = gnomeTakeDamage; break;
                 case EGameSFX._SFX_GNOME_DIE: audioSourceSFX.clip = gnomeDie; break;
+                case EGameSFX._SFX_DRAGON_FLY: audioSourceSFX.clip = dragonFly; break;
+                case EGameSFX._SFX_DRAGON_ATTACK: audioSourceSFX.clip = dragonAttack; break;
+                case EGameSFX._SFX_DRAGON_BEAM: audioSourceSFX.clip = dragonBeam; break;
+                case EGameSFX._SFX_DRAGON_TAKE_DAMAGE: audioSourceSFX.clip = dragonTakeDamage; break;
+                case EGameSFX._SFX_DRAGON_DIE: audioSourceSFX.clip = dragonDie; break;
+                case EGameSFX._SFX_LILGUY_WALK_GRASS: audioSourceSFX.clip = lilguyWalkGrass; break;
+                case EGameSFX._SFX_LILGUY_WALK_WOOD: audioSourceSFX.clip = lilguyWalkWood; break;
+                case EGameSFX._SFX_LILGUY_WALK_STONE: audioSourceSFX.clip = lilguyWalkStone; break;
+                case EGameSFX._SFX_LILGUY_ATTACK: audioSourceSFX.clip = lilguyAttack; break;
+                case EGameSFX._SFX_LILGUY_TAKE_DAMAGE: audioSourceSFX.clip = lilguyTakeDamage; break;
+                case EGameSFX._SFX_LILGUY_DIE: audioSourceSFX.clip = lilguyDie; break;
+                case EGameSFX._SFX_BLOODY_DEATH:
+                    int random = UnityEngine.Random.Range(0, 3);
+                    switch (random)
+                    {
+                        case 0:
+                            audioSourceSFX.clip = bloodyDeath1;
+                            break;
+                        case 1:
+                            audioSourceSFX.clip = bloodyDeath2;
+                            break;
+                        case 2:
+                            audioSourceSFX.clip = bloodyDeath3;
+                            break;
+                    }
+                    break;
 
                 // COLLECTIBLE SFX
                 case EGameSFX._SFX_COLLECT_AMMO: audioSourceSFX.clip = collectAmmo; break;
@@ -381,17 +462,17 @@ namespace TeamBobFPS
 
             if (loop)
             {
-                if (loopingAudioList.ContainsKey(intSFX))
+                if (loopingAudioList.Contains(audioSourceSFX))
                 {
                     if (stopLoopRoutine != null)
                     {
                         StopCoroutine(stopLoopRoutine);
                     }
-                    loopingAudioList[intSFX].loop = false;
-                    loopingAudioList[intSFX].Stop();
-                    loopingAudioList.Remove(intSFX);
+                    audioSourceSFX.loop = false;
+                    audioSourceSFX.Stop();
+                    loopingAudioList.Remove(audioSourceSFX);
                 }
-                loopingAudioList.Add(intSFX, audioSourceSFX);
+                loopingAudioList.Add(audioSourceSFX);
             }
 
             if (make2D)
@@ -407,6 +488,8 @@ namespace TeamBobFPS
             // circular buffer
             ++SFXAudioPoolIndex;
             if (SFXAudioPoolIndex >= SFXPoolSize) SFXAudioPoolIndex = 0;
+
+            return audioSourceSFX;
         }
 
         public void PlayAudio(EGameSFX intSFX)
@@ -415,12 +498,14 @@ namespace TeamBobFPS
             PlayAudioAtLocation(intSFX, Camera.current.transform.position);
         }
 
-        public void PlayMusic(EGameMusic iTrackIndex, float volume = 0.2f)
+        public void PlayMusic(EGameMusic iTrackIndex, float volume = 0.1f)
         {
             if (null == activeMusicAudioSource) Debug.Log("Music Game Object is missing an audio source component");
             switch (iTrackIndex)
             {
-                case EGameMusic._BOBCAT_INGAME: activeMusicAudioSource.clip = level1Music; break;
+                case EGameMusic._MENU_MUSIC: activeMusicAudioSource.clip = menuMusic; break;
+                case EGameMusic._VILLAGE_MUSIC: activeMusicAudioSource.clip = villageMusic; break;
+                case EGameMusic._TEMPLE_MUSIC: activeMusicAudioSource.clip = templeMusic; break;
             }
             if (null == activeMusicAudioSource.clip) Debug.Log("Audio source missing for music");
             activeMusicAudioSource.volume = volume;

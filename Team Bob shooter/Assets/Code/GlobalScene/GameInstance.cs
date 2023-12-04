@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using TeamBobFPS;
 using TeamBobFPS.UI;
 using Unity.VisualScripting;
+using TeamBobFPS.Save;
 
 namespace TeamBobFPS
 {
@@ -24,13 +25,16 @@ namespace TeamBobFPS
         private UpdateManager updateManager;
 
         [SerializeField]
-        private Menu getPauseMenu;
+        private PauseMenuController getPauseMenu;
 
         [SerializeField]
         private LoadoutSelectCanvas loadoutSelectCanvas;
 
         [SerializeField]
         private LevelSelectCanvas levelSelectCanvas;
+
+        [SerializeField]
+        private SaveController saveController;
 
         private static GameInstance instance;
 
@@ -85,6 +89,7 @@ namespace TeamBobFPS
             mapAreaManager = GetComponent<MapAreaManager>();
             progressionManager = GetComponent<GameProgressionManager>();
             audioManager = GetComponent<AudioManager>();
+            saveController = GetComponent<SaveController>();
             UsingController = Gamepad.all.Count > 0;
             //Application.targetFrameRate = 60;
         }
@@ -114,11 +119,13 @@ namespace TeamBobFPS
 
         public AudioManager GetAudioManager() { return audioManager; }
 
-        public Menu GetPauseMenu() { return getPauseMenu; }
+        public PauseMenuController GetPauseMenu() { return getPauseMenu; }
 
         public LoadoutSelectCanvas GetLoadoutSelectCanvas() {  return loadoutSelectCanvas; }
 
         public LevelSelectCanvas GetLevelSelectCanvas() { return levelSelectCanvas; }
+
+        public SaveController GetSaveController() { return saveController; }
 
     }
 }

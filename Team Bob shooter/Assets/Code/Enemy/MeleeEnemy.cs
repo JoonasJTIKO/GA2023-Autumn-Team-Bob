@@ -38,7 +38,7 @@ namespace TeamBobFPS
         Rigidbody rb;
         private int currentWaypoint = 0;
         private float nextWaypointDistance = 3f;
-        bool reachedEndOfPath = false;
+        private bool reachedEndOfPath = false;
         [SerializeField] private int speed = 25;
 
         public float timer;
@@ -63,6 +63,15 @@ namespace TeamBobFPS
         private Mover mover;
 
         private MapAreaManager mapAreaManager;
+
+        [SerializeField]
+        private Animator animator;
+
+        public bool roam = false;
+
+        private Vector3 changePosDirection = Vector3.zero;
+
+        private float idleWalkTimer = 0;
 
         void Start()
         {
@@ -127,6 +136,11 @@ namespace TeamBobFPS
 
         public void Initialize()
         {
+            if (mover != null)
+            {
+                mover.enabled = true;
+            }
+
             player = FindObjectOfType<PlayerUnit>().transform;
 
             unitHealth = GetComponent<UnitHealth>();
@@ -134,21 +148,29 @@ namespace TeamBobFPS
             unitHealth.OnDied += OnDie;
             unitHealth.OnTakeDamage += OnTakeDamage;
 
-            if (noticed)
-            {
-                radius = radius / 5;
-                noticed = false;
-                angle = 90;
+            animator.SetBool("Moving", false);
+
+            attacking = false;
+
+            if (noticed)
+            {
+                radius = radius / 5;
+                noticed = false;
+                angle = 90;
             }
         }
 
         private void OnDie(float explosionStrength, Vector3 explosionPoint, EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
         {
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_LILGUY_DIE, transform.position, 0.5f);
+
             EnemyAggroState.aggro = true;
 
             dropSpawner.SpawnThings();
             Vector3 pos = transform.position;
-            Quaternion rot = transform.rotation;
+            Vector3 vRot = transform.rotation.eulerAngles;
+
+            Quaternion rot = Quaternion.Euler(new Vector3(vRot.x, vRot.y + 180f, vRot.z));
 
             OnDefeated?.Invoke(enemyType, transform);
 
@@ -193,7 +215,7 @@ namespace TeamBobFPS
             if (noticed == false)
             {
                 noticed = true;
-                timer = 0;
+                //timer = 0f;
                 radius = radius * 5;
                 angle = 360;
             }
@@ -203,7 +225,9 @@ namespace TeamBobFPS
         {
             base.OnFixedUpdate(fixedDeltaTime);
 
-            timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+            animator.speed = GameInstance.Instance.GetUpdateManager().fixedTimeScale;
+
+            //timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
 
             if (!pathUpdating && mapAreaManager.PlayerInArea(CurrentMapArea))
             {
@@ -226,23 +250,38 @@ namespace TeamBobFPS
             else
             {
                 canSee = false;
+                IdleRoam(fixedDeltaTime);
+                return;
             }
 
-            if (timer >= 10 && noticed)
+            //if (timer >= 10 && noticed)
+            //{
+            //    radius = radius / 5;
+            //    noticed = false;
+            //    angle = 90;
+            //}
+            if (noticed /*&& timer < 10*/)
             {
-                radius = radius / 5;
-                noticed = false;
-                angle = 90;
-            }
-            if (noticed && timer < 10)
-            {
-                if (currentDistance < attackRange && !attacking)
+                if (currentDistance < attackRange)
                 {
-                    Attack();
+                    if (attacking)
+                    {
+                        FacePlayer();
+                    }
+                    else
+                    {
+                        Attack();
+                        animator.SetBool("Moving", false);
+                    }
                 }
+
                 if (!attacking && pathUpdating)
                 {
                     Move();
+                }
+                else
+                {
+                    animator.SetBool("Moving", false);
                 }
             }
             //if(!noticed && timer >= 10)
@@ -256,6 +295,53 @@ namespace TeamBobFPS
             {
                 Search();
             }
+        }
+
+        private void IdleRoam(float deltaTime)
+        {
+            if (!roam && !isInCooldown)
+            {
+                changePosDirection = Quaternion.Euler(0, UnityEngine.Random.Range(0f, 360f), 0) * Vector3.forward;
+
+
+                //float posRange;
+                //posRange = radius;
+                //var point = UnityEngine.Random.insideUnitSphere * posRange;
+                //point.y = 0;
+                //point += transform.position;
+                //seeker.StartPath(rb.position, point, OnPathComplete);
+                roam = true;
+                idleWalkTimer = 2.5f;
+            }
+            else if (roam)
+            {
+                if (idleWalkTimer <= 0 || Physics.SphereCast(new Ray(transform.position, mover.GetSlopeDirection(changePosDirection)), 1, 1, LayerMask.GetMask("Ground", "Environment", "LevelBorder")))
+                {
+                    roam = false;
+                    isInCooldown = true;
+                    StartCoroutine(Cooldown(3f));
+                }
+                transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, changePosDirection, deltaTime * 10, 0));
+                mover.Move(mover.GetSlopeDirection(changePosDirection));
+                animator.SetBool("Moving", true);
+
+                idleWalkTimer -= deltaTime;
+                return;
+            }
+
+            animator.SetBool("Moving", false);
+        }
+
+        private IEnumerator Cooldown(float time)
+        {
+            isInCooldown = true;
+            timer = 0;
+            while (timer < time)
+            {
+                timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+                yield return null;
+            }
+            isInCooldown = false;
         }
 
         private void Move()
@@ -288,6 +374,7 @@ namespace TeamBobFPS
                 Vector3 direction = ((Vector3)path.vectorPath[currentWaypoint] - rb.position).normalized;
                 direction = new Vector3(direction.x, 0, direction.z);
                 mover.Move(mover.GetSlopeDirection(direction));
+                animator.SetBool("Moving", true);
                 //Vector3 force = direction * speed * Time.deltaTime;
                 //rb.AddForce(force, ForceMode.VelocityChange);
             }
@@ -312,14 +399,7 @@ namespace TeamBobFPS
 
                     FieldOfView();
 
-                    Vector3 toPlayer = player.transform.position - transform.position;
-                    toPlayer = new Vector3(toPlayer.x, 0, toPlayer.z);
-
-                    Quaternion lookOnLook =
-                    Quaternion.LookRotation(toPlayer);
-
-                    transform.rotation =
-                    Quaternion.Slerp(transform.rotation, lookOnLook, Time.deltaTime * 10f);
+                    FacePlayer();
                 }
                 else
                 {
@@ -330,6 +410,18 @@ namespace TeamBobFPS
             {
                 canSee = false;
             }
+        }
+
+        private void FacePlayer()
+        {
+            Vector3 toPlayer = player.transform.position - transform.position;
+            toPlayer = new Vector3(toPlayer.x, 0, toPlayer.z);
+
+            Quaternion lookOnLook =
+                    Quaternion.LookRotation(toPlayer);
+
+            transform.rotation =
+            Quaternion.Slerp(transform.rotation, lookOnLook, Time.deltaTime * 10f);
         }
 
         private void FieldOfView()
@@ -362,8 +454,9 @@ namespace TeamBobFPS
         }
         public void Attack()
         {
-            if (enemyLungeAttack.Lunge())
+            if (!enemyLungeAttack.OnCooldown && !attacking)
             {
+                animator.SetTrigger("Attack");
                 mover.enabled = false;
                 attacking = true;
 
@@ -381,6 +474,12 @@ namespace TeamBobFPS
             }
         }
 
+        public void DoAttack()
+        {
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_LILGUY_ATTACK, transform.position, 0.5f);
+            enemyLungeAttack.Lunge();
+        }
+
         private void OnAttackEnd()
         {
             mover.enabled = true;
@@ -389,6 +488,10 @@ namespace TeamBobFPS
 
         private void OnTakeDamage(float amount)
         {
+            if (UnityEngine.Random.Range(0f, 1f) <= 0.33f)
+            {
+                GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_LILGUY_TAKE_DAMAGE, transform.position, 0.5f);
+            }
             EnemyAggroState.aggro = true;
         }
 

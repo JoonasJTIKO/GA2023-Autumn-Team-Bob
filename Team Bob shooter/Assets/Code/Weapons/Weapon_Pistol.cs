@@ -21,6 +21,9 @@ namespace TeamBobFPS
         [SerializeField]
         private ParticleSystem muzzleFlash;
 
+        [SerializeField]
+        private Animator slideAnimator;
+
         private PlayerUnit playerUnit;
 
         private Transform[] activeHitEffects = new Transform[8];
@@ -78,7 +81,8 @@ namespace TeamBobFPS
             screenShake.Shake(1);
             recoil.DoRecoil(-2);
             muzzleFlash.Play();
-            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_PISTOL_SHOOT, transform.position, volume: 0.5f, make2D: true);
+            slideAnimator.SetTrigger("Shoot");
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_PISTOL_SHOOT, transform.position, volume: 0.25f, make2D: true);
 
             RaycastHit hit;
             Vector3 angle = playerUnit.PlayerCam.transform.TransformDirection(Vector3.forward);

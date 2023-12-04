@@ -19,12 +19,15 @@ namespace TeamBobFPS
             }
 
             GameInstance.Instance.GetInGameHudCanvas().Show();
+            GameInstance.Instance.AudioListener.enabled = true;
         }
 
         public override void Deactivate(bool unloadScene = true)
         {
             if (unloadScene) SceneManager.UnloadSceneAsync(SceneName);
             GameInstance.Instance.GetInGameHudCanvas().Hide();
+
+            GameInstance.Instance.AudioListener.enabled = false;
         }
 
         public MainMenuState() : base()
