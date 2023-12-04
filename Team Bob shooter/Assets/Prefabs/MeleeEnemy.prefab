@@ -50,7 +50,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2364873980125049477}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -217,7 +217,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 1.2
   m_Direction: 1
-  m_Center: {x: 0, y: 0.5, z: 0}
+  m_Center: {x: 0, y: 0.65, z: 0}
 --- !u!114 &249660379454772369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,7 +263,7 @@ MonoBehaviour:
   canSee: 0
   currentDistance: 0
   hitTimer: 1
-  speed: 5
+  speed: 7
   timer: 0
   noticed: 0
   gibPrefab: {fileID: -6764940493939533426, guid: 14bd18c1ed264794f90536d3a6144d35,

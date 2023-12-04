@@ -196,7 +196,7 @@ GameObject:
   - component: {fileID: 5584773997955275122}
   - component: {fileID: 5584773997955275124}
   - component: {fileID: 5584773997955275123}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: leg.R
   m_TagString: EnemyRagdoll
   m_Icon: {fileID: 0}
@@ -404,7 +404,7 @@ GameObject:
   - component: {fileID: 1648041148389768485}
   - component: {fileID: 5584773997785086184}
   - component: {fileID: 5584773997785086185}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: Bone
   m_TagString: EnemyRagdoll
   m_Icon: {fileID: 0}
@@ -472,7 +472,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2355345544574109178}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: foot.L_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -503,7 +503,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6285110454516642887}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: back spike up
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -581,7 +581,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9157784001147086848}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: leg end.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -760,7 +760,7 @@ GameObject:
   - component: {fileID: 5584773999138012430}
   - component: {fileID: 5584773999138012416}
   - component: {fileID: 5584773999138012431}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: leg.L
   m_TagString: EnemyRagdoll
   m_Icon: {fileID: 0}
@@ -868,7 +868,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2966799184481034592}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: side.R_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -899,7 +899,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3943876135617207881}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: Armature
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1040,7 +1040,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5391410623929796188}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: front.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1075,7 +1075,7 @@ GameObject:
   - component: {fileID: 5584773999109532614}
   - component: {fileID: 5584773999109532615}
   - component: {fileID: 5584773999109532613}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: leg b mid.L
   m_TagString: EnemyRagdoll
   m_Icon: {fileID: 0}
@@ -1183,7 +1183,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2585750521420957617}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: back spike_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1214,7 +1214,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2698423557005027396}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: foot.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1355,7 +1355,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6672672738825843853}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: back spike up_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1389,7 +1389,7 @@ GameObject:
   - component: {fileID: 5584773998267083049}
   - component: {fileID: 5584773998267083051}
   - component: {fileID: 5584773998267083050}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: leg b.R
   m_TagString: EnemyRagdoll
   m_Icon: {fileID: 0}
@@ -1497,7 +1497,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1702279000876806918}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: foot b.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1529,7 +1529,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7921692789179935832}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: spike down_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1606,7 +1606,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3769776061085223186}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: eye.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1642,7 +1642,7 @@ GameObject:
   - component: {fileID: -6764940493939533426}
   - component: {fileID: -1233112468523319127}
   - component: {fileID: -134311861523824064}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: meleeRagdoll
   m_TagString: EnemyRagdoll
   m_Icon: {fileID: 0}
@@ -1721,8 +1721,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 320
-  explosionBlood: {fileID: 5395013789238911511, guid: cc63ab19a8cf6644dbe6ac5d8b263f4c,
-    type: 3}
+  explosionBlood: {fileID: 2778436045192454200}
   allowPartialGore: 0
 --- !u!114 &-1233112468523319127
 MonoBehaviour:
@@ -1978,7 +1977,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1144810677063114751}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: front horn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2011,7 +2010,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6447361921200110664}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: foot b.L_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2088,7 +2087,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5214352863538818545}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: front.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2121,7 +2120,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1757366895684865019}
   - component: {fileID: 9017785333808322879}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: eyes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2240,7 +2239,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2527558024282786010}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: foot.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2373,7 +2372,7 @@ GameObject:
   - component: {fileID: 5584773999373523117}
   - component: {fileID: 5584773999373523119}
   - component: {fileID: 5584773999373523118}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: leg b.L
   m_TagString: EnemyRagdoll
   m_Icon: {fileID: 0}
@@ -2481,7 +2480,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1954618306780584570}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: eye.L_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2512,7 +2511,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3044178893094563429}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: spike down
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2544,7 +2543,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3622551497356117545}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: foot.R_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2575,7 +2574,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1686739873066154045}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: leg b end.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2607,7 +2606,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 179145768659630578}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: leg b end.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2639,7 +2638,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4538241916522836865}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: back.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2671,7 +2670,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4499566559938999187}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: middle.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2814,7 +2813,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 383611356777383892}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: foot b.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2892,7 +2891,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5289594995423439883}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: upper lip_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2923,7 +2922,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4339812921442650918}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: middle.R
   m_TagString: EnemyRagdoll
   m_Icon: {fileID: 0}
@@ -3055,7 +3054,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5631701269624162597}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: leg end.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3090,7 +3089,7 @@ GameObject:
   - component: {fileID: 5584773998421160889}
   - component: {fileID: 5584773998421160890}
   - component: {fileID: 5584773998421160888}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: lower lip
   m_TagString: EnemyRagdoll
   m_Icon: {fileID: 0}
@@ -3197,7 +3196,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 402551563251133856}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: eye.R_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3228,7 +3227,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1246816831815714624}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: back spike
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3263,7 +3262,7 @@ GameObject:
   - component: {fileID: 5584773997775700586}
   - component: {fileID: 5584773997775700588}
   - component: {fileID: 5584773997775700587}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: upper lip
   m_TagString: EnemyRagdoll
   m_Icon: {fileID: 0}
@@ -3471,7 +3470,7 @@ GameObject:
   - component: {fileID: 5584773998267083052}
   - component: {fileID: 5584773998267083053}
   - component: {fileID: 5584773998267083048}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: leg b mid.R
   m_TagString: EnemyRagdoll
   m_Icon: {fileID: 0}
@@ -3579,7 +3578,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4595863390202604615}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: lower lip_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3613,7 +3612,7 @@ GameObject:
   - component: {fileID: 5584773998832239225}
   - component: {fileID: 5584773998832239226}
   - component: {fileID: 5584773998832239224}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: leg mid.L
   m_TagString: EnemyRagdoll
   m_Icon: {fileID: 0}
@@ -3721,7 +3720,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7918769717588989518}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: foot b.R_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3755,7 +3754,7 @@ GameObject:
   - component: {fileID: 5584773999345633062}
   - component: {fileID: 5584773999345633063}
   - component: {fileID: 5584773999345633061}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: leg mid.R
   m_TagString: EnemyRagdoll
   m_Icon: {fileID: 0}
@@ -3864,7 +3863,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7145256803223374851}
   - component: {fileID: 2504362334023103045}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3985,7 +3984,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8955968558539777450}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: back.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4017,7 +4016,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7625876917369084874}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: side.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4158,7 +4157,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8475739595478126899}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: side.L_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4189,7 +4188,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2318974142988550666}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: side.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4267,7 +4266,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5648758442521407123}
-  m_Layer: 7
+  m_Layer: 18
   m_Name: eye.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4301,6 +4300,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BloodParticle (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8340699660644369345, guid: 7c10d04b32edda5498d0df4dab19734c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 8340699660644369358, guid: 7c10d04b32edda5498d0df4dab19734c,
         type: 3}
@@ -4420,6 +4424,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BloodParticle (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8340699660644369345, guid: 7c10d04b32edda5498d0df4dab19734c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 8340699660644369358, guid: 7c10d04b32edda5498d0df4dab19734c,
         type: 3}
@@ -4559,7 +4568,7 @@ PrefabInstance:
     - target: {fileID: 3548588485384254789, guid: 2f9e7dc163581394da1e00b561eed65d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.7520359
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3548588485384254789, guid: 2f9e7dc163581394da1e00b561eed65d,
         type: 3}
@@ -4610,6 +4619,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Blood Splash
+      objectReference: {fileID: 0}
+    - target: {fileID: 3548588485384254792, guid: 2f9e7dc163581394da1e00b561eed65d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 3548588485384254792, guid: 2f9e7dc163581394da1e00b561eed65d,
         type: 3}
@@ -4664,6 +4678,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1707394987303949680}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2778436045192454200 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3548588485384254792, guid: 2f9e7dc163581394da1e00b561eed65d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1707394987303949680}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4503832977643607423
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4685,6 +4705,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BloodParticle (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8340699660644369345, guid: 7c10d04b32edda5498d0df4dab19734c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 8340699660644369358, guid: 7c10d04b32edda5498d0df4dab19734c,
         type: 3}
@@ -4811,6 +4836,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: BloodParticle (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 8340699660644369345, guid: 7c10d04b32edda5498d0df4dab19734c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: 8340699660644369358, guid: 7c10d04b32edda5498d0df4dab19734c,
         type: 3}
       propertyPath: m_RootOrder
@@ -4925,6 +4955,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BloodParticle (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8340699660644369345, guid: 7c10d04b32edda5498d0df4dab19734c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 8340699660644369358, guid: 7c10d04b32edda5498d0df4dab19734c,
         type: 3}
@@ -5045,6 +5080,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: BloodParticle (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 8340699660644369345, guid: 7c10d04b32edda5498d0df4dab19734c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: 8340699660644369358, guid: 7c10d04b32edda5498d0df4dab19734c,
         type: 3}
       propertyPath: m_RootOrder
@@ -5160,6 +5200,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: BloodParticle (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 8340699660644369345, guid: 7c10d04b32edda5498d0df4dab19734c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: 8340699660644369358, guid: 7c10d04b32edda5498d0df4dab19734c,
         type: 3}
       propertyPath: m_RootOrder
@@ -5271,6 +5316,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8340699660644369345, guid: 7c10d04b32edda5498d0df4dab19734c,
         type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 8340699660644369345, guid: 7c10d04b32edda5498d0df4dab19734c,
+        type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -5302,7 +5352,7 @@ PrefabInstance:
     - target: {fileID: 8340699660644369358, guid: 7c10d04b32edda5498d0df4dab19734c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.75203586
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8340699660644369358, guid: 7c10d04b32edda5498d0df4dab19734c,
         type: 3}
@@ -5398,6 +5448,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BloodParticle (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8340699660644369345, guid: 7c10d04b32edda5498d0df4dab19734c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 8340699660644369358, guid: 7c10d04b32edda5498d0df4dab19734c,
         type: 3}

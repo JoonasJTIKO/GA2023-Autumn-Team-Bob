@@ -38,7 +38,7 @@ namespace TeamBobFPS
         Rigidbody rb;
         private int currentWaypoint = 0;
         private float nextWaypointDistance = 3f;
-        bool reachedEndOfPath = false;
+        private bool reachedEndOfPath = false;
         [SerializeField] private int speed = 25;
 
         public float timer;
@@ -136,12 +136,19 @@ namespace TeamBobFPS
 
         public void Initialize()
         {
+            if (mover != null)
+            {
+                mover.enabled = true;
+            }
+
             player = FindObjectOfType<PlayerUnit>().transform;
 
             unitHealth = GetComponent<UnitHealth>();
             unitHealth.AddHealth(unitHealth.MaxHealth);
             unitHealth.OnDied += OnDie;
             unitHealth.OnTakeDamage += OnTakeDamage;
+
+            animator.SetBool("Moving", false);
 
             attacking = false;
 
@@ -155,13 +162,15 @@ namespace TeamBobFPS
 
         private void OnDie(float explosionStrength, Vector3 explosionPoint, EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
         {
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_LILGUY_DIE, transform.position, 0.5f);
+
             EnemyAggroState.aggro = true;
 
             dropSpawner.SpawnThings();
             Vector3 pos = transform.position;
-            Quaternion rot = transform.rotation;
+            Vector3 vRot = transform.rotation.eulerAngles;
 
-            rot = Quaternion.Euler(new Vector3(rot.x, rot.y + 180f, rot.z));
+            Quaternion rot = Quaternion.Euler(new Vector3(vRot.x, vRot.y + 180f, vRot.z));
 
             OnDefeated?.Invoke(enemyType, transform);
 
@@ -206,7 +215,7 @@ namespace TeamBobFPS
             if (noticed == false)
             {
                 noticed = true;
-                timer = 0;
+                //timer = 0f;
                 radius = radius * 5;
                 angle = 360;
             }
@@ -218,7 +227,7 @@ namespace TeamBobFPS
 
             animator.speed = GameInstance.Instance.GetUpdateManager().fixedTimeScale;
 
-            timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
+            //timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
 
             if (!pathUpdating && mapAreaManager.PlayerInArea(CurrentMapArea))
             {
@@ -245,13 +254,13 @@ namespace TeamBobFPS
                 return;
             }
 
-            if (timer >= 10 && noticed)
-            {
-                radius = radius / 5;
-                noticed = false;
-                angle = 90;
-            }
-            if (noticed && timer < 10)
+            //if (timer >= 10 && noticed)
+            //{
+            //    radius = radius / 5;
+            //    noticed = false;
+            //    angle = 90;
+            //}
+            if (noticed /*&& timer < 10*/)
             {
                 if (currentDistance < attackRange)
                 {
@@ -467,6 +476,7 @@ namespace TeamBobFPS
 
         public void DoAttack()
         {
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_LILGUY_ATTACK, transform.position, 0.5f);
             enemyLungeAttack.Lunge();
         }
 
@@ -478,6 +488,10 @@ namespace TeamBobFPS
 
         private void OnTakeDamage(float amount)
         {
+            if (UnityEngine.Random.Range(0f, 1f) <= 0.33f)
+            {
+                GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_LILGUY_TAKE_DAMAGE, transform.position, 0.5f);
+            }
             EnemyAggroState.aggro = true;
         }
 

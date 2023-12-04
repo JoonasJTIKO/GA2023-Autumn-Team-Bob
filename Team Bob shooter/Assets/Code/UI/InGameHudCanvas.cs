@@ -38,6 +38,14 @@ namespace TeamBobFPS.UI
         [SerializeField]
         private Animator WaveClearAnimator;
 
+        [SerializeField]
+        private Crosshair crosshair;
+
+        public void SetCrosshair(int index)
+        {
+            crosshair.SetCrosshair(index);
+        }
+
         public void UpdateMagCount(int amount)
         {
             magCountText.text = amount.ToString();

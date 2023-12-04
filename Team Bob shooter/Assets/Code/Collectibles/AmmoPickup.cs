@@ -124,6 +124,8 @@ namespace TeamBobFPS
                 rb.constraints = RigidbodyConstraints.FreezePosition;
                 waveHover.enabled = true;
                 waveHover.Initialize();
+
+                GetComponent<SphereCollider>().radius = 0.4f;
             }
         }
 

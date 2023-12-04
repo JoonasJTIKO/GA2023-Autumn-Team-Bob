@@ -174,7 +174,7 @@ namespace TeamBobFPS.UI
                 pressed = true;
 
                 GameInstance.Instance.GetFadeCanvas().FadeTo(0.5f);
-                StartCoroutine(LoadLevelAfterDelay(0.5f, StateType.Arena1));
+                StartCoroutine(LoadLevelAfterDelay(0.5f, StateType.Arena2));
             }
         }
 

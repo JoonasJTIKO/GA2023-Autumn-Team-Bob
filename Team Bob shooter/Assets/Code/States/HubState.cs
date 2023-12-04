@@ -21,12 +21,16 @@ namespace TeamBobFPS
             GameInstance.Instance.GetPlayerDefeatedCanvas().Hide();
             GameInstance.Instance.GetLoadoutSelectCanvas().Show();
             GameInstance.Instance.GetFadeCanvas().FadeFrom(0.5f);
+
+            GameInstance.Instance.AudioListener.enabled = true;
         }
 
         public override void Deactivate(bool unloadScene = true)
         {
             if (unloadScene) SceneManager.UnloadSceneAsync(SceneName);
             GameInstance.Instance.GetLoadoutSelectCanvas().Hide();
+
+            GameInstance.Instance.AudioListener.enabled = false;
         }
 
         public HubState() : base()

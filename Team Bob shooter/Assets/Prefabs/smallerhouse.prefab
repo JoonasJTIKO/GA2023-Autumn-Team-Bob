@@ -689,7 +689,7 @@ GameObject:
   - component: {fileID: 3314771292942897127}
   m_Layer: 6
   m_Name: Collision
-  m_TagString: Untagged
+  m_TagString: Wood
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -864,7 +864,7 @@ GameObject:
   - component: {fileID: 5819100424457666740}
   m_Layer: 6
   m_Name: roof
-  m_TagString: Untagged
+  m_TagString: Wood
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -1483,7 +1483,7 @@ GameObject:
   - component: {fileID: 7882035098014598855}
   m_Layer: 6
   m_Name: Collision
-  m_TagString: Untagged
+  m_TagString: Wood
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -1573,7 +1573,7 @@ GameObject:
   - component: {fileID: 4103171328752765759}
   m_Layer: 6
   m_Name: Collision (1)
-  m_TagString: Untagged
+  m_TagString: Stone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -1923,7 +1923,7 @@ GameObject:
   - component: {fileID: 4635216986046495067}
   m_Layer: 6
   m_Name: Collision (1)
-  m_TagString: Untagged
+  m_TagString: Wood
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -1968,7 +1968,7 @@ GameObject:
   - component: {fileID: 4775577341025311729}
   m_Layer: 6
   m_Name: Collision (2)
-  m_TagString: Untagged
+  m_TagString: Wood
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -2013,7 +2013,7 @@ GameObject:
   - component: {fileID: 2097422672689261032}
   m_Layer: 6
   m_Name: Collision (3)
-  m_TagString: Untagged
+  m_TagString: Wood
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -2059,7 +2059,7 @@ GameObject:
   - component: {fileID: 7742557046908594492}
   m_Layer: 6
   m_Name: firstflor
-  m_TagString: Untagged
+  m_TagString: Wood
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -2143,7 +2143,7 @@ GameObject:
   - component: {fileID: 4683145562873529939}
   m_Layer: 6
   m_Name: foundation
-  m_TagString: Untagged
+  m_TagString: Wood
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -2238,7 +2238,7 @@ GameObject:
   - component: {fileID: 194396247228415382}
   m_Layer: 6
   m_Name: Collision (3)
-  m_TagString: Untagged
+  m_TagString: Wood
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -2283,7 +2283,7 @@ GameObject:
   - component: {fileID: 2560638805617019424}
   m_Layer: 6
   m_Name: Collision (2)
-  m_TagString: Untagged
+  m_TagString: Wood
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -2328,7 +2328,7 @@ GameObject:
   - component: {fileID: 8379851409859921474}
   m_Layer: 6
   m_Name: Collision (1)
-  m_TagString: Untagged
+  m_TagString: Wood
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -2566,7 +2566,7 @@ GameObject:
   - component: {fileID: 6534208203007803445}
   m_Layer: 6
   m_Name: Collision
-  m_TagString: Untagged
+  m_TagString: Stone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647

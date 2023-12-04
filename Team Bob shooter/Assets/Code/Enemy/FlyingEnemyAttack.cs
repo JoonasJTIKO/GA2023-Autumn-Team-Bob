@@ -15,6 +15,8 @@ namespace TeamBobFPS
         [SerializeField]
         private LayerMask environmentLayers;
 
+        private ComponentPool<SkyBlastAttack> attackPool;
+
         public bool Ready
         {
             get;
@@ -26,6 +28,7 @@ namespace TeamBobFPS
         public void Awake()
         {
             Ready = true;
+            attackPool = new ComponentPool<SkyBlastAttack>(attackObject, 2);
         }
 
         public void OnDisable()
@@ -41,15 +44,25 @@ namespace TeamBobFPS
         {
             if (!Ready) return false;
 
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_DRAGON_ATTACK, transform.position, 0.5f);
+
             Vector3 target = FindTargetPosition(playerTransform);
             if (target == Vector3.zero) return false;
 
-            attackObject.transform.position = target;
-            attackObject.gameObject.SetActive(true);
-            attackObject.Execute();
+            SkyBlastAttack attack = attackPool.Get();
+            attack.AttackComplete += ReturnAttackToPool;
+            attack.transform.position = target;
+            attack.gameObject.SetActive(true);
+            attack.Execute();
             cooldownRoutine = StartCoroutine(Cooldown());
             
             return true;
+        }
+
+        private void ReturnAttackToPool(SkyBlastAttack item)
+        {
+            item.AttackComplete -= ReturnAttackToPool;
+            attackPool.Return(item);
         }
 
         private Vector3 FindTargetPosition(Transform playerTransform)

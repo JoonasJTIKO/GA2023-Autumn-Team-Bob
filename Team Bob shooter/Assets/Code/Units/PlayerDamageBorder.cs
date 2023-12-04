@@ -21,6 +21,9 @@ namespace TeamBobFPS
 
         public float intensity = 0;
 
+        private Coroutine damageRoutine;
+        private Coroutine healRoutine;
+
         protected override void Awake()
         {
             base.Awake();
@@ -65,13 +68,15 @@ namespace TeamBobFPS
         {
             screenShake.Shake(1);
             GameInstance.Instance.GetInGameHudCanvas().ReduceHealth(amount);
-            StartCoroutine(TakeDamageEffect());
+            if (damageRoutine != null) StopCoroutine(damageRoutine);
+            damageRoutine = StartCoroutine(TakeDamageEffect());
         }
 
         private void GiveHealth(float amount)
         {
             GameInstance.Instance.GetInGameHudCanvas().AddHealth(amount);
-            StartCoroutine(HealEffect());
+            if (healRoutine != null) StopCoroutine(healRoutine);
+            healRoutine = StartCoroutine(HealEffect());
         }
 
         private void OnDie(float ExplosionStrength, Vector3 explosionPoint, EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
