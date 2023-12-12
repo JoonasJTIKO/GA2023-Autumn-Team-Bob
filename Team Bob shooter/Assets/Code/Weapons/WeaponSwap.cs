@@ -126,7 +126,6 @@ namespace TeamBobFPS
 
             if (shootAction.phase == InputActionPhase.Performed && !playerDead && readyToFire && !lockInputs)
             {
-                activeWeapon.FireButtonHeld(true);
                 ShootActiveWeapon();
                 if (!fullAutoMode)
                 {

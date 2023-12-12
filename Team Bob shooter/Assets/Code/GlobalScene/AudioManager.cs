@@ -335,10 +335,10 @@ namespace TeamBobFPS
             }
             else
             {
-                if (stopLoopRoutine != null)
-                {
-                    StopCoroutine(stopLoopRoutine);
-                }
+                //if (stopLoopRoutine != null)
+                //{
+                //    StopCoroutine(stopLoopRoutine);
+                //}
                 stopLoopRoutine = StartCoroutine(LoopingAudioFadeOut(audioSource));
             }
         }
@@ -464,10 +464,10 @@ namespace TeamBobFPS
             {
                 if (loopingAudioList.Contains(audioSourceSFX))
                 {
-                    if (stopLoopRoutine != null)
-                    {
-                        StopCoroutine(stopLoopRoutine);
-                    }
+                    //if (stopLoopRoutine != null)
+                    //{
+                    //    StopCoroutine(stopLoopRoutine);
+                    //}
                     audioSourceSFX.loop = false;
                     audioSourceSFX.Stop();
                     loopingAudioList.Remove(audioSourceSFX);

@@ -53,6 +53,13 @@ namespace TeamBobFPS
             rb = GetComponent<Rigidbody>();
         }
 
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+
+            FireButtonHeld(false);
+        }
+
         private void Start()
         {
             screenShake = playerUnit.PlayerCam.GetComponent<ScreenShake>();
@@ -69,6 +76,7 @@ namespace TeamBobFPS
 
         protected override void Fire()
         {
+            FireButtonHeld(true);
             screenShake.Shake(1);
             recoil.DoRecoil(-0.3f);
             muzzleFlash.Play();
@@ -184,12 +192,18 @@ namespace TeamBobFPS
             viewmodelAnimator.SetBool("Firing", state);
             if (state && !shootAudioPlaying)
             {
+                if (shootAudio != null)
+                {
+                    GameInstance.Instance.GetAudioManager().StopLoopingAudio(shootAudio);
+                }
+
                 shootAudio = GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_MINIGUN_SHOOT, transform.position, volume: 0.5f, loop: true, make2D: true);
                 shootAudioPlaying = true;
             }
             else if (!state && shootAudioPlaying)
             {
                 GameInstance.Instance.GetAudioManager().StopLoopingAudio(shootAudio);
+                shootAudio = null;
                 shootAudioPlaying = false;
             }
         }
