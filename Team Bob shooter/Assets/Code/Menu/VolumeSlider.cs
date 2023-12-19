@@ -21,10 +21,6 @@ namespace TeamBobFPS
             {
                 slider.value = SettingsData.settings.sfxVolume;
             }
-            else if (gameObject.name == "Ambience Slider")
-            {
-                slider.value = SettingsData.settings.ambVolume;
-            }
         }
 
         public void SetVolume(float volume)
@@ -38,11 +34,6 @@ namespace TeamBobFPS
             {
                 mixer.SetFloat("SFXVol", Mathf.Log10(volume) * 20);
                 SettingsData.settings.sfxVolume = volume;
-            }
-            else if (gameObject.name == "Ambience Slider")
-            {
-                mixer.SetFloat("AmbienceVol", Mathf.Log10(volume) * 20);
-                SettingsData.settings.ambVolume = volume;
             }
 
             SaveSettings.SaveGameSettings();

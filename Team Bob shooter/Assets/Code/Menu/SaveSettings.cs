@@ -38,7 +38,7 @@ namespace TeamBobFPS
             else
             {
                 print("settings file not found, creating new");
-                SettingsClass defaultSettings = new SettingsClass(0.5f, 0.5f, 0.5f, 2, true, true);
+                SettingsClass defaultSettings = new SettingsClass(0.5f, 0.5f, 2, true);
 
                 using (FileStream stream = new FileStream(path, FileMode.Create))
                 {

@@ -9,22 +9,15 @@ namespace TeamBobFPS
     {
         public float musicVolume;
         public float sfxVolume;
-        public float ambVolume;
         public int resolutionIndex;
         public bool fullscreen;
-        public bool renderClouds;
-        public bool movementWobble;
-        public bool lowresToggle;
-        public bool alarmMute;
 
-        public SettingsClass(float mv, float sv, float av, int res, bool fs, bool lr)
+        public SettingsClass(float mv, float sv, int res, bool fs)
         {
             musicVolume = mv;
             sfxVolume = sv;
-            ambVolume = av;
             resolutionIndex = res;
             fullscreen = fs;
-            lowresToggle = lr;
         }
     }
 }

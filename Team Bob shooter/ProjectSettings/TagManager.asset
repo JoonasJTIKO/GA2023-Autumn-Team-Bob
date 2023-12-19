@@ -18,6 +18,7 @@ TagManager:
   - RangeEnemy
   - MeleeEnemy
   - FlyingEnemy
+  - SettingsLoader
   layers:
   - Default
   - TransparentFX

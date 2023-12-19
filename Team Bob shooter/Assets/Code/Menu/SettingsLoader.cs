@@ -9,36 +9,16 @@ namespace TeamBobFPS
         void Awake()
         {
             SaveSettings.LoadSettings();
-            Fullscreen(SettingsData.settings.fullscreen);
+            //Fullscreen(SettingsData.settings.fullscreen);
             SetResolution(SettingsData.settings.resolutionIndex);
-            LowRes(SettingsData.settings.lowresToggle);
         }
 
-        public void Fullscreen(bool isFS)
-        {
-            Screen.fullScreen = isFS;
-            SettingsData.settings.fullscreen = isFS;
-            SaveSettings.SaveGameSettings();
-        }
-
-        public void Wobble(bool wobble)
-        {
-            SettingsData.settings.movementWobble = wobble;
-            SaveSettings.SaveGameSettings();
-        }
-
-        public void LowRes(bool resToggle)
-        {
-            //if (camFollowScript != null) { camFollowScript.ToggleDownRes(resToggle); }
-            //SettingsData.settings.lowresToggle = resToggle;
-            //SaveSettings.SaveGameSettings();
-        }
-
-        public void CloudToggle(bool cloudToggleValue)
-        {
-            SettingsData.settings.renderClouds = cloudToggleValue;
-            SaveSettings.SaveGameSettings();
-        }
+        //public void Fullscreen(bool isFS)
+        //{
+        //    Screen.fullScreen = isFS;
+        //    SettingsData.settings.fullscreen = isFS;
+        //    SaveSettings.SaveGameSettings();
+        //}
 
         public void SetResolution(int index)
         {
