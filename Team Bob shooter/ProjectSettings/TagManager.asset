@@ -31,7 +31,7 @@ TagManager:
   - Environment
   - Viewmodel
   - WorldUI
-  - 
+  - Invisible
   - Interactable
   - PlayerProjectile
   - Pickup

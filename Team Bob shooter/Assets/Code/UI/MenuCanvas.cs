@@ -13,6 +13,8 @@ namespace TeamBobFPS.UI
         [SerializeField]
         protected GameObject initialSelectedObject;
 
+        protected bool buttonPressed = false;
+
         public override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
@@ -34,6 +36,7 @@ namespace TeamBobFPS.UI
                 eventSystem.SetSelectedGameObject(initialSelectedObject);
             }
 
+            buttonPressed = false;
         }
 
         public virtual void Hide()

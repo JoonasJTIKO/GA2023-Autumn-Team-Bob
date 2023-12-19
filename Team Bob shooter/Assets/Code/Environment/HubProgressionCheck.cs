@@ -34,13 +34,6 @@ namespace TeamBobFPS
                     //TEMP
                     levelPortals[0].SetTargetState(StateType.Arena1);
                     break;
-                case GameProgressionManager.GameProgress.AllCleared:
-                    foreach (var levelPortal in levelPortals)
-                    { 
-                        levelPortal.gameObject.SetActive(true); 
-                    }
-                    levelPortals[0].SetTargetState(StateType.Arena1);
-                    break;
             }
         }
     }

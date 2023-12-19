@@ -23,7 +23,6 @@ namespace TeamBobFPS
             NoneCleared = 0,
             FirstCleared = 1,
             SecondCleared = 2,
-            AllCleared = 3,
         }
 
         public GameProgress CurrentGameProgress

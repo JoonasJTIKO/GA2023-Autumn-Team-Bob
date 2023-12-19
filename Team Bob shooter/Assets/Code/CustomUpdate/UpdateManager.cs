@@ -17,6 +17,11 @@ namespace TeamBobFPS
 		private PostUpdateRunner postUpdateRunner;
 		private FixedUpdateRunner fixedUpdateRunner;
 
+		public bool Ready
+		{
+			get { return updateRunner != null; }
+		}
+
 		private void Awake()
 		{
 			updateRunner = new UpdateRunner();

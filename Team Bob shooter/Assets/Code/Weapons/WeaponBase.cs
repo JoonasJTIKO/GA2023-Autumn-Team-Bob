@@ -167,7 +167,7 @@ namespace TeamBobFPS
 
             if (viewmodelAnimator != null)
             {
-                viewmodelAnimator.SetTrigger("Fire");
+                viewmodelAnimator.SetTrigger("Shoot");
             }
         }
         

@@ -41,6 +41,7 @@ namespace TeamBobFPS.UI
         private void OnEnable()
         {
             WeaponLoadout.WeaponUnequipped += CheckOnUnequip;
+            StartCheck();
         }
 
         private void OnDisable()

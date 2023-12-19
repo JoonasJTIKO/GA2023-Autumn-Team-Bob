@@ -24,6 +24,9 @@ namespace TeamBobFPS
         [SerializeField]
         private float shotSize = 0.5f;
 
+        [SerializeField]
+        private ParticleSystem muzzleFlash;
+
         private PlayerUnit playerUnit;
 
         private Transform[] activeHitEffects = new Transform[8];
@@ -35,6 +38,8 @@ namespace TeamBobFPS
         private ScreenShake screenShake;
 
         private bool buttonHeld = false;
+
+        private bool fireAnimStarted = false;
 
         private float chargeTimer = 0f;
 
@@ -56,11 +61,21 @@ namespace TeamBobFPS
 
             if (buttonHeld)
             {
+                if (!fireAnimStarted)
+                {
+                    if (viewmodelAnimator != null)
+                    {
+                        viewmodelAnimator.SetTrigger("Shoot");
+                        fireAnimStarted = true;
+                    }
+                }
+
                 chargeTimer += deltaTime;
 
                 if (chargeTimer >= chargeTime)
                 {
                     ChargeCompleted();
+                    fireAnimStarted = false;
                 }
             }
             else
@@ -71,7 +86,7 @@ namespace TeamBobFPS
 
         public override void Shoot()
         {
-            
+            FireButtonHeld(true);
         }
 
         public override void AbortReload()
@@ -113,11 +128,6 @@ namespace TeamBobFPS
             readyToFire = false;
             if (fireRate != 0) timer = 1 / fireRate;
             else timer = 0;
-
-            if (viewmodelAnimator != null)
-            {
-                viewmodelAnimator.SetTrigger("Fire");
-            }
 
             screenShake.Shake(0);
             GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_RAILGUN_SHOOT, transform.position, volume: 0.5f, make2D: true);
@@ -220,6 +230,14 @@ namespace TeamBobFPS
             {
                 buttonHeld = state;
             }
+        }
+
+        public override void Activate(bool state)
+        {
+            base.Activate(state);
+
+            viewmodelAnimator.SetTrigger("Equip");
+            bulletOrigin.transform.position = muzzleFlash.transform.position;
         }
     }
 }

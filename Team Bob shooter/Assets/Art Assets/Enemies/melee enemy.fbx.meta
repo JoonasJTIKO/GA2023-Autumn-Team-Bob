@@ -3,7 +3,32 @@ guid: c16dfa10d33691f4dbae5f0ded34566f
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Blueish
+    second: {fileID: 2100000, guid: c559a462b03f52f4d86dccd708b50110, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Eye light yellow
+    second: {fileID: 2100000, guid: 8d9342bf9d6a458479402f0fa668cb01, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Light greenish
+    second: {fileID: 2100000, guid: 8d9342bf9d6a458479402f0fa668cb01, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Light red
+    second: {fileID: 2100000, guid: 8d9342bf9d6a458479402f0fa668cb01, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sandy
+    second: {fileID: 2100000, guid: 8d9342bf9d6a458479402f0fa668cb01, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

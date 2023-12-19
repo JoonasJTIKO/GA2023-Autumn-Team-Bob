@@ -30,6 +30,8 @@ namespace TeamBobFPS
         {
             if (unloadScene) SceneManager.UnloadSceneAsync(SceneName);
             GameInstance.Instance.GetInGameHudCanvas().Hide();
+
+            GameInstance.Instance.GetAudioManager().FadeMusicOut(0.5f, false);
         }
 
         public InGameState() : base() 

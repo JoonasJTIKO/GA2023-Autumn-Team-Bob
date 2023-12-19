@@ -108,7 +108,7 @@ namespace TeamBobFPS
         {
             if (other.gameObject.tag == "Player" && flyToPlayer)
             {
-                // GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_COLLECT_HEALTH, transform.position, make2D: true);
+                GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_COLLECT_HEALTH, transform.position, 0.5f, make2D: true);
                 weaponSwap.AddAmmo(ammoRecoveryAmount);
                 flyToPlayer = false;
                 Recycle();

@@ -87,6 +87,17 @@ namespace TeamBobFPS
 
         private IEnumerator TakeDamageEffect()
         {
+            if (UnityEngine.Random.Range(0, 2)  == 0)
+            {
+                GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_PLAYER_TAKE_DAMAGE, transform.position, 0.5f, make2D: true);
+            }
+            else
+            {
+                GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_PLAYER_TAKE_DAMAGE2, transform.position, 0.5f, make2D: true);
+            }
+
+
+
             vignette.color.Override(Color.red);
 
             //if(isGreen)

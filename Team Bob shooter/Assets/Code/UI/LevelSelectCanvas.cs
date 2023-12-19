@@ -109,6 +109,8 @@ namespace TeamBobFPS.UI
 
         private void TogglePage(InputAction.CallbackContext context)
         {
+            if (GameInstance.Instance.GetGameProgressionManager().CurrentGameProgress != GameProgressionManager.GameProgress.SecondCleared) return;
+
             if (!endlessPageActive)
             {
                 endlessPageActive = true;
@@ -138,9 +140,16 @@ namespace TeamBobFPS.UI
         private IEnumerator Activate()
         {
             yield return new WaitForFixedUpdate();
-            foreach (var button in normalButtons)
+
+            switch (GameInstance.Instance.GetGameProgressionManager().CurrentGameProgress)
             {
-                button.SetActive(true);
+                case GameProgressionManager.GameProgress.NoneCleared:
+                    normalButtons[0].SetActive(true);
+                    break;
+                case GameProgressionManager.GameProgress.FirstCleared:
+                    normalButtons[0].SetActive(true);
+                    normalButtons[1].SetActive(true);
+                    break;
             }
         }
 

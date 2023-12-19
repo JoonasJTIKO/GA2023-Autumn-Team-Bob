@@ -8,11 +8,17 @@ namespace TeamBobFPS.UI
     {
         public void RetryStage()
         {
+            if (buttonPressed) return;
+
+            buttonPressed = true;
             GameInstance.Instance.GetGameStateManager().ReloadCurrentState();
         }
 
         public void BackToHub()
         {
+            if (buttonPressed) return;
+
+            buttonPressed = true;
             GameInstance.Instance.GetGameStateManager().Go(StateType.Hub);
         }
     }

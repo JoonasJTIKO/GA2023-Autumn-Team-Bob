@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace TeamBobFPS
 {
@@ -11,14 +12,37 @@ namespace TeamBobFPS
         [SerializeField]
         private Color color;
 
+        [SerializeField]
+        private bool canBeUnlocked = false;
+
         private Color defaultColor;
 
         private TMP_Text textComponent;
+
+        private Button button;
+
+        private string weaponName;
 
         private void Awake()
         {
             textComponent = GetComponentInChildren<TMP_Text>();
             defaultColor = textComponent.color;
+            button = GetComponent<Button>();
+            weaponName = textComponent.text;
+        }
+
+        private void Update()
+        {
+            if (!canBeUnlocked) return;
+
+            if (button.interactable)
+            {
+                textComponent.text = weaponName;
+            }
+            else
+            {
+                textComponent.text = "Not available";
+            }
         }
 
         public void OnSelect(BaseEventData eventData)

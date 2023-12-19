@@ -265,29 +265,57 @@ namespace TeamBobFPS
 
         private void ActivateViewmodel(WeaponType weapon)
         {
-            viewmodels[0].SetActive(false);
-            viewmodels[1].SetActive(false);
-            viewmodels[2].SetActive(false);
-            viewmodels[3].SetActive(false);
-            viewmodels[4].SetActive(false);
+            foreach (var viewModel in viewmodels)
+            {
+                if (viewModel.layer == 9)
+                {
+                    SetLayers(viewModel, 11);
+                }
+            }
+
+            //viewmodels[0].SetActive(false);
+            //viewmodels[1].SetActive(false);
+            //viewmodels[2].SetActive(false);
+            //viewmodels[3].SetActive(false);
+            //viewmodels[4].SetActive(false);
 
             switch (weapon)
             {
                 case WeaponType.Minigun:
-                    viewmodels[0].SetActive(true);
+                    //viewmodels[0].SetActive(true);
+                    SetLayers(viewmodels[0], 9);
                     break;
                 case WeaponType.Shotgun:
-                    viewmodels[1].SetActive(true);
+                    //viewmodels[1].SetActive(true);
+                    SetLayers(viewmodels[1], 9);
                     break;
                 case WeaponType.RocketLauncher:
-                    viewmodels[2].SetActive(true);
+                    //viewmodels[2].SetActive(true);
+                    SetLayers(viewmodels[2], 9);
                     break;
                 case WeaponType.Railgun:
-                    viewmodels[3].SetActive(true);
+                    //viewmodels[3].SetActive(true);
+                    SetLayers(viewmodels[3], 9);
                     break;
                 case WeaponType.Pistol:
-                    viewmodels[4].SetActive(true);
+                    //viewmodels[4].SetActive(true);
+                    SetLayers(viewmodels[4], 9);
                     break;
+            }
+        }
+
+        private void SetLayers(GameObject go, int layer)
+        {
+            go.layer = layer;
+            foreach (Transform child in go.transform)
+            {
+                child.gameObject.layer = layer;
+
+                Transform grandchild = child.GetComponentInChildren<Transform>();
+                if (grandchild != null)
+                {
+                    SetLayers(child.gameObject, layer);
+                }
             }
         }
 
