@@ -60,6 +60,8 @@ namespace TeamBobFPS
 
         private IEnumerator Cutscene()
         {
+            EnemyAggroState.aggro = false;
+
             float timer = 0;
             int index = 0;
             currentMovement = cameraMovements[index];
@@ -128,6 +130,8 @@ namespace TeamBobFPS
             playerUnit.PlayerCam.enabled = true;
             playerUnit.PlayerCam.gameObject.tag = "MainCamera";
             playerUnit.LockControls(false, false, false);
+
+            EnemyAggroState.aggro = true;
         }
     }
 }

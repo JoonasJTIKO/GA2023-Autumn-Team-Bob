@@ -107,17 +107,17 @@ namespace TeamBobFPS
 
         public void Load(ISaveReader reader)
         {
-            int CurrentGameProgress = reader.ReadInt();
+            CurrentGameProgress = (GameProgress)reader.ReadInt();
 
             foreach (var weaponUnlockState in weaponUnlockStates)
             {
                 weaponUnlockState.unlocked = reader.ReadBool();
             }
 
-            foreach (var key in VillageEndlessModeHighScores)
-            {
-                VillageEndlessModeHighScores[key.Key] = reader.ReadInt();
-            }
+            VillageEndlessModeHighScores["Pistol"] = reader.ReadInt();
+            VillageEndlessModeHighScores["Shotgun"] = reader.ReadInt();
+            VillageEndlessModeHighScores["Minigun"] = reader.ReadInt();
+            VillageEndlessModeHighScores["Railgun"] = reader.ReadInt();
         }
     }
 }

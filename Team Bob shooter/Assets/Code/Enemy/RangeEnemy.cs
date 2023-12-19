@@ -160,8 +160,16 @@ namespace TeamBobFPS
 
         private void OnDie(float explosionStrength, Vector3 explosionPoint, EnemyGibbing.DeathType deathType = EnemyGibbing.DeathType.Normal)
         {
-            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_GNOME_DIE, transform.position, 0.5f);
-
+            float random = UnityEngine.Random.Range(0f, 1f);
+            if (random <= 0.05)
+            {
+                GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_GNOME_DIE, transform.position, 0.5f);
+            }
+            else
+            {
+                GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_GNOME_TAKE_DAMAGE, transform.position, 0.5f);
+            }
+
             EnemyAggroState.aggro = true;
 
             dropSpawner.SpawnThings();
@@ -524,7 +532,10 @@ namespace TeamBobFPS
 
         private void OnTakeDamage(float amount)
         {
-            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_GNOME_TAKE_DAMAGE, transform.position, 0.5f);
+            if (UnityEngine.Random.Range(0f, 1f) <= 0.33f)
+            {
+                GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_GNOME_TAKE_DAMAGE, transform.position, 0.5f);
+            }
 
             firing = false;
 

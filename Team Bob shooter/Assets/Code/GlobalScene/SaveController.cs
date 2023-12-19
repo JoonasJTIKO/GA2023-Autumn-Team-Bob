@@ -19,6 +19,10 @@ namespace TeamBobFPS.Save
         {
             ISaveSystem saver = new BinarySaver();
             saveSystem = new SaveSystem(saver, saver);
+        }
+
+        private void Start()
+        {
             this.QuickLoad();
         }
 

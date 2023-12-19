@@ -55,8 +55,8 @@ namespace TeamBobFPS.UI
         {
             if (GameInstance.Instance == null) return;
 
-            if (GameInstance.Instance.GetWeaponLoadout().CheckEquipStatus(weapon) == true
-                || !GameInstance.Instance.GetGameProgressionManager().CheckWeaponUnlockState(weapon))
+            if (/*GameInstance.Instance.GetWeaponLoadout().CheckEquipStatus(weapon) == true*/
+                /*||*/ !GameInstance.Instance.GetGameProgressionManager().CheckWeaponUnlockState(weapon))
             {
                 button.interactable = false;
             }

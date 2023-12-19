@@ -126,7 +126,6 @@ namespace TeamBobFPS
 
             if (shootAction.phase == InputActionPhase.Performed && !playerDead && readyToFire && !lockInputs)
             {
-                activeWeapon.FireButtonHeld(true);
                 ShootActiveWeapon();
                 if (!fullAutoMode)
                 {
@@ -231,12 +230,15 @@ namespace TeamBobFPS
             }
             fullAutoMode = true;
 
+            GameInstance.Instance.GetInGameHudCanvas().SetCrosshair(0);
+
             switch (weaponType)
             {
                 case WeaponType.Minigun:
                     break;
                 case WeaponType.Shotgun:
                     if (dashAction != null) dashAction.performed += ShotgunDash;
+                    GameInstance.Instance.GetInGameHudCanvas().SetCrosshair(1);
                     break;
                 case WeaponType.RocketLauncher:
                     break;

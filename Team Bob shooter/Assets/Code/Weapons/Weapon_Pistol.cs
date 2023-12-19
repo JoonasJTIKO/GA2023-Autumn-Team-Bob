@@ -82,7 +82,7 @@ namespace TeamBobFPS
             recoil.DoRecoil(-2);
             muzzleFlash.Play();
             slideAnimator.SetTrigger("Shoot");
-            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_PISTOL_SHOOT, transform.position, volume: 0.5f, make2D: true);
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_PISTOL_SHOOT, transform.position, volume: 0.25f, make2D: true);
 
             RaycastHit hit;
             Vector3 angle = playerUnit.PlayerCam.transform.TransformDirection(Vector3.forward);

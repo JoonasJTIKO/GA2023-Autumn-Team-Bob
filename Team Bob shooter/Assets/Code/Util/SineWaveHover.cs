@@ -12,6 +12,9 @@ namespace TeamBobFPS
         [SerializeField]
         private float distance = 1.0f;
 
+        [SerializeField]
+        private float originYOffset = 1f;
+
         private Vector3 origin;
 
         private float angle;
@@ -25,7 +28,7 @@ namespace TeamBobFPS
 
         public void Initialize()
         {
-            origin = transform.position;
+            origin = new Vector3(transform.position.x, transform.position.y + originYOffset, transform.position.z);
         }
 
         public override void OnUpdate(float deltaTime)

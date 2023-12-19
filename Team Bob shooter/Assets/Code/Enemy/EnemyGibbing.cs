@@ -73,6 +73,8 @@ namespace TeamBobFPS
 
         public void Activate(Vector3 explosionPoint, float explosionStrengthMultiplier = 1f, DeathType deathType = DeathType.Normal)
         {
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_BLOODY_DEATH, transform.position);
+
             ragdollBehavior.EnableRagdoll();
             ragdollBehavior.PushRagdoll(transform.forward * 10);
             explosionBlood.SetActive(false);
