@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: colorPalette.001
-    second: {fileID: 2100000, guid: 76b02108b2d602f4b8bf254e18ccb2bf, type: 2}
+    second: {fileID: 2100000, guid: a7a5a8a2f61abf0468ce517830ba1bfd, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
