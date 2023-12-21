@@ -10053,6 +10053,21 @@ PrefabInstance:
       propertyPath: m_TagString
       value: EnemyArmL
       objectReference: {fileID: 0}
+    - target: {fileID: 3071712106064800153, guid: 87627ce70b5972941876f6e56c328b74,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0b85e5e0bf8b53e46bdd3308b3bc02a1, type: 2}
+    - target: {fileID: 3071712106064800153, guid: 87627ce70b5972941876f6e56c328b74,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1102ebb37afa3b943ab9b9bfcb649b69, type: 2}
+    - target: {fileID: 3071712106064800153, guid: 87627ce70b5972941876f6e56c328b74,
+        type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: a2929a854c5e4a34188b4ed66d237993, type: 2}
     - target: {fileID: 3217883657801639351, guid: 87627ce70b5972941876f6e56c328b74,
         type: 3}
       propertyPath: m_Layer
@@ -10193,6 +10208,21 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 3720441906697378360, guid: 87627ce70b5972941876f6e56c328b74,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0b85e5e0bf8b53e46bdd3308b3bc02a1, type: 2}
+    - target: {fileID: 3720441906697378360, guid: 87627ce70b5972941876f6e56c328b74,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1102ebb37afa3b943ab9b9bfcb649b69, type: 2}
+    - target: {fileID: 3720441906697378360, guid: 87627ce70b5972941876f6e56c328b74,
+        type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: a2929a854c5e4a34188b4ed66d237993, type: 2}
     - target: {fileID: 3724553451586107088, guid: 87627ce70b5972941876f6e56c328b74,
         type: 3}
       propertyPath: m_Layer

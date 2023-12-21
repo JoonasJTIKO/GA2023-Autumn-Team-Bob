@@ -533,6 +533,21 @@ PrefabInstance:
       propertyPath: m_TagString
       value: EnemyArmL
       objectReference: {fileID: 0}
+    - target: {fileID: -1206874426333947015, guid: c16dfa10d33691f4dbae5f0ded34566f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f609464dd546342448bf7c3fa717b276, type: 2}
+    - target: {fileID: -1206874426333947015, guid: c16dfa10d33691f4dbae5f0ded34566f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[3]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1ddc420a4fbe99f4fa67537179fb2e90, type: 2}
+    - target: {fileID: -1206874426333947015, guid: c16dfa10d33691f4dbae5f0ded34566f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[4]
+      value: 
+      objectReference: {fileID: 2100000, guid: c559a462b03f52f4d86dccd708b50110, type: 2}
     - target: {fileID: -1036956004224237494, guid: c16dfa10d33691f4dbae5f0ded34566f,
         type: 3}
       propertyPath: m_Layer

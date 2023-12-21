@@ -7,6 +7,21 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Eye black
+    second: {fileID: 2100000, guid: a2929a854c5e4a34188b4ed66d237993, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Eye blue
+    second: {fileID: 2100000, guid: a6441c96e23855b4eb798364e75d6fdf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Eye white
+    second: {fileID: 2100000, guid: 1102ebb37afa3b943ab9b9bfcb649b69, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: colorPalette
     second: {fileID: 2100000, guid: 60a0a3677af8f944294a2ac7941d12fc, type: 2}
   - first:
