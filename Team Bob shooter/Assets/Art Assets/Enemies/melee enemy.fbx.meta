@@ -33,12 +33,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Light red
-    second: {fileID: 2100000, guid: 8d9342bf9d6a458479402f0fa668cb01, type: 2}
+    second: {fileID: 2100000, guid: f609464dd546342448bf7c3fa717b276, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Sandy
-    second: {fileID: 2100000, guid: 8d9342bf9d6a458479402f0fa668cb01, type: 2}
+    second: {fileID: 2100000, guid: 1ddc420a4fbe99f4fa67537179fb2e90, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

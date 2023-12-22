@@ -10,10 +10,9 @@ Material:
   m_Name: mouth glossy
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_ValidKeywords:
-  - _EMISSION
   - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords: []
-  m_LightmapFlags: 2
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 3000
@@ -110,8 +109,8 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 0
     m_Colors:
-    - _BaseColor: {r: 0.52156866, g: 0.19215687, b: 0.42352942, a: 1}
-    - _Color: {r: 0.5215686, g: 0.19215682, b: 0.4235294, a: 1}
+    - _BaseColor: {r: 0.28235295, g: 0, b: 0.023261128, a: 1}
+    - _Color: {r: 0.28235292, g: 0, b: 0.023261128, a: 1}
     - _EmissionColor: {r: 0.01629902, g: 0.006004902, b: 0.013235294, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
