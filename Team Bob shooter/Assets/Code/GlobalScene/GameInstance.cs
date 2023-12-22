@@ -34,6 +34,9 @@ namespace TeamBobFPS
         private LevelSelectCanvas levelSelectCanvas;
 
         [SerializeField]
+        private UnlockPopupCanvas unlockPopupCanvas;
+
+        [SerializeField]
         private SaveController saveController;
 
         private static GameInstance instance;
@@ -124,6 +127,8 @@ namespace TeamBobFPS
         public LoadoutSelectCanvas GetLoadoutSelectCanvas() {  return loadoutSelectCanvas; }
 
         public LevelSelectCanvas GetLevelSelectCanvas() { return levelSelectCanvas; }
+
+        public UnlockPopupCanvas GetUnlockPopupCanvas() {  return unlockPopupCanvas; }
 
         public SaveController GetSaveController() { return saveController; }
 

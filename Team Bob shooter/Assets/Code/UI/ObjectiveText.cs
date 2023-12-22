@@ -39,6 +39,9 @@ namespace TeamBobFPS
                 case 1:
                     index += 3;
                     break;
+                case 2:
+                    index += 8;
+                    break;
             }
 
             text.text = objectiveTexts[index];

@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 1723036195431618676}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0.25, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 7563046574269475315}
@@ -4887,9 +4887,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 10
   range: 3
-  chargeTime: 2
+  chargeTime: 1
   timeBetweenShots: 3
-  disableTime: 5.5
+  disableTime: 3
   playerLayer:
     serializedVersion: 2
     m_Bits: 8

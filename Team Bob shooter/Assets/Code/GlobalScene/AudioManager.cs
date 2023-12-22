@@ -65,7 +65,7 @@ public enum EGameSFX
     _SFX_COLLECT_HEALTH,
 
     // UI SFX
-    _SFX_TEXT_TYPE,
+    _SFX_UI_PRESS,
     _SFX_UI_SELECT,
 
     // NULL OPTION
@@ -203,7 +203,7 @@ namespace TeamBobFPS
 
         [Header("UI SFX")]
         [SerializeField]
-        private AudioClip textType;
+        private AudioClip UIPress;
         [SerializeField]
         private AudioClip UISelect;
 
@@ -364,7 +364,7 @@ namespace TeamBobFPS
         /// </summary>
         /// <param name="intSFX">SFX given as EGameSFX enum</param>
         /// <param name="pos">Vector3 where SFX should be played</param>
-        public AudioSource PlayAudioAtLocation(EGameSFX intSFX, Vector3 pos, float volume = 1f, bool loop = false, bool make2D = false, bool canStack = false)
+        public AudioSource PlayAudioAtLocation(EGameSFX intSFX, Vector3 pos, float volume = 0.5f, bool loop = false, bool make2D = false, bool canStack = false)
         {
             // TODO: check if player prefs setup is done
             // if (!m_bIsSetup) return;
@@ -450,7 +450,7 @@ namespace TeamBobFPS
                 case EGameSFX._SFX_COLLECT_HEALTH: audioSourceSFX.clip = collectHealth; break;
 
                 // UI SFX
-                case EGameSFX._SFX_TEXT_TYPE: audioSourceSFX.clip = textType; break;
+                case EGameSFX._SFX_UI_PRESS: audioSourceSFX.clip = UIPress; break;
                 case EGameSFX._SFX_UI_SELECT: audioSourceSFX.clip = UISelect; break;
 
                     #endregion

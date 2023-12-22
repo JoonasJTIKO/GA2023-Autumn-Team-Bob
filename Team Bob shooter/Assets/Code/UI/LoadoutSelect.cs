@@ -88,6 +88,8 @@ namespace TeamBobFPS.UI
         {
             loadoutSelectCanvas.EnableSlotSelect(weapon);
             button.interactable = false;
+
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_UI_PRESS, transform.position, make2D: true);
         }
 
         public IEnumerator Enable()

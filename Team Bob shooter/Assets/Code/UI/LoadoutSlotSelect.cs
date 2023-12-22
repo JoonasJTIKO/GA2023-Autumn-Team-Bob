@@ -58,6 +58,8 @@ namespace TeamBobFPS
             UpdateText(weapon.WeaponType);
             weapon = null;
             loadoutSelectCanvas.DisableSlotSelect();
+
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_UI_PRESS, transform.position, make2D: true);
         }
 
         private void UpdateText(EquippableWeapon.Weapon weaponType)

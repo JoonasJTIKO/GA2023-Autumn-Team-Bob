@@ -13,6 +13,9 @@ namespace TeamBobFPS
         [SerializeField]
         private string promptText;
 
+        [SerializeField]
+        private string[] unlockTexts;
+
         public string PromptText
         {
             get { return promptText; }
@@ -20,10 +23,25 @@ namespace TeamBobFPS
 
         private bool activated = false;
 
+        private void DisplayUnlocks()
+        {
+            GameInstance.Instance.GetFadeCanvas().OnFadeToComplete -= DisplayUnlocks;
+            if (unlockTexts.Length == 0) LoadTarget();
+            else
+            {
+                foreach (string text in unlockTexts)
+                {
+                    GameInstance.Instance.GetUnlockPopupCanvas().QueueUnlockAnimation(text);
+                }
+                StartCoroutine(GameInstance.Instance.GetUnlockPopupCanvas().PlayQueuedUnlocks());
+                GameInstance.Instance.GetUnlockPopupCanvas().UnlocksPlayed += LoadTarget;
+            }
+        }
+
         private void LoadTarget()
         {
             FadeCanvas fadeCanvas = GameInstance.Instance.GetFadeCanvas();
-            fadeCanvas.OnFadeToComplete -= LoadTarget;
+            GameInstance.Instance.GetUnlockPopupCanvas().UnlocksPlayed -= LoadTarget;
             GameInstance.Instance.GetGameStateManager().Go(targetState);
         }
 
@@ -38,7 +56,7 @@ namespace TeamBobFPS
 
             FadeCanvas fadeCanvas = GameInstance.Instance.GetFadeCanvas();
             fadeCanvas.FadeTo(0.5f);
-            fadeCanvas.OnFadeToComplete += LoadTarget;
+            fadeCanvas.OnFadeToComplete += DisplayUnlocks;
             activated = true;
             return true;
         }

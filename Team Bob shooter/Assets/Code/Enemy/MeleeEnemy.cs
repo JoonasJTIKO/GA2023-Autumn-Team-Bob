@@ -53,6 +53,8 @@ namespace TeamBobFPS
 
         private EnemyGibbing activeGibbing = null;
 
+        private EnemySpawnEffect spawnEffect;
+
         [SerializeField]
         private WaveData.EnemyType enemyType;
 
@@ -92,6 +94,7 @@ namespace TeamBobFPS
 
             enemyGibbingPool = new ComponentPool<EnemyGibbing>(gibPrefab, 2);
             enemyLungeAttack = GetComponent<EnemyLungeAttack>();
+            spawnEffect = GetComponentInChildren<EnemySpawnEffect>();
         }
 
         protected override void OnEnable()
@@ -149,6 +152,7 @@ namespace TeamBobFPS
             unitHealth.OnTakeDamage += OnTakeDamage;
 
             animator.SetBool("Moving", false);
+            spawnEffect.PlayEffect();
 
             attacking = false;
 

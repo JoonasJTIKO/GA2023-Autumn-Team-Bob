@@ -28,7 +28,6 @@ namespace TeamBobFPS
         public override void Deactivate(bool unloadScene = true)
         {
             if (unloadScene) SceneManager.UnloadSceneAsync(SceneName);
-            GameInstance.Instance.GetLoadoutSelectCanvas().Hide();
 
             GameInstance.Instance.AudioListener.enabled = false;
         }

@@ -32,6 +32,12 @@ namespace TeamBobFPS.UI
         [SerializeField]
         private GameObject weaponModelCamera;
 
+        [SerializeField]
+        private Animator holderAnimator;
+
+        [SerializeField]
+        private Canvas background;
+
         private LoadoutSelectWeaponModel LoadoutSelectWeaponModel;
 
         private PlayerInputs playerInputs;
@@ -66,16 +72,20 @@ namespace TeamBobFPS.UI
         {
             base.Show();
 
+            holderAnimator.SetTrigger("Appear");
             weaponModel.SetActive(true);
             weaponModelCamera.SetActive(true);
+            background.gameObject.SetActive(true);
         }
 
         public override void Hide()
         {
-            base.Hide();
-
+            //base.Hide();
+            StartCoroutine(Disable());
+            holderAnimator.SetTrigger("Dissapear");
             weaponModel?.SetActive(false);
             weaponModelCamera?.SetActive(false);
+            background.gameObject.SetActive(false);
         }
 
         public void SetSelectedObject(GameObject gameObject = null)
@@ -134,6 +144,8 @@ namespace TeamBobFPS.UI
         {
             Hide();
             GameInstance.Instance.GetLevelSelectCanvas().Show();
+
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_UI_PRESS, transform.position, make2D: true);
         }
 
         private IEnumerator WaitForInputRelease()
@@ -144,6 +156,13 @@ namespace TeamBobFPS.UI
             }
 
             eventSystem.enabled = true;
+        }
+
+        private IEnumerator Disable()
+        {
+            yield return new WaitForSeconds(0.84f);
+
+            gameObject.SetActive(false);
         }
     }
 }

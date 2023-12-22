@@ -30,6 +30,12 @@ namespace TeamBobFPS.UI
 
         private int selectedLevelIndex = 2;
 
+        [SerializeField]
+        private Animator holderAnimator;
+
+        [SerializeField]
+        private Canvas background;
+
         protected override void Awake()
         {
             base.Awake();
@@ -71,6 +77,8 @@ namespace TeamBobFPS.UI
                 backAction.performed += GoBack;
             }
 
+            background.gameObject.SetActive(true);
+            holderAnimator.SetTrigger("Appear");
             StartCoroutine(Activate());
         }
 
@@ -98,13 +106,19 @@ namespace TeamBobFPS.UI
             endlessPageActive = false;
             highscoreUI.gameObject.SetActive(false);
 
-            base.Hide();
+            holderAnimator.SetTrigger("Dissapear");
+            background.gameObject.SetActive(false);
+
+            //base.Hide();
+            StartCoroutine(Disable());
         }
 
         private void GoBack(InputAction.CallbackContext context)
         {
             Hide();
             GameInstance.Instance.GetLoadoutSelectCanvas().Show();
+
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_UI_PRESS, transform.position, make2D: true);
         }
 
         private void TogglePage(InputAction.CallbackContext context)
@@ -135,6 +149,8 @@ namespace TeamBobFPS.UI
                 }
                 eventSystem.SetSelectedGameObject(normalButtons[0]);
             }
+
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_UI_PRESS, transform.position, make2D: true);
         }
 
         private IEnumerator Activate()
@@ -173,6 +189,8 @@ namespace TeamBobFPS.UI
 
                 GameInstance.Instance.GetFadeCanvas().FadeTo(0.5f);
                 StartCoroutine(LoadLevelAfterDelay(0.5f, StateType.Arena1));
+
+                GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_UI_PRESS, transform.position, make2D: true);
             }
         }
 
@@ -184,6 +202,8 @@ namespace TeamBobFPS.UI
 
                 GameInstance.Instance.GetFadeCanvas().FadeTo(0.5f);
                 StartCoroutine(LoadLevelAfterDelay(0.5f, StateType.Arena2));
+
+                GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_UI_PRESS, transform.position, make2D: true);
             }
         }
 
@@ -195,6 +215,8 @@ namespace TeamBobFPS.UI
 
                 GameInstance.Instance.GetFadeCanvas().FadeTo(0.5f);
                 StartCoroutine(LoadLevelAfterDelay(0.5f, StateType.Arena1Endless));
+
+                GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_UI_PRESS, transform.position, make2D: true);
             }
         }
 
@@ -206,7 +228,16 @@ namespace TeamBobFPS.UI
 
                 GameInstance.Instance.GetFadeCanvas().FadeTo(0.5f);
                 StartCoroutine(LoadLevelAfterDelay(0.5f, StateType.Arena1Endless));
+
+                GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_UI_PRESS, transform.position, make2D: true);
             }
+        }
+
+        private IEnumerator Disable()
+        {
+            yield return new WaitForSeconds(0.84f);
+
+            gameObject.SetActive(false);
         }
     }
 }

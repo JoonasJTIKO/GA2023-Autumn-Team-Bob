@@ -48040,10 +48040,15 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 25
       objectReference: {fileID: 0}
-    - target: {fileID: 8640158193809777297, guid: 3af25f07de9667d4d8bbc7a9015b6f5c,
+    - target: {fileID: 8624829661867372445, guid: 3af25f07de9667d4d8bbc7a9015b6f5c,
         type: 3}
       propertyPath: m_RootOrder
       value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 8640158193809777297, guid: 3af25f07de9667d4d8bbc7a9015b6f5c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3af25f07de9667d4d8bbc7a9015b6f5c, type: 3}
@@ -48083,7 +48088,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3490200982161055925}
-  m_RootOrder: 33
+  m_RootOrder: 57
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1601701414
 BoxCollider:
@@ -52035,7 +52040,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3490200982161055925}
-  m_RootOrder: 31
+  m_RootOrder: 32
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1758067522
 BoxCollider:
@@ -52726,10 +52731,15 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 47
       objectReference: {fileID: 0}
-    - target: {fileID: 8640158193809777297, guid: 3af25f07de9667d4d8bbc7a9015b6f5c,
+    - target: {fileID: 8624829661867372445, guid: 3af25f07de9667d4d8bbc7a9015b6f5c,
         type: 3}
       propertyPath: m_RootOrder
       value: 46
+      objectReference: {fileID: 0}
+    - target: {fileID: 8640158193809777297, guid: 3af25f07de9667d4d8bbc7a9015b6f5c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 47
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3af25f07de9667d4d8bbc7a9015b6f5c, type: 3}
@@ -57499,7 +57509,7 @@ MonoBehaviour:
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 524289
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 0
@@ -59392,6 +59402,16 @@ PrefabInstance:
       propertyPath: targetState
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4297612791183936304, guid: 784949b180c7cc144bd5b1326d57cd02,
+        type: 3}
+      propertyPath: unlockTexts.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4297612791183936304, guid: 784949b180c7cc144bd5b1326d57cd02,
+        type: 3}
+      propertyPath: unlockTexts.Array.data[0]
+      value: Railgun unlocked
+      objectReference: {fileID: 0}
     - target: {fileID: 4297612791183936305, guid: 784949b180c7cc144bd5b1326d57cd02,
         type: 3}
       propertyPath: m_RootOrder
@@ -59894,7 +59914,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3490200982161055925}
-  m_RootOrder: 32
+  m_RootOrder: 33
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &2107919212
 BoxCollider:
@@ -60443,12 +60463,12 @@ PrefabInstance:
     - target: {fileID: 8624829661867372445, guid: 3af25f07de9667d4d8bbc7a9015b6f5c,
         type: 3}
       propertyPath: m_RootOrder
-      value: 30
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 8640158193809777297, guid: 3af25f07de9667d4d8bbc7a9015b6f5c,
         type: 3}
       propertyPath: m_RootOrder
-      value: 57
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 9059172841127411766, guid: 3af25f07de9667d4d8bbc7a9015b6f5c,
         type: 3}

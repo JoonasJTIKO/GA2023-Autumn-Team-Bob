@@ -26,7 +26,10 @@ namespace TeamBobFPS
             {
                 foreach (var renderer in renderers)
                 {
-                    renderer.material.SetFloat("_FadeProgress", progress);
+                    foreach (var material in renderer.materials)
+                    {
+                        material.SetFloat("_FadeProgress", progress);
+                    }
                 }
                 progress -= Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale * 0.5f;
                 yield return null;

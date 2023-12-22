@@ -48,6 +48,7 @@ namespace TeamBobFPS
         public void OnSelect(BaseEventData eventData)
         {
             textComponent.color = color;
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_UI_SELECT, transform.position, make2D: true);
         }
 
         public void OnDeselect(BaseEventData eventData)
