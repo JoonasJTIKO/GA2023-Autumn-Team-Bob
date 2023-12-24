@@ -13,6 +13,9 @@ namespace TeamBobFPS
     public class GameInstance : MonoBehaviour
     {
         [SerializeField]
+        private MainMenu mainMenu;
+
+        [SerializeField]
         private PlayerDefeatedCanvas playerDefeatedCanvas;
 
         [SerializeField]
@@ -104,7 +107,8 @@ namespace TeamBobFPS
 
         // Getters
 
-        public PlayerDefeatedCanvas GetPlayerDefeatedCanvas() { return  playerDefeatedCanvas; }
+        public MainMenu GetMainMenu() { return mainMenu; }
+        public PlayerDefeatedCanvas GetPlayerDefeatedCanvas() { return playerDefeatedCanvas; }
 
         public InGameHudCanvas GetInGameHudCanvas() { return inGameHudCanvas; }
 
@@ -116,19 +120,19 @@ namespace TeamBobFPS
 
         public WeaponLoadout GetWeaponLoadout() { return weaponLoadout; }
 
-        public MapAreaManager GetMapAreaManager() {  return mapAreaManager; }
+        public MapAreaManager GetMapAreaManager() { return mapAreaManager; }
 
-        public GameProgressionManager GetGameProgressionManager() {  return progressionManager; }
+        public GameProgressionManager GetGameProgressionManager() { return progressionManager; }
 
         public AudioManager GetAudioManager() { return audioManager; }
 
         public PauseMenuController GetPauseMenu() { return getPauseMenu; }
 
-        public LoadoutSelectCanvas GetLoadoutSelectCanvas() {  return loadoutSelectCanvas; }
+        public LoadoutSelectCanvas GetLoadoutSelectCanvas() { return loadoutSelectCanvas; }
 
         public LevelSelectCanvas GetLevelSelectCanvas() { return levelSelectCanvas; }
 
-        public UnlockPopupCanvas GetUnlockPopupCanvas() {  return unlockPopupCanvas; }
+        public UnlockPopupCanvas GetUnlockPopupCanvas() { return unlockPopupCanvas; }
 
         public SaveController GetSaveController() { return saveController; }
 

@@ -23,7 +23,7 @@ namespace TeamBobFPS
 
         public void Awake()
         {
-            myEventSystem = GameObject.Find("EventSystem");
+            myEventSystem = GameObject.Find("EventSystem"); 
             GameObject lol = GameObject.FindGameObjectWithTag("SettingsLoader");
             loader = lol.GetComponent<SettingsLoader>();
             SaveSettings.LoadSettings();

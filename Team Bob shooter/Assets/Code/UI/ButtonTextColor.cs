@@ -23,16 +23,33 @@ namespace TeamBobFPS
 
         private string weaponName;
 
+        private bool red = false;
+
+        private EventSystem eventSystem;
+
         private void Awake()
         {
             textComponent = GetComponentInChildren<TMP_Text>();
             defaultColor = textComponent.color;
             button = GetComponent<Button>();
             weaponName = textComponent.text;
+
+            eventSystem = FindObjectOfType<EventSystem>();
         }
 
         private void Update()
         {
+            if (eventSystem.currentSelectedGameObject == gameObject && !red)
+            {
+                textComponent.color = color;
+                red = true;
+            }
+            else if (eventSystem.currentSelectedGameObject != gameObject && red)
+            {
+                textComponent.color = defaultColor;
+                red = false;
+            }
+
             if (!canBeUnlocked) return;
 
             if (button.interactable)
@@ -48,12 +65,14 @@ namespace TeamBobFPS
         public void OnSelect(BaseEventData eventData)
         {
             textComponent.color = color;
+            red = true;
             GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_UI_SELECT, transform.position, make2D: true);
         }
 
         public void OnDeselect(BaseEventData eventData)
         {
             textComponent.color = defaultColor;
+            red = false;
         }
     }
 }

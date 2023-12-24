@@ -7,7 +7,7 @@ namespace TeamBobFPS
 {
     public class MainMenuState : GameStateBase
     {
-        public override string SceneName { get { return "MainMenu"; } }
+        public override string SceneName { get { return "MainMenuBackground"; } }
 
         public override StateType Type { get { return StateType.MainMenu; } }
 
@@ -18,14 +18,16 @@ namespace TeamBobFPS
                 SceneManager.LoadSceneAsync(SceneName, LoadSceneMode.Additive);
             }
 
-            GameInstance.Instance.GetInGameHudCanvas().Show();
+            GameInstance.Instance.GetInGameHudCanvas().Hide();
+            GameInstance.Instance.GetMainMenu().Show();
+            GameInstance.Instance.GetFadeCanvas().FadeFrom(0.5f);
             GameInstance.Instance.AudioListener.enabled = true;
         }
 
         public override void Deactivate(bool unloadScene = true)
         {
             if (unloadScene) SceneManager.UnloadSceneAsync(SceneName);
-            GameInstance.Instance.GetInGameHudCanvas().Hide();
+            GameInstance.Instance.GetMainMenu().Hide();
 
             GameInstance.Instance.AudioListener.enabled = false;
         }
@@ -33,7 +35,11 @@ namespace TeamBobFPS
         public MainMenuState() : base()
         {
             AddTargetState(StateType.MainMenu);
+            AddTargetState(StateType.Hub);
             AddTargetState(StateType.Arena1);
+            AddTargetState(StateType.Arena2);
+            AddTargetState(StateType.Arena1Endless);
+            AddTargetState(StateType.Arena2Endless);
         }
     }
 }

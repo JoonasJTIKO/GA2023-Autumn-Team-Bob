@@ -51,11 +51,13 @@ namespace TeamBobFPS
 
         private void Initialize()
         {
+            MainMenuState mainMenuState = new MainMenuState();
             InGameState inGameState = new InGameState();
             VillageEndlessState villageEndlessState = new VillageEndlessState();
             HubState hubState = new HubState();
             TempleState templeState = new TempleState();
 
+            states.Add(mainMenuState);
             states.Add(inGameState);
             states.Add(villageEndlessState);
             states.Add(hubState);

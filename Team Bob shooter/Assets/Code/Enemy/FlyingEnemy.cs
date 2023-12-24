@@ -486,7 +486,7 @@ namespace TeamBobFPS
         private void OnTakeDamage(float amount)
         {
             EnemyAggroState.aggro = true;
-            animator.SetTrigger("Damage");
+            //animator.SetTrigger("Damage");
             StartCoroutine(DamageLockout());
         }
 

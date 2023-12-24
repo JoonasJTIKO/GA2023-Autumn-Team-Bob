@@ -166,6 +166,10 @@ namespace TeamBobFPS.UI
                     normalButtons[0].SetActive(true);
                     normalButtons[1].SetActive(true);
                     break;
+                case GameProgressionManager.GameProgress.SecondCleared:
+                    normalButtons[0].SetActive(true);
+                    normalButtons[1].SetActive(true);
+                    break;
             }
         }
 

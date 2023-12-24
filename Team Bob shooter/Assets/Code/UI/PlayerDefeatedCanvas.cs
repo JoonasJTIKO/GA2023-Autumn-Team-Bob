@@ -19,7 +19,7 @@ namespace TeamBobFPS.UI
             if (buttonPressed) return;
 
             buttonPressed = true;
-            GameInstance.Instance.GetGameStateManager().Go(StateType.Hub);
+            GameInstance.Instance.GetGameStateManager().Go(StateType.MainMenu);
         }
     }
 }

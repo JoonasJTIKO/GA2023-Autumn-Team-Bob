@@ -42,7 +42,7 @@ namespace TeamBobFPS.UI
 
         private PlayerInputs playerInputs;
 
-        private InputAction selectAction;
+        private InputAction selectAction, backAction;
 
         protected override void Awake()
         {
@@ -50,6 +50,7 @@ namespace TeamBobFPS.UI
 
             playerInputs = new PlayerInputs();
             selectAction = playerInputs.Menu.Select;
+            backAction = playerInputs.Menu.Back;
 
             LoadoutSelectWeaponModel = weaponModel.GetComponent<LoadoutSelectWeaponModel>();
         }
@@ -59,6 +60,8 @@ namespace TeamBobFPS.UI
             base.OnEnable();
 
             selectAction.Enable();
+            backAction.Enable();
+            backAction.performed += GoBack;
         }
 
         protected override void OnDisable()
@@ -66,6 +69,8 @@ namespace TeamBobFPS.UI
             base.OnDisable();
 
             selectAction?.Disable();
+            backAction?.Disable();
+            backAction.performed -= GoBack;
         }
 
         public override void Show()
@@ -76,6 +81,8 @@ namespace TeamBobFPS.UI
             weaponModel.SetActive(true);
             weaponModelCamera.SetActive(true);
             background.gameObject.SetActive(true);
+            eventSystem.enabled = false;
+            StartCoroutine(WaitForInputRelease());
         }
 
         public override void Hide()
@@ -86,6 +93,14 @@ namespace TeamBobFPS.UI
             weaponModel?.SetActive(false);
             weaponModelCamera?.SetActive(false);
             background.gameObject.SetActive(false);
+        }
+
+        private void GoBack(InputAction.CallbackContext context)
+        {
+            Hide();
+            GameInstance.Instance.GetMainMenu().Show();
+
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_UI_PRESS, transform.position, make2D: true);
         }
 
         public void SetSelectedObject(GameObject gameObject = null)

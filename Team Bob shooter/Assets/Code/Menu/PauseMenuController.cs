@@ -38,7 +38,7 @@ namespace TeamBobFPS
 
         public void BackToMenu()
         {
-            SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+            GameInstance.Instance.GetGameStateManager().Go(StateType.MainMenu);
         }
     }
 }
