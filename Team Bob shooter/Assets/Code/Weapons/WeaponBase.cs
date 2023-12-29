@@ -124,6 +124,7 @@ namespace TeamBobFPS
             if (state)
             {
                 StartCoroutine(OnActivate());
+                if (currentMagAmmoCount == 0) BeginReload();
             }
             else
             {

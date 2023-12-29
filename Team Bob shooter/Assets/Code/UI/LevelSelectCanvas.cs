@@ -231,7 +231,7 @@ namespace TeamBobFPS.UI
                 pressed = true;
 
                 GameInstance.Instance.GetFadeCanvas().FadeTo(0.5f);
-                StartCoroutine(LoadLevelAfterDelay(0.5f, StateType.Arena1Endless));
+                StartCoroutine(LoadLevelAfterDelay(0.5f, StateType.Arena2Endless));
 
                 GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_UI_PRESS, transform.position, make2D: true);
             }

@@ -28,6 +28,7 @@ namespace TeamBobFPS.Save
 
         public void QuickSave()
         {
+            Debug.Log("quicksaving");
             saveSystem.QuickSave();
         }
 

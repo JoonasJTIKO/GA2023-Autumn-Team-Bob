@@ -20,6 +20,9 @@ namespace TeamBobFPS
         [SerializeField]
         private bool endless = false;
 
+        [SerializeField]
+        private bool loop = false;
+
         private bool backwards = false;
 
         private int endlessLoop = 0;
@@ -103,6 +106,7 @@ namespace TeamBobFPS
                     totalAmountInfo.Add(enemy, (int)(enemy.TotalAmount * multiplier));
                 }
                 canSpawnReinforcements.Add(enemy, enemy.MaxConcurrent != totalAmountInfo[enemy]);
+                Debug.Log(enemy.MaxConcurrent != totalAmountInfo[enemy]);
             }
             enemySpawning.SpawnRate = wave.SpawnRate;
             enemySpawning.SpawnAll();
@@ -193,8 +197,15 @@ namespace TeamBobFPS
                 {
                     if (endless)
                     {
-                        backwards = true;
-                        waveIndex -= 2;
+                        if (loop)
+                        {
+                            waveIndex = 0;
+                        }
+                        else
+                        {
+                            backwards = true;
+                            waveIndex -= 2;
+                        }
                         endlessLoop++;
                     }
                     else
@@ -234,6 +245,7 @@ namespace TeamBobFPS
                 timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
                 yield return null;
             }
+            GameInstance.Instance.GetGameProgressionManager().ResetEndless();
             StartWave(currentWave);
         }
 

@@ -11,7 +11,7 @@ namespace TeamBobFPS
         public AudioMixer mixer;
         public Slider slider;
 
-        private void Start()
+        public void Initialize()
         {
             if (gameObject.name == "Music Slider")
             {

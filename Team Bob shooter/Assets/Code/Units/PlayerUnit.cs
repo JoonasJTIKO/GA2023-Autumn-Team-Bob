@@ -140,6 +140,8 @@ namespace TeamBobFPS
             menu.Enable();
 
             menu.performed += Pause;
+
+            GameInstance.Instance.GetInGameHudCanvas().ResetHealth();
         }
 
         protected override void OnDisable()

@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Name: m12 SDF
   m_EditorClassIdentifier: 
   hashCode: 822136895
-  material: {fileID: 4701803530586222747}
+  material: {fileID: 2100000, guid: a6708ae33ad31b84e92278de277e80ac, type: 2}
   materialHashCode: 355527103
   m_Version: 1.1.0
   m_SourceFontFileGUID: cb0683e4d084a8e4a818b2a53f9b349f

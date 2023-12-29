@@ -43,7 +43,7 @@ namespace TeamBobFPS.UI
                 }
 
                 timeElapsed += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
-                if (timeElapsed >= 2.5f)
+                if (timeElapsed >= 2.834f)
                 {
                     textChanged = false;
                     timeElapsed = 0f;

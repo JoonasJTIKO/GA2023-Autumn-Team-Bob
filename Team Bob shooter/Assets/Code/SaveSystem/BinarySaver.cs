@@ -88,8 +88,6 @@ namespace TeamBobFPS.Save
 			return reader.ReadInt32();
 		}
 
-        
-
         public string ReadString()
 		{
 			return reader.ReadString();

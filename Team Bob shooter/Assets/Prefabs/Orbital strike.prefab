@@ -4889,7 +4889,7 @@ MonoBehaviour:
   range: 3
   chargeTime: 1
   timeBetweenShots: 3
-  disableTime: 3
+  disableTime: 4
   playerLayer:
     serializedVersion: 2
     m_Bits: 8

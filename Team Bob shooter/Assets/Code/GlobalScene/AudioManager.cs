@@ -498,8 +498,15 @@ namespace TeamBobFPS
             PlayAudioAtLocation(intSFX, Camera.current.transform.position);
         }
 
-        public void PlayMusic(EGameMusic iTrackIndex, float volume = 0.1f)
+        public void PlayMusic(EGameMusic iTrackIndex, float volume = 0.1f, float waitForSeconds = 0.5f)
         {
+            StartCoroutine(StartMusic(iTrackIndex, volume, waitForSeconds));
+        }
+
+        private IEnumerator StartMusic(EGameMusic iTrackIndex, float volume, float waitForSeconds)
+        {
+            yield return new WaitForSeconds(waitForSeconds);
+
             if (null == activeMusicAudioSource) Debug.Log("Music Game Object is missing an audio source component");
             switch (iTrackIndex)
             {

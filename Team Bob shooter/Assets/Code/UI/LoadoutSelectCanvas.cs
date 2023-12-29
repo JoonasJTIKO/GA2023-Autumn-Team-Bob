@@ -75,14 +75,19 @@ namespace TeamBobFPS.UI
 
         public override void Show()
         {
+            gameObject.SetActive(true);
+            StartCoroutine(Activate());
+        }
+
+        private IEnumerator Activate()
+        {
+            yield return new WaitForFixedUpdate();
             base.Show();
 
             holderAnimator.SetTrigger("Appear");
             weaponModel.SetActive(true);
             weaponModelCamera.SetActive(true);
             background.gameObject.SetActive(true);
-            eventSystem.enabled = false;
-            StartCoroutine(WaitForInputRelease());
         }
 
         public override void Hide()
@@ -171,6 +176,7 @@ namespace TeamBobFPS.UI
             }
 
             eventSystem.enabled = true;
+            buttonPressed = false;
         }
 
         private IEnumerator Disable()

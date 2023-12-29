@@ -1425,6 +1425,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9842166339e55e645a1da8eb88506e33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eventSystem: {fileID: 0}
+  initialSelectedObject: {fileID: 0}
+  settingsInitialSelected: {fileID: 0}
   mainCanvas: {fileID: 1999763247}
   settingsCanvas: {fileID: 1566892664}
 --- !u!4 &877970314

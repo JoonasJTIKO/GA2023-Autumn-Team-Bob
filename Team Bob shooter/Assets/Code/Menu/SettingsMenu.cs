@@ -26,7 +26,7 @@ namespace TeamBobFPS
             myEventSystem = GameObject.Find("EventSystem"); 
             GameObject lol = GameObject.FindGameObjectWithTag("SettingsLoader");
             loader = lol.GetComponent<SettingsLoader>();
-            SaveSettings.LoadSettings();
+            //SaveSettings.LoadSettings();
             resolutionDropdown.value = SettingsData.settings.resolutionIndex;
         }
 

@@ -146,6 +146,9 @@ namespace TeamBobFPS
             noticed = false;
             posChange = false;
             roam = false;
+            dashing = false;
+            firing = false;
+            orbiting = true;
 
             player = FindObjectOfType<PlayerUnit>().transform;
 
@@ -157,6 +160,7 @@ namespace TeamBobFPS
             damageLockout = false;
             if (spawnEffect != null) spawnEffect.PlayEffect();
 
+            GetComponent<FlyingEnemyOrbit>().enabled = true;
             GetComponent<FlyingEnemyOrbit>().Setup();
         }
 
@@ -264,9 +268,9 @@ namespace TeamBobFPS
 
             if (timer >= 10 && noticed)
             {
-                radius = radius / 5;
+                //radius = radius / 5;
                 noticed = false;
-                angle = 90;
+                //angle = 90;
             }
 
             switch (currentState)

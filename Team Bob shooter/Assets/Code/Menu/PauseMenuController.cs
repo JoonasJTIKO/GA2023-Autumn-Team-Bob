@@ -32,12 +32,18 @@ namespace TeamBobFPS
 
         public void Restart()
         {
+            Hide();
+            GameInstance.Instance.GetUpdateManager().timeScale = 1;
+            GameInstance.Instance.GetUpdateManager().fixedTimeScale = 1;
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             Debug.Log("Restart");
         }
 
         public void BackToMenu()
         {
+            Hide();
+            GameInstance.Instance.GetUpdateManager().timeScale = 1;
+            GameInstance.Instance.GetUpdateManager().fixedTimeScale = 1;
             GameInstance.Instance.GetGameStateManager().Go(StateType.MainMenu);
         }
     }

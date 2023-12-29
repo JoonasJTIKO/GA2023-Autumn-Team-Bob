@@ -21,10 +21,10 @@ namespace TeamBobFPS
                     highscoreTexts[3].text = "Railgun: " + GameInstance.Instance.GetGameProgressionManager().VillageEndlessModeHighScores["Railgun"];
                     break;
                 case 3:
-                    highscoreTexts[0].text = "Pistol: ";
-                    highscoreTexts[1].text = "Shotgun: ";
-                    highscoreTexts[2].text = "Minigun: ";
-                    highscoreTexts[3].text = "Railgun: ";
+                    highscoreTexts[0].text = "Pistol: " + GameInstance.Instance.GetGameProgressionManager().TempleEndlessModeHighScores["Pistol"];
+                    highscoreTexts[1].text = "Shotgun: " + GameInstance.Instance.GetGameProgressionManager().TempleEndlessModeHighScores["Shotgun"];
+                    highscoreTexts[2].text = "Minigun: " + GameInstance.Instance.GetGameProgressionManager().TempleEndlessModeHighScores["Minigun"];
+                    highscoreTexts[3].text = "Railgun: " + GameInstance.Instance.GetGameProgressionManager().TempleEndlessModeHighScores["Railgun"];
                     break;
             }
         }

@@ -82,8 +82,6 @@ namespace TeamBobFPS
                 OnHealthUpdate?.Invoke(Health - startingHealth);
                 OnHeal?.Invoke(amount);
 
-                Debug.Log(Health);
-
                 return true;
             }
             return false;

@@ -97,6 +97,12 @@ namespace TeamBobFPS.UI
             healthText.text = currentHealthValue.ToString();
         }
 
+        public void ResetHealth()
+        {
+            currentHealthValue = 100;
+            healthText.text = currentHealthValue.ToString();
+        }
+
         public override void Show()
         {
             base.Show();

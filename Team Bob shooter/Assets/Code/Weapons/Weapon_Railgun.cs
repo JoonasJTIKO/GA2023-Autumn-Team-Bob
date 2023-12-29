@@ -105,6 +105,7 @@ namespace TeamBobFPS
             reloading = true;
 
             reloadRoutine = StartCoroutine(ReloadAfterDelay());
+            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_RAILGUN_RELOAD, transform.position, make2D: true);
         }
 
         private IEnumerator ReloadAfterDelay()
@@ -115,7 +116,6 @@ namespace TeamBobFPS
                 timer += Time.deltaTime * GameInstance.Instance.GetUpdateManager().timeScale;
                 yield return null;
             }
-            GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_RAILGUN_RELOAD, transform.position, volume: 0.5f, make2D: true);
 
             ReloadCompleted();
         }

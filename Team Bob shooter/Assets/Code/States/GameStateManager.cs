@@ -56,12 +56,14 @@ namespace TeamBobFPS
             VillageEndlessState villageEndlessState = new VillageEndlessState();
             HubState hubState = new HubState();
             TempleState templeState = new TempleState();
+            TempleEndlessState templeEndlessState = new TempleEndlessState();
 
             states.Add(mainMenuState);
             states.Add(inGameState);
             states.Add(villageEndlessState);
             states.Add(hubState);
             states.Add(templeState);
+            states.Add(templeEndlessState);
         }
 
         private void LoadInitialState()

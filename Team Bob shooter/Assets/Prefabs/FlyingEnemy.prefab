@@ -224,7 +224,7 @@ MonoBehaviour:
   wallMask:
     serializedVersion: 2
     m_Bits: 320
-  radius: 30
+  radius: 35
   angle: 360
   canSee: 0
   reachedEndOfPath: 0
@@ -234,7 +234,7 @@ MonoBehaviour:
   gibPrefab: {fileID: 6573204157362346898, guid: 7e8854404719b0c4484dab7e125d5c26,
     type: 3}
   enemyType: 2
-  fireRange: 20
+  fireRange: 35
   roam: 0
   animator: {fileID: 2482753817578027987}
   damageLockoutTime: 0.5
@@ -803,6 +803,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 8295092683227727426}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1590602467826230747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9214223041380629267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5f8badcfc5a66f41a76676e027d78a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3478426172147635611
 MonoBehaviour:
   m_ObjectHideFlags: 0

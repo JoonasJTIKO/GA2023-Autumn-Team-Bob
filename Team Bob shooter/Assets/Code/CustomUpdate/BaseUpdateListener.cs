@@ -25,26 +25,35 @@ namespace TeamBobFPS
 
         protected virtual void OnEnable()
         {
-            if (updateManager == null || !updateManager.Ready) return;
+            if (!listenerAdded)
+            {
+                if (updateManager == null || !updateManager.Ready) return;
 
-            updateManager.AddUpdateListener(this);
-            listenerAdded = true;
+                updateManager.AddUpdateListener(this);
+                listenerAdded = true;
+            }
         }
 
         protected virtual void OnDisable()
         {
-            if (updateManager == null || !updateManager.Ready) return;
+            if (listenerAdded)
+            {
+                if (updateManager == null || !updateManager.Ready) return;
 
-            updateManager.RemoveUpdateListener(this);
-            listenerAdded = false;
+                updateManager.RemoveUpdateListener(this);
+                listenerAdded = false;
+            }
         }
 
         protected virtual void OnDestroy()
         {
-            if (updateManager == null || !updateManager.Ready) return;
+            if (listenerAdded)
+            {
+                if (updateManager == null || !updateManager.Ready) return;
 
-            updateManager.RemoveUpdateListener(this);
-            listenerAdded = false;
+                updateManager.RemoveUpdateListener(this);
+                listenerAdded = false;
+            }
         }
 
         private void Update()

@@ -53,6 +53,8 @@ namespace TeamBobFPS
 
         private SineWaveHover waveHover;
 
+        private TrailRenderer trailRenderer;
+
         protected override void Awake()
         {
             base.Awake();
@@ -62,6 +64,7 @@ namespace TeamBobFPS
             rb = GetComponent<Rigidbody>();
             flightCurve = GetComponent<Bezier>();
             waveHover = GetComponent<SineWaveHover>();
+            trailRenderer = GetComponent<TrailRenderer>();
         }
 
         public override void OnFixedUpdate(float fixedDeltaTime)
@@ -141,6 +144,8 @@ namespace TeamBobFPS
             rb.constraints = RigidbodyConstraints.None;
             StartCoroutine(CanBeCollectedTimer(canBeCollectedTimer));
             aliveTimerRoutine = StartCoroutine(AliveTimer());
+            trailRenderer.enabled = true;
+            trailRenderer.Clear();
         }
 
         private void Recycle()
@@ -152,6 +157,7 @@ namespace TeamBobFPS
 
             if (Expired != null)
             {
+                trailRenderer.enabled = false;
                 Expired(this);
             }
         }

@@ -197,7 +197,7 @@ namespace TeamBobFPS
                     GameInstance.Instance.GetAudioManager().StopLoopingAudio(shootAudio);
                 }
 
-                shootAudio = GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_MINIGUN_SHOOT, transform.position, volume: 0.5f, loop: true, make2D: true);
+                shootAudio = GameInstance.Instance.GetAudioManager().PlayAudioAtLocation(EGameSFX._SFX_MINIGUN_SHOOT, transform.position, volume: 0.3f, loop: true, make2D: true);
                 shootAudioPlaying = true;
             }
             else if (!state && shootAudioPlaying)

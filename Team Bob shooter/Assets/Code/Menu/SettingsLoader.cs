@@ -8,7 +8,7 @@ namespace TeamBobFPS
     {
         void Awake()
         {
-            SaveSettings.LoadSettings();
+            //SaveSettings.LoadSettings();
             //Fullscreen(SettingsData.settings.fullscreen);
             SetResolution(SettingsData.settings.resolutionIndex);
         }

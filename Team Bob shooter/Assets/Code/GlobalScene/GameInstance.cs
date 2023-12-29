@@ -42,6 +42,12 @@ namespace TeamBobFPS
         [SerializeField]
         private SaveController saveController;
 
+        [SerializeField]
+        private VolumeSlider musicSlider;
+
+        [SerializeField]
+        private VolumeSlider sfxSlider;
+
         private static GameInstance instance;
 
         private GameStateManager gameStateManager;
@@ -98,6 +104,14 @@ namespace TeamBobFPS
             saveController = GetComponent<SaveController>();
             UsingController = Gamepad.all.Count > 0;
             //Application.targetFrameRate = 60;
+
+            SaveSettings.LoadSettings();
+        }
+
+        private void Start()
+        {
+            musicSlider.Initialize();
+            sfxSlider.Initialize();
         }
 
         private void Update()

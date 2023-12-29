@@ -20,8 +20,10 @@ namespace TeamBobFPS
 
             GameInstance.Instance.GetInGameHudCanvas().Hide();
             GameInstance.Instance.GetMainMenu().Show();
-            GameInstance.Instance.GetFadeCanvas().FadeFrom(0.5f);
+            GameInstance.Instance.GetFadeCanvas().FadeFrom(1f);
             GameInstance.Instance.AudioListener.enabled = true;
+
+            GameInstance.Instance.GetAudioManager().PlayMusic(EGameMusic._MENU_MUSIC);
         }
 
         public override void Deactivate(bool unloadScene = true)
@@ -30,6 +32,7 @@ namespace TeamBobFPS
             GameInstance.Instance.GetMainMenu().Hide();
 
             GameInstance.Instance.AudioListener.enabled = false;
+            GameInstance.Instance.GetAudioManager().FadeMusicOut(0.5f, false);
         }
 
         public MainMenuState() : base()

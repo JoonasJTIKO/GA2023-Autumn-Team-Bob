@@ -21,6 +21,9 @@ namespace TeamBobFPS
         [SerializeField]
         private ParticleSystem muzzleFlash;
 
+        [SerializeField]
+        private Animator holderAnimator;
+
         private PlayerUnit playerUnit;
 
         private Transform[] activeHitEffects = new Transform[8];
@@ -61,6 +64,7 @@ namespace TeamBobFPS
             reloadRoutine = StartCoroutine(ReloadAfterDelay());
 
             viewmodelAnimator.SetTrigger("Reload");
+            holderAnimator.SetTrigger("Reload");
         }
 
         private IEnumerator ReloadAfterDelay()
